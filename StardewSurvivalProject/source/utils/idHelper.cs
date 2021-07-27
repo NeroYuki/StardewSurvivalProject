@@ -28,6 +28,18 @@ namespace StardewSurvivalProject.source.utils
         WEDDING = 6,
     }
 
+    enum weatherIconType
+    {
+        SNOW = 7,
+        RAIN = 4,
+        WINDY_SPRING = 3,
+        WINDY_FALL = 6,
+        WEDDING = 0,
+        SUNNY = 2,
+        STORM = 5,
+        FESTIVAL = 1,
+    }
+
     enum bodyStatus
     {
         //constant health loss

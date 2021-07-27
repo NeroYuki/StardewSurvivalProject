@@ -5,7 +5,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using Harmony;
+using HarmonyLib;
 using SObject = StardewValley.Object;
 using Newtonsoft.Json;
 
@@ -73,7 +73,7 @@ namespace StardewSurvivalProject
             instance = new source.Manager();
             
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             // TODO: move this somewhere else lol
             harmony.Patch(
@@ -269,7 +269,13 @@ namespace StardewSurvivalProject
                 return;
             else
             {
-                instance.onEnvUpdate(e.NewTime, Game1.currentSeason, Game1.weatherIcon);
+                //foreach (GameLocation l in Game1.locations)
+                //{
+                //    this.Monitor.Log($"name={l.name}, isOutdoor={l.isOutdoors}");
+                //}
+                int mine_level = Game1.CurrentMineLevel; 
+                
+                instance.onEnvUpdate(e.NewTime, Game1.currentSeason, Game1.weatherIcon, Game1.currentLocation, Game1.CurrentMineLevel);
                 instance.onClockUpdate();
             }
         }

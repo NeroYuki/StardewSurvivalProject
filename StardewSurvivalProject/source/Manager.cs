@@ -37,30 +37,42 @@ namespace StardewSurvivalProject.source
         {
         }
 
-        public void onEnvUpdate(int time, string season, int weatherId)
+        public void onEnvUpdate(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
         {
             //TODO: temp follow a curve increase from morning to noon and decrease from noon to midnight, also depend on current season and current weather
-            const double BASE_VALUE = 27.0;
+            const double BASE_VALUE = 25.0;
             double value = BASE_VALUE;
+
+            //LogHelper.Debug($"season={season} time={time} weatherId={weatherIconId}");
+
             //start with applying adjustment based on season
             if (season.Equals("spring") || season.Equals("fall")) value *= 0.9;
             else if (season.Equals("summer")) value *= 1.1;
             else if (season.Equals("winter")) value *= 0.2;
 
             //next, check for weather
-            switch (weatherId)
+            switch (weatherIconId)
             {
-                case (int)weatherType.SUNNY: case (int)weatherType.FESTIVAL: case (int)weatherType.WEDDING:
+                case (int)weatherIconType.SUNNY: 
+                case (int)weatherIconType.FESTIVAL: 
+                case (int)weatherIconType.WEDDING:
                     value *= 1.2; break;
-                case (int)weatherType.STORM:
+                case (int)weatherIconType.STORM:
                     value *= 0.8; break;
-                case (int)weatherType.RAIN:
+                case (int)weatherIconType.RAIN:
                     value *= 0.8; break;
-                case (int)weatherType.WINDY:
+                case (int)weatherIconType.WINDY_SPRING:
+                case (int)weatherIconType.WINDY_FALL:
                     value *= 0.9; break;
-                case (int)weatherType.SNOW:
+                case (int)weatherIconType.SNOW:
                     value *= -1; break;
                 default: break;
+            }
+
+            //check for location
+            if (location != null)
+            {
+                LogHelper.Debug(location.name);
             }
 
             //next, check for time
@@ -70,6 +82,8 @@ namespace StardewSurvivalProject.source
             //curve look good enough on desmos so YOLO
             double timeTempModifier = Math.Sin((decTime - 8.5) / (Math.PI * 1.2)) * 3; //TODO change number 3 to a season-dependent multiplier
             value += timeTempModifier;
+
+
 
             //finally, add some randomness XD
 
