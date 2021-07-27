@@ -1,0 +1,55 @@
+[
+	//Rain Collector
+	{
+		"ProducerName": "Rain Collector",
+        "InputIdentifier": "Canteen",
+        "InputStack": 1,
+        "MinutesUntilReady": 120,
+        "OutputIdentifier": "Full Canteen",
+        "Sounds": ["Ship"],
+	},
+	
+	//Fan
+	{
+		"ProducerName": "Fan",
+        "InputIdentifier": "787",
+        "InputStack": 1,
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"],
+	},
+	
+	//Air Cooler
+	{
+		"ProducerName": "Air Cooler",
+        "InputIdentifier": "787",
+        "InputStack": 1,
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"],
+	},
+	
+	//Medicine Worktable
+	{
+		"ProducerName": "Medicine Worktable",
+        "InputIdentifier": "-80",
+        "InputStack": 2,
+		"FuelIdentifier": "388",
+        "MinutesUntilReady": 300,
+        "OutputIdentifier": "Herbal Medicine",
+        "Sounds": ["Ship"],
+	},
+	//Magical Medicine Stove
+	{
+		"ProducerName": "Magical Medicine Stove",
+        "InputIdentifier": "Herbal Medicine",
+        "InputStack": 1,
+		"FuelIdentifier": "388",
+		"AdditionalFuel": {
+			"595": 1,
+		},
+        "MinutesUntilReady": 500,
+        "OutputIdentifier": "Magic Herbal Medicine",
+        "Sounds": ["Ship"],
+	},
+]

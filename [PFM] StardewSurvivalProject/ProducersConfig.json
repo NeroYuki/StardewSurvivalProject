@@ -1,0 +1,29 @@
+[
+	{
+		"ProducerName": "Rain Collector", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+		"WorkingWeather": [ "Rainy", "Stormy" ],
+		"WorkingOutdoors": true,
+	},
+	{
+		"ProducerName": "Air Cooler", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+	},
+	{
+		"ProducerName": "Fan", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+	},
+	{
+		"ProducerName": "Medicine Worktable", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+	},
+	{
+		"ProducerName": "Magical Medicine Stove", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+	}
+]

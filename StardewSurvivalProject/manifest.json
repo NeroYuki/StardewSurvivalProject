@@ -1,0 +1,10 @@
+{
+  "Name": "StardewSurvivalProject",
+  "Author": "NeroYuki",
+  "Version": "0.0.2-alpha",
+  "Description": "testing",
+  "UniqueID": "neroyuki.rlvalley",
+  "EntryDll": "StardewSurvivalProject.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

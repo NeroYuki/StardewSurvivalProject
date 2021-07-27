@@ -1,0 +1,12 @@
+{
+  "Name": "StardewSurvivalProject Items",
+  "Author": "NeroYuki",
+  "Version": "0.0.2-alpha",
+  "Description": "testing JA",
+  "UniqueID": "neroyuki.rlvalleyitems",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  },
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

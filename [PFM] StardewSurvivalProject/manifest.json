@@ -1,0 +1,17 @@
+{
+    "Name": "StardewSurvivalProject Production Machine",
+    "Author": "NeroYuki",
+    "Version": "0.0.2-alpha",
+    "Description": "testing PFM",
+    "UniqueID": "neroyuki.rlvalleymachine",
+    "ContentPackFor": {
+        "UniqueID": "DIGUS.ProducerFrameworkMod"
+    },
+    "Dependencies": [{
+            "UniqueID": "neroyuki.rlvalleyitems",
+            "IsRequired": true,
+        },
+    ],
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}
