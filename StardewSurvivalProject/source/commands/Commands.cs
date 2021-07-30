@@ -1,4 +1,4 @@
-﻿
+﻿using StardewSurvivalProject.source.effects;
 
 namespace StardewSurvivalProject.source.commands
 {
@@ -28,6 +28,21 @@ namespace StardewSurvivalProject.source.commands
                     LogHelper.Info("Usage: player_setthirst <amt>");
                 else
                     instance.setPlayerThirst(double.Parse(args[0]));
+            }
+        }
+        
+        public void SetEffect(string cmd, string[] args)
+        {
+            if (cmd == "player_testeffect")
+            {
+                EffectManager.addEffect(EffectManager.burnEffectIndex);
+                EffectManager.addEffect(EffectManager.dehydrationEffectIndex);
+                EffectManager.addEffect(EffectManager.feverEffectIndex);
+                EffectManager.addEffect(EffectManager.frostbiteEffectIndex);
+                EffectManager.addEffect(EffectManager.heatstrokeEffectIndex);
+                EffectManager.addEffect(EffectManager.hypothermiaEffectIndex);
+                EffectManager.addEffect(EffectManager.starvationEffectIndex);
+                EffectManager.addEffect(EffectManager.stomachacheEffectIndex);
             }
         }
     }

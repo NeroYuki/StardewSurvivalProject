@@ -19,10 +19,14 @@ namespace StardewSurvivalProject.source.data
         public static void loadList(Mod context)
         {
 
-            String RelativePath = Path.Combine(context.Helper.DirectoryPath, "customHydrationData.json");
-            String jsonData = File.ReadAllText(RelativePath);
-            HydrationItemData[] tempArray = JsonConvert.DeserializeObject<HydrationItemData[]>(jsonData);
+            String RelativePath = Path.Combine("customHydrationData.json");
+            HydrationItemData[] tempArray = context.Helper.Data.ReadJsonFile<HydrationItemData[]>(RelativePath);
             //TODO: load this list from a file
+            if (tempArray == null)
+            {
+                LogHelper.Warn("No hydration item entry is found");
+                return;
+            }
             for (int i = 0; i < tempArray.Length; i++)
                 value_list.Add(tempArray[i].name, tempArray[i]);
             LogHelper.Debug("Hydration Item Data loaded");

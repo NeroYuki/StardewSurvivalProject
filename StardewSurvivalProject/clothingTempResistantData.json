@@ -1,0 +1,30 @@
+{
+  "shirt_data": [
+    {
+      "name": "Copper Brestplate",
+      "minTemp": 10.0,
+      "maxTemp": 25.0
+    }
+  ],
+  "pant_data": [
+    {
+      "name": "Farmer Pants",
+      "minTemp": 8.0,
+      "maxTemp": 27.0
+    }
+  ],
+  "hat_data": [
+    {
+      "name": "Floppy Beanie",
+      "minTemp": -5.0,
+      "maxTemp":  18.0
+    }
+  ],
+  "footwear_data": [
+    {
+      "name": "Firewalker Boots",
+      "minTemp": 5.0,
+      "maxTemp": 50.0
+    }
+  ]
+}

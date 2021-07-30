@@ -44,13 +44,13 @@ namespace StardewSurvivalProject.source.utils
     {
         //constant health loss
         BURN = 0,
-        //drastically increase stamina usage
+        //drastically increase dehydration rate
         HEATSTROKE = 1,
         //drastically slow down player
         HYPOTHERMIA = 2,
         //constant health loss
         FROSTBITE = 3,
-        //drain stamina constantly
+        //drastically increase stamina usage
         FEVER = 4,
         //drain stamina in place of hunger
         STARVING = 5,
