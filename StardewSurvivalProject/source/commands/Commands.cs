@@ -15,8 +15,11 @@ namespace StardewSurvivalProject.source.commands
             {
                 if (args.Length != 1)
                     LogHelper.Info("Usage: player_sethunger <amt>");
-                else
+                else {
                     instance.setPlayerHunger(double.Parse(args[0]));
+                    LogHelper.Info($"Ok, set player hunger level to {args[0]}");
+                }
+                    
             }
 
         }
@@ -27,7 +30,24 @@ namespace StardewSurvivalProject.source.commands
                 if (args.Length != 1)
                     LogHelper.Info("Usage: player_setthirst <amt>");
                 else
+                {
                     instance.setPlayerThirst(double.Parse(args[0]));
+                    LogHelper.Info($"Ok, set player thirst level to {args[0]}");
+                }
+            }
+        }
+
+        public void SetBodyTemp(string cmd, string[] args)
+        {
+            if (cmd == "player_settemp")
+            {
+                if (args.Length < 1)
+                    LogHelper.Info("Usage: player_settemp <temp>");
+                else
+                {
+                    instance.setPlayerBodyTemp(double.Parse(args[0]));
+                    LogHelper.Info($"Ok, set player body temperature to {args[0]}C");
+                }
             }
         }
         
@@ -35,14 +55,26 @@ namespace StardewSurvivalProject.source.commands
         {
             if (cmd == "player_testeffect")
             {
-                EffectManager.addEffect(EffectManager.burnEffectIndex);
-                EffectManager.addEffect(EffectManager.dehydrationEffectIndex);
-                EffectManager.addEffect(EffectManager.feverEffectIndex);
-                EffectManager.addEffect(EffectManager.frostbiteEffectIndex);
-                EffectManager.addEffect(EffectManager.heatstrokeEffectIndex);
-                EffectManager.addEffect(EffectManager.hypothermiaEffectIndex);
-                EffectManager.addEffect(EffectManager.starvationEffectIndex);
-                EffectManager.addEffect(EffectManager.stomachacheEffectIndex);
+                if (args.Length < 1)
+                {
+                    EffectManager.applyEffect(EffectManager.burnEffectIndex);
+                    EffectManager.applyEffect(EffectManager.dehydrationEffectIndex);
+                    EffectManager.applyEffect(EffectManager.feverEffectIndex);
+                    EffectManager.applyEffect(EffectManager.frostbiteEffectIndex);
+                    EffectManager.applyEffect(EffectManager.heatstrokeEffectIndex);
+                    EffectManager.applyEffect(EffectManager.hypothermiaEffectIndex);
+                    EffectManager.applyEffect(EffectManager.starvationEffectIndex);
+                    EffectManager.applyEffect(EffectManager.stomachacheEffectIndex);
+                    LogHelper.Info($"Effect index not found, adding all custom effect at once");
+                }
+                else
+                {
+                    foreach (string i in args)
+                    {
+                        EffectManager.applyEffect(int.Parse(i));
+                        LogHelper.Info($"Ok, applied effect at index {i}");
+                    }
+                }
             }
         }
     }

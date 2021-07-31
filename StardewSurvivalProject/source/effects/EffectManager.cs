@@ -16,30 +16,36 @@ namespace StardewSurvivalProject.source.effects
         public const int feverEffectIndex = 42;
         public const int stomachacheEffectIndex = 43;
 
-        public static Dictionary<int, string> effectDescDictionary = new Dictionary<int, string>();
+        //dictionary include effect index as key, a string int pair value for description and effect duration respectively
+        public static Dictionary<int, KeyValuePair<string, int>> effectDescDictionary = new Dictionary<int, KeyValuePair<string, int>>();
 
         public static void initialize()
         {
-            effectDescDictionary.Add(burnEffectIndex, "Holy crap you are on fire! Get away from the heat source NOW");
-            effectDescDictionary.Add(starvationEffectIndex, "You're starving. Please eat something...");
-            effectDescDictionary.Add(hypothermiaEffectIndex, "Your skin is getting colder. Please seek a shelter and a campfire.");
-            effectDescDictionary.Add(frostbiteEffectIndex, "Your mind is getting numb. I hope your shelter is nearby...");
-            effectDescDictionary.Add(heatstrokeEffectIndex, "The heat is so bad, you begin to sweat non-stop");
-            effectDescDictionary.Add(dehydrationEffectIndex, "You are as dry as a kindle. Please get yourself something to drink");
-            effectDescDictionary.Add(feverEffectIndex, "Someday you just feeling sick. You'd better not doing something to heavy");
-            effectDescDictionary.Add(stomachacheEffectIndex, "Your gut felt some pain, maybe cook your food next time");
+            effectDescDictionary.Add(burnEffectIndex, new KeyValuePair<string, int>("Holy crap you are on fire! Get away from the heat source NOW", 1000));
+            effectDescDictionary.Add(starvationEffectIndex, new KeyValuePair<string, int>("You're starving. Please eat something...", 1000));
+            effectDescDictionary.Add(hypothermiaEffectIndex, new KeyValuePair<string, int>("Your skin is getting colder. Please seek a shelter and a campfire.", 1000));
+            effectDescDictionary.Add(frostbiteEffectIndex, new KeyValuePair<string, int>("Your mind is getting numb. I hope your shelter is nearby...", 1000));
+            effectDescDictionary.Add(heatstrokeEffectIndex, new KeyValuePair<string, int>("The heat is so bad, you begin to sweat non-stop", 1000));
+            effectDescDictionary.Add(dehydrationEffectIndex, new KeyValuePair<string, int>("You are as dry as a kindle. Please get yourself something to drink", 1000));
+            effectDescDictionary.Add(feverEffectIndex, new KeyValuePair<string, int>("Someday you just feeling sick. You'd better not doing something to heavy", 480000));
+            effectDescDictionary.Add(stomachacheEffectIndex, new KeyValuePair<string, int>("Your gut felt some pain, maybe cook your food next time", 10000));
         }
 
         public static void addEffect(int effectIndex)
         {
             Buff effect = null;
-
-            Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
+            if (effectIndex == hypothermiaEffectIndex)
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, "", ""));
+            else 
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
 
             effect.which = effectIndex;
             effect.sheetIndex = effectIndex;
-            effect.millisecondsDuration = (effectIndex == feverEffectIndex) ? 480000 : 10000;
-            bool res = effectDescDictionary.TryGetValue(effectIndex, out effect.description);
+            KeyValuePair<string, int> effectExtraInfo = new KeyValuePair<string, int>("Unknown Effect", 0);
+            bool res = effectDescDictionary.TryGetValue(effectIndex, out effectExtraInfo);
+
+            effect.millisecondsDuration = effectExtraInfo.Value;
+            effect.description = effectExtraInfo.Key;
         }
 
         public static void applyEffect(int effectIndex)
@@ -57,8 +63,9 @@ namespace StardewSurvivalProject.source.effects
 
         public static void renewEffect(Buff effect)
         {
-
-            effect.millisecondsDuration = (effect.which == feverEffectIndex) ? 480000 : 10000;
+            KeyValuePair<string, int> effectExtraInfo = new KeyValuePair<string, int>("Unknown Effect", 0);
+            bool res = effectDescDictionary.TryGetValue(effect.which, out effectExtraInfo);
+            effect.millisecondsDuration = effectExtraInfo.Value;
         }
     }
 }

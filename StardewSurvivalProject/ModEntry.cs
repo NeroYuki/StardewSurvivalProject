@@ -43,7 +43,7 @@ namespace StardewSurvivalProject
 
             //for checking water tile to drink
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            //do nothing for now
+            //apply custom effect
             helper.Events.GameLoop.OneSecondUpdateTicked += this.OnSecondPassed;
             //for properly load manager with player save info
             helper.Events.GameLoop.SaveLoaded += this.OnLoadedSave;
@@ -63,6 +63,8 @@ namespace StardewSurvivalProject
             helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
             //for overnight passive drain
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
+            //for fever effect applying dice roll
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -113,7 +115,8 @@ namespace StardewSurvivalProject
             commandManager = new source.commands.Commands(instance);
             helper.ConsoleCommands.Add("player_sethunger", "Set your hunger to a specified amount", commandManager.SetHungerCmd);
             helper.ConsoleCommands.Add("player_setthirst", "Set your hydration level to a specified amount", commandManager.SetThirstCmd);
-            helper.ConsoleCommands.Add("player_testeffect", "Test", commandManager.SetEffect);
+            helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
+            helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
         }
 
         //patch game assets
@@ -262,8 +265,8 @@ namespace StardewSurvivalProject
             Vector2 env_ind_pos = new Vector2(OffsetX + (float) x_coord_env_temp, OffsetY + this.HungerBar.Height * Scale * 2);
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
-            const double BODY_TEMP_BOUND_LOW = 32;
-            const double BODY_TEMP_BOUND_HIGH = 42;
+            const double BODY_TEMP_BOUND_LOW = 30;
+            const double BODY_TEMP_BOUND_HIGH = 45;
 
             double x_coord_body_temp = ((instance.getPlayerBodyTemp() - BODY_TEMP_BOUND_LOW) / (BODY_TEMP_BOUND_HIGH - BODY_TEMP_BOUND_LOW)) * (50 * Scale);
             Vector2 body_ind_pos = new Vector2(OffsetX + (float) x_coord_body_temp, OffsetY + this.HungerBar.Height * Scale * 3);
@@ -358,6 +361,11 @@ namespace StardewSurvivalProject
 
             //this.Monitor.Log(Game1.player.CurrentTool.GetType().Name);
             instance.updateOnToolUsed(Game1.player.CurrentTool);
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            instance.dayStartProcedure();
         }
 
         private void OnLoadedSave(object sender, SaveLoadedEventArgs e)

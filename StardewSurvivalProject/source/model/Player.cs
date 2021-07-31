@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
 
@@ -32,7 +29,6 @@ namespace StardewSurvivalProject.source.model
                 hunger.value -= ModConfig.GetInstance().PassiveHungerDrainRate;
                 thirst.value -= ModConfig.GetInstance().PassiveThirstDrainRate;
             }
-            temp.value = rand.NextDouble() * 0.5 + 36.5;
             checkIsDangerValue();
         }
 
@@ -41,12 +37,18 @@ namespace StardewSurvivalProject.source.model
             if (hunger.value <= 0)
             {
                 hunger.value = 0;
-                bindedFarmer.stamina -= ModConfig.GetInstance().StaminaPenaltyOnStarvation;
+                int staminaPenalty = ModConfig.GetInstance().StaminaPenaltyOnStarvation;
+                bindedFarmer.stamina -= staminaPenalty;
+                //Game1.currentLocation.playSound("ow");
+                Game1.staminaShakeTimer = 100 * staminaPenalty;
             }
             if (thirst.value <= 0)
             {
                 thirst.value = 0;
-                bindedFarmer.health -= ModConfig.GetInstance().HealthPenaltyOnDehydration;
+                int healthPenalty = ModConfig.GetInstance().HealthPenaltyOnDehydration;
+                bindedFarmer.health -= healthPenalty; 
+                Game1.currentLocation.playSound("ow");
+                Game1.hitShakeTimer = 100 * healthPenalty;
             }
         }
 
@@ -73,6 +75,11 @@ namespace StardewSurvivalProject.source.model
             if (addValue == 0) return;
             Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + addValue} Hydration", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
             checkIsDangerValue();
+        }
+
+        public void updateBodyTemp(EnvTemp envTemp)
+        {
+            temp.BodyTempCalc(envTemp, (rand.NextDouble() * 0.2) - 0.1);
         }
 
         public String getStatString()

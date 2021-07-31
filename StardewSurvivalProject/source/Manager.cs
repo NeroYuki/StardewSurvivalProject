@@ -14,7 +14,6 @@ namespace StardewSurvivalProject.source
         private model.EnvTemp envTemp;
         private String displayString = "";
         private Random rand = null;
-        private ModConfig Config = null;
 
         private string RelativeDataPath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
 
@@ -35,6 +34,33 @@ namespace StardewSurvivalProject.source
 
         public void onSecondUpdate()
         {
+            //poition effect apply here
+            if (player.hunger.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.starvationEffectIndex);
+            if (player.thirst.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.dehydrationEffectIndex);
+            if (player.temp.value >= 38.5) effects.EffectManager.applyEffect(effects.EffectManager.heatstrokeEffectIndex);
+            if (player.temp.value <= 35) effects.EffectManager.applyEffect(effects.EffectManager.hypothermiaEffectIndex);
+            if (player.temp.value >= 42) effects.EffectManager.applyEffect(effects.EffectManager.burnEffectIndex);
+            if (player.temp.value <= 30) effects.EffectManager.applyEffect(effects.EffectManager.frostbiteEffectIndex);
+
+            //the real isPause code xd
+            if (!Game1.eventUp && (Game1.activeClickableMenu == null || Game1.IsMultiplayer) && !Game1.paused)
+            {
+                //apply some effects' result every second
+                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.stomachacheEffectIndex))
+                {
+                    player.updateActiveDrain(-model.Hunger.DEFAULT_VALUE * 0.01, 0);
+                }
+                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.burnEffectIndex || e.which == effects.EffectManager.frostbiteEffectIndex))
+                {
+                    player.bindedFarmer.health -= 3;
+                    Game1.currentLocation.playSound("ow");
+                    Game1.hitShakeTimer = 100 * 3;
+                }
+                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.heatstrokeEffectIndex))
+                {
+                    player.updateActiveDrain(0, -2);
+                }
+            }
         }
 
         public void onEnvUpdate(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
@@ -47,7 +73,7 @@ namespace StardewSurvivalProject.source
             if (player == null) return;
             player.updateDrain();
             //TODO: update player body temp based on env temp, whether user is indoor and nearby heating / cooling source (light source / nearby big craftable)
-
+            player.updateBodyTemp(envTemp);
             displayString = player.getStatStringUI();
         }
 
@@ -70,6 +96,13 @@ namespace StardewSurvivalProject.source
                 }
             }
 
+            //check if eaten food is cooked or artisan product, if no apply chance for stomachache effect
+            if (gameObj.Category != SObject.CookingCategory && gameObj.Category != SObject.artisanGoodsCategory)
+            {
+                if (rand.NextDouble() * 100 < (100 - 0.012))
+                    effects.EffectManager.applyEffect(effects.EffectManager.stomachacheEffectIndex);
+            }
+
             //band-aid fix coming, if edibility is 1 and healing value is not 0, dont add hunger
             //TODO: document this weird anomaly
             if (data.HealingItemDictionary.getHealingValue(gameObj.name) > 0 && gameObj.Edibility == 1) return;
@@ -90,6 +123,12 @@ namespace StardewSurvivalProject.source
         {
             if (player == null || amt < 0 || amt > 1000000) return;
             player.thirst.value = amt;
+        }
+
+        public  void setPlayerBodyTemp(double v)
+        {
+            if (player == null || v < -274 || v > 10000) return;
+            player.temp.value = v;
         }
 
         public string getDisplayString()
@@ -124,6 +163,9 @@ namespace StardewSurvivalProject.source
 
         public void onDayEnding()
         {
+            //clear all buff on day ending (bug-free?)
+            Game1.buffsDisplay.clearAllBuffs();
+
             if (player == null || !ModConfig.GetInstance().UseOvernightPassiveDrain || player.bindedFarmer.passedOut) return;
             //24 mean 240 minutes of sleep (from 2am to 6am)
             player.updateActiveDrain(-ModConfig.GetInstance().PassiveHungerDrainRate * 24, -ModConfig.GetInstance().PassiveThirstDrainRate * 24);
@@ -191,29 +233,93 @@ namespace StardewSurvivalProject.source
 
         public void updateOnToolUsed(StardewValley.Tool toolHold)
         {
+            bool isFever = Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.feverEffectIndex);
+            int power = (int)((player.bindedFarmer.toolHold + 20f) / 600f) + 1;
+            LogHelper.Debug($"Tool Power = {power}");
+
             if (!ModConfig.GetInstance().UseOnToolUseDrain) return;
 
+            //yea this is terrible
+            //TODO: more generic code
             if (toolHold is StardewValley.Tools.Axe)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().AxeHungerDrain, -ModConfig.GetInstance().AxeThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.ForagingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
             else if (toolHold is StardewValley.Tools.Hoe)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().HoeHungerDrain, -ModConfig.GetInstance().HoeThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
             else if (toolHold is StardewValley.Tools.Pickaxe)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().PickaxeHungerDrain, -ModConfig.GetInstance().PickaxeThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.MiningLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
             else if (toolHold is StardewValley.Tools.MeleeWeapon)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().MeleeWeaponHungerDrain, -ModConfig.GetInstance().MeleeWeaponThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * 2.0f;
+                }
+            }
             else if (toolHold is StardewValley.Tools.Slingshot)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().SlingshotHungerDrain, -ModConfig.GetInstance().SlingshotThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * 2.0f;
+                }
+            }
             else if (toolHold is StardewValley.Tools.WateringCan)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().WateringCanHungerDrain, -ModConfig.GetInstance().WateringCanThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= ((float)(2 * (power + 1)) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
             else if (toolHold is StardewValley.Tools.FishingRod)
+            {
                 player.updateActiveDrain(-ModConfig.GetInstance().FishingPoleHungerDrain, -ModConfig.GetInstance().FishingPoleThirstDrain);
-
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= (8f - (float)player.bindedFarmer.FishingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
+            else if (toolHold is StardewValley.Tools.MilkPail)
+            {
+                player.updateActiveDrain(-1.0, -1.0);
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
+            else if (toolHold is StardewValley.Tools.Shears)
+            {
+                player.updateActiveDrain(-1.0, -1.0);
+                if (isFever)
+                {
+                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    Game1.staminaShakeTimer += 100;
+                }
+            }
             else
                 LogHelper.Debug("Unknown tool type");
 
@@ -250,6 +356,15 @@ namespace StardewSurvivalProject.source
 
             SaveData savingData = new SaveData(this.player.hunger, this.player.thirst, this.player.temp);
             context.Helper.Data.WriteJsonFile<SaveData>(this.RelativeDataPath, savingData);
+        }
+
+        internal void dayStartProcedure()
+        {
+            double dice_roll = rand.NextDouble() * 100;
+            if (dice_roll > 100 - 2)
+            {
+                effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
+            }
         }
     }
 }
