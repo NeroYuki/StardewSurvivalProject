@@ -5,6 +5,6 @@
   "Description": "A mod aim to add and alter Stardew Valley's game mechanic for additional layer of realism (one may call this a bit masochist but who care lol)",
   "UniqueID": "neroyuki.rlvalley",
   "EntryDll": "StardewSurvivalProject.dll",
-  "MinimumApiVersion": "3.12.0",
+  "MinimumApiVersion": "3.11.0",
   "UpdateKeys": []
 }

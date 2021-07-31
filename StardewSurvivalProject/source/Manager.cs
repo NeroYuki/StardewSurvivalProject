@@ -99,7 +99,7 @@ namespace StardewSurvivalProject.source
             //check if eaten food is cooked or artisan product, if no apply chance for stomachache effect
             if (gameObj.Category != SObject.CookingCategory && gameObj.Category != SObject.artisanGoodsCategory)
             {
-                if (rand.NextDouble() * 100 < (100 - 0.012))
+                if (rand.NextDouble() * 100 >= (100 - 5))
                     effects.EffectManager.applyEffect(effects.EffectManager.stomachacheEffectIndex);
             }
 
@@ -361,7 +361,7 @@ namespace StardewSurvivalProject.source
         internal void dayStartProcedure()
         {
             double dice_roll = rand.NextDouble() * 100;
-            if (dice_roll > 100 - 2)
+            if (dice_roll >= 100 - 2)
             {
                 effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
             }

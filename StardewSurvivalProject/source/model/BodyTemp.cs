@@ -28,21 +28,24 @@ namespace StardewSurvivalProject.source.model
         public void BodyTempCalc(EnvTemp envTemp, double fluctuation = 0)
         {
             double envTempVal = envTemp.value;
+            double targetBodyTemp = value;
             //currently follow a sigmoid function (adjust to look good on desmos xd)
             if (envTemp.value > MaxComfortTemp)
             {
                 // if more than maximum comfort temp
-                value = DEFAULT_VALUE + (5 / (1 + Math.Pow(Math.E, -0.1 * (envTempVal - MaxComfortTemp - 24)))) * 1.5;
+                targetBodyTemp = DEFAULT_VALUE + (5 / (1 + Math.Pow(Math.E, -0.1 * (envTempVal - MaxComfortTemp - 24)))) * 1.5;
             }
             else if (envTemp.value < MinComfortTemp)
             {
                 // if more than maximum comfort temp
-                value = DEFAULT_VALUE - (5 / (1 + Math.Pow(Math.E, -0.2 * (MinComfortTemp - envTempVal - 12)))) * 1.5;
+                targetBodyTemp = DEFAULT_VALUE - (5 / (1 + Math.Pow(Math.E, -0.2 * (MinComfortTemp - envTempVal - 12)))) * 1.5;
             }
             else
             {
-                value = DEFAULT_VALUE;
+                targetBodyTemp = DEFAULT_VALUE;
             }
+            //gradual temp change instead of abrupted
+            value += (targetBodyTemp - value) / 2;
             //fluctuate a bit
             value += fluctuation;
         }
