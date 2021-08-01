@@ -37,10 +37,10 @@ namespace StardewSurvivalProject.source
             //poition effect apply here
             if (player.hunger.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.starvationEffectIndex);
             if (player.thirst.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.dehydrationEffectIndex);
-            if (player.temp.value >= 38.5) effects.EffectManager.applyEffect(effects.EffectManager.heatstrokeEffectIndex);
-            if (player.temp.value <= 35) effects.EffectManager.applyEffect(effects.EffectManager.hypothermiaEffectIndex);
-            if (player.temp.value >= 42) effects.EffectManager.applyEffect(effects.EffectManager.burnEffectIndex);
-            if (player.temp.value <= 30) effects.EffectManager.applyEffect(effects.EffectManager.frostbiteEffectIndex);
+            if (player.temp.value >= model.BodyTemp.HeatstrokeThreshold) effects.EffectManager.applyEffect(effects.EffectManager.heatstrokeEffectIndex);
+            if (player.temp.value <= model.BodyTemp.HypotherminaThreshold) effects.EffectManager.applyEffect(effects.EffectManager.hypothermiaEffectIndex);
+            if (player.temp.value >= model.BodyTemp.BurnThreshold) effects.EffectManager.applyEffect(effects.EffectManager.burnEffectIndex);
+            if (player.temp.value <= model.BodyTemp.FrostbiteThreshold) effects.EffectManager.applyEffect(effects.EffectManager.frostbiteEffectIndex);
 
             //the real isPause code xd
             if (!Game1.eventUp && (Game1.activeClickableMenu == null || Game1.IsMultiplayer) && !Game1.paused)
@@ -66,6 +66,7 @@ namespace StardewSurvivalProject.source
         public void onEnvUpdate(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
         {
             envTemp.updateEnvTemp(time, season, weatherIconId, location, currentMineLevel);
+            envTemp.updateLocalEnvTemp();
         }
 
         public void onClockUpdate()
@@ -366,5 +367,6 @@ namespace StardewSurvivalProject.source
                 effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
             }
         }
+
     }
 }

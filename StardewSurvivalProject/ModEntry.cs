@@ -265,7 +265,7 @@ namespace StardewSurvivalProject
             Vector2 env_ind_pos = new Vector2(OffsetX + (float) x_coord_env_temp, OffsetY + this.HungerBar.Height * Scale * 2);
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
-            const double BODY_TEMP_BOUND_LOW = 30;
+            const double BODY_TEMP_BOUND_LOW = 28;
             const double BODY_TEMP_BOUND_HIGH = 45;
 
             double x_coord_body_temp = ((instance.getPlayerBodyTemp() - BODY_TEMP_BOUND_LOW) / (BODY_TEMP_BOUND_HIGH - BODY_TEMP_BOUND_LOW)) * (50 * Scale);
@@ -276,14 +276,12 @@ namespace StardewSurvivalProject
             if (instance.getPlayerHungerPercentage() > 0)
             {
                 float perc = (float)instance.getPlayerHungerPercentage();
-
-                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), Color.GreenYellow);
+                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
             }
             if (instance.getPlayerThirstPercentage() > 0)
             {
                 float perc = (float)instance.getPlayerThirstPercentage();
-
-                b.Draw(this.fillRect, thirst_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), Color.GreenYellow);
+                b.Draw(this.fillRect, thirst_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
             }
             
             Rectangle hunger_hover_area = new Rectangle((int) hunger_pos.X, (int) hunger_pos.Y, (int) (this.HungerBar.Width * Scale), (int) (this.HungerBar.Height * Scale));

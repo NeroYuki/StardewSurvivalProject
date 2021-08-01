@@ -72,6 +72,7 @@
     <Compile Include="source\Manager.cs" />
     <Compile Include="source\model\Player.cs" />
     <Compile Include="source\model\Thirst.cs" />
+    <Compile Include="source\utils\ColorHelper.cs" />
     <Compile Include="source\utils\idHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using StardewSurvivalProject.source.utils;
 using StardewValley;
+using Newtonsoft.Json;
 
 namespace StardewSurvivalProject.source.model
 {
@@ -55,18 +56,50 @@ namespace StardewSurvivalProject.source.model
             //check for location
             if (location != null)
             {
+                LogHelper.Debug(location.Name);
                 data.LocationEnvironmentData locationData = data.CustomEnvironmentDictionary.GetEnvironmentData(location.Name);
                 if (locationData != null)
                 {
                     value += locationData.tempModifierAdditive;
                     value *= locationData.tempModifierMultiplicative;
-                    if (locationData.tempModifierFixedValue <= -274)
+                    if (locationData.tempModifierFixedValue > -273)
                     {
                         value = locationData.tempModifierFixedValue;
                         fixedTemp = true;
                     }
                     dayNightCycleTempDiffScale = locationData.tempModifierTimeDependentScale;
                     fluctuationTempScale = locationData.tempModifierFluctuationScale;
+                }
+
+                if (!location.IsOutdoors)
+                {
+                    //cut temperature difference by half
+                    value += (DEFAULT_VALUE - value) / 2;
+                }
+
+                //special treatment for cave
+                if (location.Name.Contains("UndergroundMine"))
+                {
+                    if (currentMineLevel >= 0 && currentMineLevel < 40)
+                    {
+                        value = DEFAULT_VALUE + 0.22 * currentMineLevel;
+                        fixedTemp = true;
+                    }
+                    else if (currentMineLevel >= 40 && currentMineLevel < 80)
+                    {
+                        value = -0.01 * Math.Pow(currentMineLevel - 60, 2) - 6;
+                        fixedTemp = true;
+                    }
+                    else if (currentMineLevel >= 80)
+                    {
+                        value = 1.1 * (currentMineLevel - 50);
+                        fixedTemp = true;
+                    }
+                }
+                else if (location.Name.Equals("SkullCave"))
+                {
+                    value = DEFAULT_VALUE + 0.045 * currentMineLevel;
+                    fixedTemp = true;
                 }
             }
 
@@ -82,6 +115,16 @@ namespace StardewSurvivalProject.source.model
 
             value += rand.NextDouble() * fluctuationTempScale - 0.5 * fluctuationTempScale;
             this.value = value;
+        }
+
+        public void updateLocalEnvTemp()
+        {
+            //TODO: check in player proximity for light source as heat source, as well as cooling source
+            LogHelper.Debug($"LightLevel={Game1.currentLocation.LightLevel}");
+            foreach (LightSource ls in Game1.currentLightSources)
+            {
+               LogHelper.Debug($"Light source at {ls.position.X} {ls.position.Y} with radius of {ls.radius}");
+            }
         }
     }
 }

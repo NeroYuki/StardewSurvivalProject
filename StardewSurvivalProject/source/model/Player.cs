@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using StardewValley;
 using StardewModdingAPI;
+using Newtonsoft.Json;
 
 namespace StardewSurvivalProject.source.model
 {
@@ -74,11 +75,24 @@ namespace StardewSurvivalProject.source.model
             thirst.value = Math.Min(thirst.value + addValue, Thirst.DEFAULT_VALUE);
             if (addValue == 0) return;
             Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + addValue} Hydration", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
+
+            //cooling down player if water was drank
+            if (addValue > 0 || this.temp.value > BodyTemp.DEFAULT_VALUE)
+            {
+                this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * addValue + 1));
+            }
             checkIsDangerValue();
         }
 
         public void updateBodyTemp(EnvTemp envTemp)
         {
+            LogHelper.Debug($"shirtIndex={bindedFarmer.GetShirtIndex()} pantIndex={bindedFarmer.GetPantsIndex()}");
+            String hat_name = "", shirt_name = "", pants_name = "", boots_name = "";
+            if (bindedFarmer.hat.Value != null) hat_name = bindedFarmer.hat.Value.Name;
+            if (bindedFarmer.shirtItem.Value != null) shirt_name = bindedFarmer.shirtItem.Value.Name;
+            if (bindedFarmer.pantsItem.Value != null) pants_name = bindedFarmer.pantsItem.Value.Name;
+            if (bindedFarmer.boots.Value != null) boots_name = bindedFarmer.boots.Value.Name;
+            temp.updateComfortTemp(hat_name, shirt_name, pants_name, boots_name);
             temp.BodyTempCalc(envTemp, (rand.NextDouble() * 0.2) - 0.1);
         }
 

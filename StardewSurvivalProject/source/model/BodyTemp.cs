@@ -8,10 +8,16 @@ namespace StardewSurvivalProject.source.model
 {
     public class BodyTemp
     {
-        private const double DEFAULT_VALUE = 37.5;
+        public const double DEFAULT_VALUE = 37.5;
 
         public double MinComfortTemp = 16.0;
-        public double MaxComfortTemp = 27.0;
+        public double MaxComfortTemp = 24.0;
+
+        public static double HypotherminaThreshold = 35.0;
+        public static double FrostbiteThreshold = 30.0;
+        public static double HeatstrokeThreshold = 38.5;
+        public static double BurnThreshold = 41.0;
+
         public double value { get; set; }
 
         public BodyTemp()
@@ -29,16 +35,16 @@ namespace StardewSurvivalProject.source.model
         {
             double envTempVal = envTemp.value;
             double targetBodyTemp = value;
-            //currently follow a sigmoid function (adjust to look good on desmos xd)
+            //currently follow a segmented linear function (adjust to look good on desmos xd)
             if (envTemp.value > MaxComfortTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = DEFAULT_VALUE + (5 / (1 + Math.Pow(Math.E, -0.1 * (envTempVal - MaxComfortTemp - 24)))) * 1.5;
+                targetBodyTemp = DEFAULT_VALUE + 0.09 * (envTempVal - MaxComfortTemp);
             }
             else if (envTemp.value < MinComfortTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = DEFAULT_VALUE - (5 / (1 + Math.Pow(Math.E, -0.2 * (MinComfortTemp - envTempVal - 12)))) * 1.5;
+                targetBodyTemp = DEFAULT_VALUE - 0.17 * (MinComfortTemp - envTempVal);
             }
             else
             {
@@ -48,6 +54,13 @@ namespace StardewSurvivalProject.source.model
             value += (targetBodyTemp - value) / 2;
             //fluctuate a bit
             value += fluctuation;
+        }
+
+        internal void updateComfortTemp(string hat_name, string shirt_name, string pants_name, string boots_name)
+        {
+            //placeholder
+            MinComfortTemp = MinComfortTemp;
+            MaxComfortTemp = MaxComfortTemp;
         }
     }
 }
