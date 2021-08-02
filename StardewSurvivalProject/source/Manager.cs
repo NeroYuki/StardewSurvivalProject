@@ -58,7 +58,7 @@ namespace StardewSurvivalProject.source
                 }
                 if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.heatstrokeEffectIndex))
                 {
-                    player.updateActiveDrain(0, -2);
+                    player.updateActiveDrain(0, -0.8);
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace StardewSurvivalProject.source
         public void onEnvUpdate(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
         {
             envTemp.updateEnvTemp(time, season, weatherIconId, location, currentMineLevel);
-            envTemp.updateLocalEnvTemp();
+            envTemp.updateLocalEnvTemp(player.bindedFarmer.getTileX(), player.bindedFarmer.getTileY());
         }
 
         public void onClockUpdate()

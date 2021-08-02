@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Torch",
+    "deviceType": "heating",
+    "coreTemp": 40.0,
+    "effectiveRange": 1
+  },
+  {
+    "name": "Brick Fireplace",
+    "deviceType": "heating",
+    "coreTemp": 60.0,
+    "effectiveRange": 4,
+    "needActive": true
+  },
+  {
+    "name": "Fan",
+    "deviceType": "cooling",
+    "coreTemp": 25.0,
+    "effectiveRange": 3,
+    "needActive": true,
+    "activeType": 1
+  },
+  {
+    "name": "Air Cooler",
+    "deviceType": "cooling",
+    "coreTemp": 18.0,
+    "effectiveRange": 4,
+    "needActive": true,
+    "activeType": 1
+  },
+  {
+    "name": "Campfire",
+    "deviceType": "heating",
+    "coreTemp": 50.0,
+    "effectiveRange": 2,
+    "needActive": true
+  }
+]

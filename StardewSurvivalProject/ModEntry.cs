@@ -79,11 +79,11 @@ namespace StardewSurvivalProject
             source.data.HealingItemDictionary.loadList(this);
             source.data.CustomHydrationDictionary.loadList(this);
             source.data.CustomEnvironmentDictionary.loadList(this);
+            source.data.TempControlObjectDictionary.loadList(this);
 
             instance = new source.Manager();
 
             source.effects.EffectManager.initialize();
-            
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
 

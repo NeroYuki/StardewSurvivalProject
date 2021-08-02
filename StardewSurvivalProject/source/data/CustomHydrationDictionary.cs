@@ -6,13 +6,14 @@ using Newtonsoft.Json;
 
 namespace StardewSurvivalProject.source.data
 {
-    class CustomHydrationDictionary
+    public class HydrationItemData
     {
-        public class HydrationItemData
-        {
-            public String name { get; set; } = "";
-            public int value { get; set; } = 0;
-        }
+        public String name { get; set; } = "";
+        public int value { get; set; } = 0;
+    }
+
+    public class CustomHydrationDictionary
+    {
         //load a whitelist of item that can be used to heal player (healing value is separated from edibility)
         public static Dictionary<String, HydrationItemData> value_list = new Dictionary<string, HydrationItemData>();
 

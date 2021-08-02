@@ -60,6 +60,7 @@
     <Compile Include="source\data\CustomEnvironmentDictionary.cs" />
     <Compile Include="source\data\CustomHydrationDictionary.cs" />
     <Compile Include="source\data\HealingItemDictionary.cs" />
+    <Compile Include="source\data\TempControlObjectDictionary.cs" />
     <Compile Include="source\effects\EffectManager.cs" />
     <Compile Include="source\events\CustomEvents.cs" />
     <Compile Include="source\harmony_patches\FarmerPatches.cs" />
@@ -88,6 +89,9 @@
     <None Include="manifest.json" />
     <None Include="packages.config" />
     <None Include="locationEnvironmentData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="tempControlObjectData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
