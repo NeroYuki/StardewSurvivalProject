@@ -80,6 +80,7 @@ namespace StardewSurvivalProject
             source.data.CustomHydrationDictionary.loadList(this);
             source.data.CustomEnvironmentDictionary.loadList(this);
             source.data.TempControlObjectDictionary.loadList(this);
+            source.data.ClothingTempResistantDictionary.loadList(this);
 
             instance = new source.Manager();
 

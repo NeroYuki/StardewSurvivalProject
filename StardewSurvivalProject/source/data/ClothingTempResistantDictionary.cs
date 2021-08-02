@@ -1,14 +1,78 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace StardewSurvivalProject.source.data
 {
+    public class ClothingTempResistantData
+    {
+        public string name { get; set; } = "";
+        //matching pattern (match, prefix, postfix, contain)
+        public string pattern { get; set; } = "match";
+        public double heatInsulationModifier = 0;
+        public double coldInsulationModifier = 0;
+    }
     public class ClothingTempResistantDictionary
     {
-        //inspired by RimWorld temperature resistant mechanic
-        
+        public static LoadedClothingData data = null;
+
+        public class LoadedClothingData
+        {
+            public ClothingTempResistantData[] hat_data ;
+            public ClothingTempResistantData[] shirt_data ;
+            public ClothingTempResistantData[] pants_data ;
+            public ClothingTempResistantData[] boots_data ;
+
+        }
+
+        public static void loadList(Mod context)
+        {
+            String RelativePath = Path.Combine(context.Helper.DirectoryPath, "clothingTempResistantData.json");
+            String jsonData = File.ReadAllText(RelativePath);
+
+            data = JsonConvert.DeserializeObject<LoadedClothingData>(jsonData);
+
+            if (data == null)
+            {
+                LogHelper.Warn("No clothing entry is found");
+                return;
+            }
+
+            LogHelper.Debug("Clothing list loaded");
+        }
+
+        public static ClothingTempResistantData GetClothingData(string clothingName, string type = "")
+        {
+            if (type.Equals("hat"))
+                return GetDataByIteration(clothingName, data.hat_data);
+            else if (type.Equals("shirt"))
+                return GetDataByIteration(clothingName, data.shirt_data);
+            else if (type.Equals("pants"))
+                return GetDataByIteration(clothingName, data.pants_data);
+            else if (type.Equals("boots"))
+                return GetDataByIteration(clothingName, data.boots_data);
+
+            return null;
+        }
+
+        //TODO: modify the data structure
+        public static ClothingTempResistantData GetDataByIteration(string clothingName, ClothingTempResistantData[] arr)
+        {
+            ClothingTempResistantData res = null;
+            foreach (ClothingTempResistantData x in arr)
+            {
+                if (x.pattern.Equals("match"))
+                    if (clothingName.Equals(x.name)) { res = x; break; }
+                if (x.pattern.Equals("prefix"))
+                    if (clothingName.StartsWith(x.name)) { res = x; break; }
+                if (x.pattern.Equals("postfix"))
+                    if (clothingName.EndsWith(x.name)) { res = x; break; }
+                if (x.pattern.Equals("contain"))
+                    if (clothingName.Contains(x.name)) { res = x; break; }
+            }
+            return res;
+        }
     }
 }

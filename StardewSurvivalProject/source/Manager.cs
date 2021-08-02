@@ -65,6 +65,7 @@ namespace StardewSurvivalProject.source
 
         public void onEnvUpdate(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
         {
+            if (!ModConfig.GetInstance().UseTemperatureModule) return;
             envTemp.updateEnvTemp(time, season, weatherIconId, location, currentMineLevel);
             envTemp.updateLocalEnvTemp(player.bindedFarmer.getTileX(), player.bindedFarmer.getTileY());
         }
@@ -74,7 +75,10 @@ namespace StardewSurvivalProject.source
             if (player == null) return;
             player.updateDrain();
             //TODO: update player body temp based on env temp, whether user is indoor and nearby heating / cooling source (light source / nearby big craftable)
-            player.updateBodyTemp(envTemp);
+            if (ModConfig.GetInstance().UseTemperatureModule)
+            {
+                player.updateBodyTemp(envTemp);
+            }
             displayString = player.getStatStringUI();
         }
 
@@ -305,7 +309,7 @@ namespace StardewSurvivalProject.source
             }
             else if (toolHold is StardewValley.Tools.MilkPail)
             {
-                player.updateActiveDrain(-1.0, -1.0);
+                player.updateActiveDrain(-ModConfig.GetInstance().MilkPailHungerDrain, -ModConfig.GetInstance().MilkPailThirstDrain);
                 if (isFever)
                 {
                     player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
@@ -314,7 +318,7 @@ namespace StardewSurvivalProject.source
             }
             else if (toolHold is StardewValley.Tools.Shears)
             {
-                player.updateActiveDrain(-1.0, -1.0);
+                player.updateActiveDrain(-ModConfig.GetInstance().ShearHungerDrain, -ModConfig.GetInstance().ShearThirstDrain);
                 if (isFever)
                 {
                     player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
@@ -362,7 +366,8 @@ namespace StardewSurvivalProject.source
         internal void dayStartProcedure()
         {
             double dice_roll = rand.NextDouble() * 100;
-            if (dice_roll >= 100 - 2)
+            //base chance of 2%, increase to +10% the less stamina player have at the end of the day
+            if (dice_roll >= 100 - 2 + 8 * (1 - player.bindedFarmer.stamina / player.bindedFarmer.maxStamina))
             {
                 effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
             }

@@ -33,6 +33,11 @@ namespace StardewSurvivalProject
         public double HoeThirstDrain { get; set; } = 0.2;
         public double WateringCanHungerDrain { get; set; } = 0.5;
         public double WateringCanThirstDrain { get; set; } = 0.2;
+        public double MilkPailHungerDrain { get; set; } = 0.5;
+        public double MilkPailThirstDrain { get; set; } = 0.2;
+        public double ShearHungerDrain { get; set; } = 0.5;
+        public double ShearThirstDrain { get; set; } = 0.2;
+
         public double DefaultHydrationGainOnDrinkableItems { get; set; } = 10.0;
         public double HydrationGainOnEnvironmentWaterDrinking { get; set; } = 5.0;
         public double HungerGainMultiplierFromItemEdibility { get; set; } = 1.0;

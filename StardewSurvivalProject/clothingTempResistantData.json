@@ -1,30 +1,34 @@
 {
   "shirt_data": [
     {
-      "name": "Copper Brestplate",
-      "minTemp": 10.0,
-      "maxTemp": 25.0
+      "name": "Brestplate",
+      "pattern": "postfix",
+      "heatInsulationModifier": -0.1,
+      "coldInsulationModifier": 0.1
     }
   ],
-  "pant_data": [
+  "pants_data": [
     {
       "name": "Farmer Pants",
-      "minTemp": 8.0,
-      "maxTemp": 27.0
+      "pattern": "match",
+      "heatInsulationModifier": 0,
+      "coldInsulationModifier": 0
     }
   ],
   "hat_data": [
     {
       "name": "Floppy Beanie",
-      "minTemp": -5.0,
-      "maxTemp":  18.0
+      "pattern": "match",
+      "heatInsulationModifier": -0.1,
+      "coldInsulationModifier": 0.3
     }
   ],
-  "footwear_data": [
+  "boots_data": [
     {
       "name": "Firewalker Boots",
-      "minTemp": 5.0,
-      "maxTemp": 50.0
+      "pattern": "match",
+      "heatInsulationModifier": 0.2,
+      "coldInsulationModifier": 0.2
     }
   ]
 }
