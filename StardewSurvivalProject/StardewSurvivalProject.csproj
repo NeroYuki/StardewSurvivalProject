@@ -65,6 +65,7 @@
     <Compile Include="source\events\CustomEvents.cs" />
     <Compile Include="source\harmony_patches\FarmerPatches.cs" />
     <Compile Include="source\harmony_patches\ObjectPatches.cs" />
+    <Compile Include="source\harmony_patches\UIDrawPatches.cs" />
     <Compile Include="source\LogHelper.cs" />
     <Compile Include="source\model\BodyTemp.cs" />
     <Compile Include="source\model\EnvTemp.cs" />

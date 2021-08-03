@@ -27,4 +27,12 @@
     "name": "Painkiller",
     "value": 30
   },
+  {
+    "name": "Fairy Rose",
+    "value": 5
+  },
+  {
+    "name": "Life Elixir",
+    "value": 20
+  }
 ]

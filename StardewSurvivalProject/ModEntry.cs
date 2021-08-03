@@ -8,6 +8,8 @@ using StardewValley;
 using HarmonyLib;
 using SObject = StardewValley.Object;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
 
 namespace StardewSurvivalProject
 {
@@ -22,6 +24,8 @@ namespace StardewSurvivalProject
         private Texture2D BodyTempBar;
         private Texture2D TempIndicator;
         private Texture2D fillRect;
+        //expose for harmony patches
+        public static Texture2D InfoIcon;
 
         /*********
         ** Public methods
@@ -75,6 +79,7 @@ namespace StardewSurvivalProject
 
             source.harmony_patches.FarmerPatches.Initialize(this.Monitor);
             source.harmony_patches.ObjectPatches.Initialize(this.Monitor);
+            source.harmony_patches.UIDrawPatches.Initialize(this.Monitor);
 
             source.data.HealingItemDictionary.loadList(this);
             source.data.CustomHydrationDictionary.loadList(this);
@@ -104,6 +109,12 @@ namespace StardewSurvivalProject
                 prefix: new HarmonyMethod(typeof(source.harmony_patches.ObjectPatches), nameof(source.harmony_patches.ObjectPatches.CalculateHPGain_Prefix))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Menus.IClickableMenu), nameof(StardewValley.Menus.IClickableMenu.drawHoverText),
+                new Type[] { typeof(SpriteBatch), typeof(StringBuilder), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
+                postfix: new HarmonyMethod(typeof(source.harmony_patches.UIDrawPatches), nameof(source.harmony_patches.UIDrawPatches.DrawHoverText_Postfix))
+            );
+
             //Load assets
             this.HungerBar = helper.Content.Load<Texture2D>("assets/HungerBar.png");
             this.ThirstBar = helper.Content.Load<Texture2D>("assets/ThirstBar.png");
@@ -111,6 +122,8 @@ namespace StardewSurvivalProject
             this.BodyTempBar = helper.Content.Load<Texture2D>("assets/BodyTempBar.png");
             this.TempIndicator = helper.Content.Load<Texture2D>("assets/TempIndicator.png");
             this.fillRect = helper.Content.Load<Texture2D>("assets/fillRect.png");
+            
+            InfoIcon = helper.Content.Load<Texture2D>("assets/InfoIcon.png");
 
             //load command
             commandManager = new source.commands.Commands(instance);
@@ -211,7 +224,7 @@ namespace StardewSurvivalProject
                 //TODO: subtract amount move to config
                 if (Game1.player.CurrentTool is StardewValley.Tools.WateringCan && ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft >= ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking)
                 {
-                    ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft -= 5;
+                    ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft -= (int)ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking;
                     instance.onEnvDrinkingUpdate(false, true);
                     this.Monitor.Log("drank from watering can");
                 }
@@ -343,12 +356,17 @@ namespace StardewSurvivalProject
 
             //for whatever reason the field determine whether a player can drink the "edible" is never exposed in the SObject field
             //the result is this abhorent
+            double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
             var arrInfo = Game1.objectInformation[ateItem.parentSheetIndex].Split('/');
-            if (arrInfo.Length > 6)
+            if (addThirst != 0)
+            {
+                instance.onItemDrinkingUpdate(ateItem, addThirst);
+            }
+            else if (arrInfo.Length > 6)
             {
                 if (arrInfo[6].Equals("drink"))
                 {
-                    instance.onItemDrinkingUpdate(ateItem);
+                    instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems);
                 }
             }
         }

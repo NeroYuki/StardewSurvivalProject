@@ -112,7 +112,7 @@ namespace StardewSurvivalProject.source
             //TODO: document this weird anomaly
             if (data.HealingItemDictionary.getHealingValue(gameObj.name) > 0 && gameObj.Edibility == 1) return;
 
-            double addHunger = gameObj.Edibility * ModConfig.GetInstance().HungerGainMultiplierFromItemEdibility;
+            double addHunger = (gameObj.Edibility >= 0)? gameObj.Edibility * ModConfig.GetInstance().HungerGainMultiplierFromItemEdibility : 0;
             player.updateEating(addHunger);
                 
             displayString = player.getStatStringUI();
@@ -196,10 +196,10 @@ namespace StardewSurvivalProject.source
             LogHelper.Debug("Reset player stats");
         }
 
-        public void onItemDrinkingUpdate(SObject gameObj)
+        public void onItemDrinkingUpdate(SObject gameObj, double overrideAddThirst = 0)
         {
             if (player == null) return;
-            double addThirst = data.CustomHydrationDictionary.getHydrationValue(gameObj.name);
+            double addThirst = overrideAddThirst;
             if (addThirst == 0) addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
 
             player.updateDrinking(addThirst);

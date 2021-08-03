@@ -6,6 +6,8 @@ using System.IO;
 
 namespace StardewSurvivalProject.source.data
 {
+    //TODO: This is very ineffecient to iterate (espeically on rendering hover text), should read every clothing info
+    //on game load and add it to a dictionary by the rule dictated in the json file
     public class ClothingTempResistantData
     {
         public string name { get; set; } = "";
