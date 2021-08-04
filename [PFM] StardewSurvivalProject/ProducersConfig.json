@@ -25,5 +25,15 @@
 		"ProducerName": "Magical Medicine Stove", //Only 1 frame
 		"AlternateFrameProducing": false, 
 		"AlternateFrameWhenReady": false, 
+	},
+	{
+		"ProducerName": "Groundwater Collector", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+	},
+	{
+		"ProducerName": "Primitive Water Filter", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
 	}
 ]

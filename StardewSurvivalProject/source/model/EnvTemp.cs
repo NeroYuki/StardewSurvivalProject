@@ -23,6 +23,9 @@ namespace StardewSurvivalProject.source.model
             //TODO: temp follow a curve increase from morning to noon and decrease from noon to midnight, also depend on current season and current weather
             const double BASE_VALUE = DEFAULT_VALUE;
             double value = BASE_VALUE;
+            double dayNightCycleTempDiffScale = 3;
+            double fluctuationTempScale = 1;
+            bool fixedTemp = false;
 
             //LogHelper.Debug($"season={season} time={time} weatherId={weatherIconId}");
 
@@ -46,14 +49,11 @@ namespace StardewSurvivalProject.source.model
                 case (int)weatherIconType.WINDY_FALL:
                     value *= 0.9; break;
                 case (int)weatherIconType.SNOW:
-                    value *= -1; break;
+                    value = Math.Max(value - 20, -5); break;
                 default: break;
             }
 
-            double dayNightCycleTempDiffScale = 3;
-            double fluctuationTempScale = 1;
-            bool fixedTemp = false;
-
+            
             //check for location
             if (location != null)
             {
@@ -74,8 +74,8 @@ namespace StardewSurvivalProject.source.model
 
                 if (!location.IsOutdoors)
                 {
-                    //cut temperature difference by half if indoor
-                    value += (DEFAULT_VALUE - value) / 2;
+                    //cut temperature difference by half if indoor if outside is colder
+                    value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
                 }
 
                 //special treatment for cave
@@ -120,8 +120,10 @@ namespace StardewSurvivalProject.source.model
         public void updateLocalEnvTemp(int playerTileX, int playerTileY)
         {
             //FIXME: approach can be improved
-            //TODO: change to instead keeping track of a list of heating / cooling source (initialize on loading save file
-            //check in player proximity for any object (5x5 tile square around player position - currently hardcode, should change based on the biggest effectiveRange entry)
+            //TODO: change to instead keeping track of a list of heating / cooling source (initialize on loading save file)
+
+            //check in player proximity for any object (AxA tile square around player position
+            //should change based on the biggest effectiveRange entry)
             int proximityCheckBound = (int)Math.Ceiling(data.TempControlObjectDictionary.maxEffectiveRange); 
             Dictionary<int, SObject> nearbyObject = new Dictionary<int, SObject>();
             for (int i = playerTileX - proximityCheckBound; i <= playerTileX + proximityCheckBound; i++)

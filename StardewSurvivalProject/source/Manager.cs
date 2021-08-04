@@ -87,17 +87,12 @@ namespace StardewSurvivalProject.source
             if (player == null) return;
 
             //addition: if player is drinking a refillable container, give back the empty container item
-            if (gameObj.name.Equals("Full Canteen"))
+            if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen"))
             {
-                LogHelper.Debug("finding item");
-                //why i have to do this?
-                //TODO: cache container id on json shuffle process
-                foreach (KeyValuePair<int, string> itemInfoString in Game1.objectInformation)
+                int itemId = data.ItemNameCache.getIDFromCache("Canteen");
+                if (itemId != -1)
                 {
-                    //check string start for object name
-                    if (itemInfoString.Value.StartsWith("Canteen/")) {
-                        player.bindedFarmer.addItemToInventory(new SObject(itemInfoString.Key, 1));
-                    }
+                    player.bindedFarmer.addItemToInventory(new SObject(itemId, 1));
                 }
             }
 
@@ -110,7 +105,12 @@ namespace StardewSurvivalProject.source
 
             //band-aid fix coming, if edibility is 1 and healing value is not 0, dont add hunger
             //TODO: document this weird anomaly
-            if (data.HealingItemDictionary.getHealingValue(gameObj.name) > 0 && gameObj.Edibility == 1) return;
+            int healingValue = data.HealingItemDictionary.getHealingValue(gameObj.name);
+            if (healingValue > 0 && gameObj.Edibility == 1) return;
+            if (healingValue > 0 && gameObj.Edibility < 0 && gameObj.Edibility != -300)
+            {
+                player.bindedFarmer.health = Math.Min(player.bindedFarmer.maxHealth, player.bindedFarmer.health + healingValue);
+            }
 
             double addHunger = (gameObj.Edibility >= 0)? gameObj.Edibility * ModConfig.GetInstance().HungerGainMultiplierFromItemEdibility : 0;
             player.updateEating(addHunger);
@@ -373,5 +373,14 @@ namespace StardewSurvivalProject.source
             }
         }
 
+        public void onActionButton()
+        {
+
+        }
+
+        public void onUseButton()
+        {
+
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace StardewSurvivalProject
         private Texture2D fillRect;
         //expose for harmony patches
         public static Texture2D InfoIcon;
+        public static Texture2D ModIcon;
 
         /*********
         ** Public methods
@@ -124,6 +125,7 @@ namespace StardewSurvivalProject
             this.fillRect = helper.Content.Load<Texture2D>("assets/fillRect.png");
             
             InfoIcon = helper.Content.Load<Texture2D>("assets/InfoIcon.png");
+            ModIcon = helper.Content.Load<Texture2D>("assets/ModIcon.png");
 
             //load command
             commandManager = new source.commands.Commands(instance);
@@ -201,8 +203,13 @@ namespace StardewSurvivalProject
             if (!e.Button.IsActionButton()) return;
 
             //should only check if player is not holding anything
-            this.Monitor.Log((Game1.player.CurrentTool is StardewValley.Tools.WateringCan).ToString(), LogLevel.Debug);
-            if (Game1.player.CurrentItem != null && !(Game1.player.CurrentTool is StardewValley.Tools.WateringCan)) return;
+            //this.Monitor.Log((Game1.player.CurrentTool is StardewValley.Tools.WateringCan).ToString(), LogLevel.Debug);
+
+            if (Game1.player.CurrentItem != null)
+            {
+                if (!(Game1.player.CurrentTool is StardewValley.Tools.WateringCan)
+                    && !(Game1.player.CurrentItem.Name.Equals("Canteen"))) return;
+            }
 
             //if player is eating or drinking, don't do anything
             if (Game1.player.isEating) return;
@@ -233,6 +240,17 @@ namespace StardewSurvivalProject
                     this.Monitor.Log("cant drink from watering can");
                     Game1.addHUDMessage(new HUDMessage("There is not enough water in your Watering Can", HUDMessage.error_type));
                 }   
+            }
+            else if (Game1.player.CurrentItem != null && Game1.player.CurrentItem.Name.Equals("Canteen") && isWater && !isOcean)
+            {
+                //remove empty canteen
+                Game1.player.removeItemFromInventory(Game1.player.CurrentItem);
+                //give dirty canteen
+                int itemId = source.data.ItemNameCache.getIDFromCache("Dirty Canteen");
+                if (itemId != -1)
+                {
+                    Game1.player.addItemToInventory(new SObject(itemId, 1));
+                }
             }
             else if (isWater)
             {
@@ -389,6 +407,10 @@ namespace StardewSurvivalProject
         {
             instance.init(Game1.player);
             instance.loadData(this);
+            //cache these item's id
+            source.data.ItemNameCache.cacheItem("Canteen");
+            source.data.ItemNameCache.cacheItem("Full Canteen");
+            source.data.ItemNameCache.cacheItem("Dirty Canteen");
         }
 
         private void OnGameSaved(object sender, SavedEventArgs e)
@@ -399,6 +421,7 @@ namespace StardewSurvivalProject
         private void OnExitToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             instance.onExit();
+            source.data.ItemNameCache.clearCache();
         }
     }
 }

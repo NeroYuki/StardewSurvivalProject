@@ -1,6 +1,6 @@
 {
-    "Name": "Fan",
-    "Description": "Cool you down in hot summer days",
+    "Name": "Groundwater Collector",
+    "Description": "Diamond drill down to the ground. Fresh water ready for ya!",
     "Price": 1,
     "ProvidesLight": false,
     "ReserveNextIndex": false,
@@ -9,23 +9,20 @@
         "Ingredients": [
 			{
                 "Object": 335,
-                "Count": 5
+                "Count": 10
             },
 			{
-				"Object": 334,
-                "Count": 10
+				"Object": 72,
+                "Count": 1
 			},
 			{
-				"Object": 338,
-				"Count": 10
+				"Object": 787,
+				"Count": 2
 			}
         ],
 		"CanPurchase": true,
 		"PurchaseFrom": "Robin",
 		"PurchasePrice": 10000,
 		"PurchaseRequirements": null
-    },
-	"CanPurchase": true,
-	"PurchaseFrom": "Robin",
-	"PurchasePrice": 4000
+    }
 }

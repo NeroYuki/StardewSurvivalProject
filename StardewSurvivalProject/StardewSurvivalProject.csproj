@@ -60,6 +60,7 @@
     <Compile Include="source\data\CustomEnvironmentDictionary.cs" />
     <Compile Include="source\data\CustomHydrationDictionary.cs" />
     <Compile Include="source\data\HealingItemDictionary.cs" />
+    <Compile Include="source\data\ItemNameCache.cs" />
     <Compile Include="source\data\TempControlObjectDictionary.cs" />
     <Compile Include="source\effects\EffectManager.cs" />
     <Compile Include="source\events\CustomEvents.cs" />
