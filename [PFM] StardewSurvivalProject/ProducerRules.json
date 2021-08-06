@@ -28,6 +28,36 @@
         "OutputIdentifier": "168",
         "Sounds": ["Ship"]
 	},
+
+    //Portable Heater
+	{
+		"ProducerName": "Portable Heater",
+        "InputIdentifier": "787",
+        "InputStack": 1,
+        "MinutesUntilReady": 1600,
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"]
+	},
+
+    //Air Conditioner
+	{
+		"ProducerName": "Air Conditioner",
+        "InputIdentifier": "787",
+        "InputStack": 1,
+        "MinutesUntilReady": 400, 
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"]
+	},
+
+    //Tall Air Conditioner
+	{
+		"ProducerName": "Tall Air Conditioner",
+        "InputIdentifier": "787",
+        "InputStack": 1,
+        "MinutesUntilReady": 1200, 
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"]
+	},
 	
 	//Medicine Worktable
 	{
@@ -81,6 +111,17 @@
         "InputStack": 1,
         "MinutesUntilReady": 60,
         "OutputIdentifier": "Full Canteen",
+        "Sounds": ["Ship"]
+    },
+
+    //Ice Machine
+    {
+        "ProducerName": "Ice Machine",
+        "InputIdentifier": "84",
+        "InputStack": 1,
+        "MinutesUntilReady": 60,
+        "OutputIdentifier": "Ice Cube",
+        "OutputStack": 5,
         "Sounds": ["Ship"]
     }
 ]

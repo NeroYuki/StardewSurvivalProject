@@ -46,6 +46,8 @@ namespace StardewSurvivalProject
 
         public double MaxHunger { get; set; } = 100;
         public double MaxThirst { get; set; } = 100;
+        public double HungerEffectPercentageThreshold { get; set; } = 25;
+        public double ThirstEffectPercentageThreshold { get; set; } = 25;
 
         //Feature config
         public bool UsePassiveDrain { get; set; } = true;
@@ -54,6 +56,13 @@ namespace StardewSurvivalProject
         public bool UseTemperatureModule { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
+
+        //Advanced Number Tinkering
+        //Thirst and Hunger
+
+        //Environmental Temperature
+
+        //Body Temperature
 
         private static ModConfig _instance;
 

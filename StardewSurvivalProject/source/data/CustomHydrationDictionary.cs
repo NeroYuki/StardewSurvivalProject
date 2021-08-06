@@ -9,7 +9,8 @@ namespace StardewSurvivalProject.source.data
     public class HydrationItemData
     {
         public String name { get; set; } = "";
-        public int value { get; set; } = 0;
+        public double value { get; set; } = 0;
+        public double coolingModifier { get; set; } = 1;
     }
 
     public class CustomHydrationDictionary
@@ -33,7 +34,7 @@ namespace StardewSurvivalProject.source.data
             LogHelper.Debug("Hydration Item Data loaded");
         }
 
-        public static int getHydrationValue(string itemName)
+        public static double getHydrationValue(string itemName)
         {
             if (value_list.ContainsKey(itemName))
             {
@@ -42,6 +43,20 @@ namespace StardewSurvivalProject.source.data
             else
             {
                 return 0;
+            }
+        }
+
+        public static double getCoolingModifierValue(string itemName)
+        {
+            if (value_list.ContainsKey(itemName))
+            {
+                double res = value_list[itemName].coolingModifier;
+                if (res < 0) return 1;
+                else return res;
+            }
+            else
+            {
+                return 1;
             }
         }
 

@@ -1,7 +1,7 @@
 {
   "Name": "StardewSurvivalProject Items",
   "Author": "NeroYuki",
-  "Version": "0.1.5-alpha",
+  "Version": "0.2.0-alpha",
   "Description": "Json Assets for new items added support StardewSurvivalProject's new mechanic",
   "UniqueID": "neroyuki.rlvalleyitems",
   "ContentPackFor": {

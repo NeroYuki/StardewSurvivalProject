@@ -1,8 +1,8 @@
 {
   "Name": "Canteen",
-  "Description": "An empty canteen. How about putting some rain water inside",
+  "Description": "An empty canteen. How about putting some water inside",
   "Category": "ArtisanGoods",
-  "Edibility": -300,
+  "Edibility": 0,
   "Price": 1,
   "IsColored": false,
   "Recipe": {
@@ -10,7 +10,7 @@
     "Ingredients": [
       {
         "Object": 334,
-        "Count": 3,
+        "Count": 3
       }
     ],
     "IsDefault": true

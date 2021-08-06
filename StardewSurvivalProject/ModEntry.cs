@@ -152,13 +152,16 @@ namespace StardewSurvivalProject
                 Texture2D hypothermiaEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HypothermiaEffect.png");
                 Texture2D frostbiteEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FrostbiteEffect.png");
                 Texture2D heatstrokeEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HeatstrokeEffect.png");
-                Texture2D dehydrationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/DehydrationEffect.png");
+                Texture2D dehydrationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/DehydratedEffect.png");
                 Texture2D feverEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FeverEffect.png");
                 Texture2D stomachacheEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StomachacheEffect.png");
+                Texture2D thirstEffectIcon = this.Helper.Content.Load<Texture2D>("assets/ThirstEffect.png");
+                Texture2D hungerEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HungerEffect.png");
+                Texture2D wellFedEffectIcon = this.Helper.Content.Load<Texture2D>("assets/WellFedEffect.png");
 
                 //extend the image to occupy a different row from other effects
                 int extraEffectYCoord = editor.Data.Height;
-                editor.ExtendImage(minWidth: editor.Data.Width, minHeight: 300);
+                editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
 
                 editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
                 editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
@@ -168,6 +171,9 @@ namespace StardewSurvivalProject
                 editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
                 editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
                 editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
+                editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
+                editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
+                editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
 
                 this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
             }
@@ -356,7 +362,7 @@ namespace StardewSurvivalProject
                 //{
                 //    this.Monitor.Log($"name={l.name}, isOutdoor={l.isOutdoors}");
                 //}
-                int mine_level = Game1.CurrentMineLevel; 
+                //int mine_level = Game1.CurrentMineLevel; 
                 
                 instance.onEnvUpdate(e.NewTime, Game1.currentSeason, Game1.weatherIcon, Game1.currentLocation, Game1.CurrentMineLevel);
                 instance.onClockUpdate();
@@ -375,16 +381,18 @@ namespace StardewSurvivalProject
             //for whatever reason the field determine whether a player can drink the "edible" is never exposed in the SObject field
             //the result is this abhorent
             double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
+            double coolingModifier = source.data.CustomHydrationDictionary.getCoolingModifierValue(ateItem.name);
+
             var arrInfo = Game1.objectInformation[ateItem.parentSheetIndex].Split('/');
             if (addThirst != 0)
             {
-                instance.onItemDrinkingUpdate(ateItem, addThirst);
+                instance.onItemDrinkingUpdate(ateItem, addThirst, coolingModifier);
             }
             else if (arrInfo.Length > 6)
             {
                 if (arrInfo[6].Equals("drink"))
                 {
-                    instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems);
+                    instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems, coolingModifier);
                 }
             }
         }

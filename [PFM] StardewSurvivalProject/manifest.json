@@ -1,7 +1,7 @@
 {
     "Name": "StardewSurvivalProject Production Machine",
     "Author": "NeroYuki",
-    "Version": "0.1.5-alpha",
+    "Version": "0.2.0-alpha",
     "Description": "Adding production machine to support StardewSurvivalProject's new mechanic",
     "UniqueID": "neroyuki.rlvalleymachine",
     "ContentPackFor": {

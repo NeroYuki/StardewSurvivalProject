@@ -70,7 +70,7 @@ namespace StardewSurvivalProject.source.model
             checkIsDangerValue();
         }
 
-        public void updateDrinking(double addValue)
+        public void updateDrinking(double addValue, double cooling_modifier = 1)
         {
             thirst.value = Math.Min(thirst.value + addValue, Thirst.DEFAULT_VALUE);
             if (addValue == 0) return;
@@ -79,7 +79,7 @@ namespace StardewSurvivalProject.source.model
             //cooling down player if water was drank
             if (addValue > 0 || this.temp.value > BodyTemp.DEFAULT_VALUE)
             {
-                this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * addValue + 1));
+                this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * cooling_modifier * addValue + 1));
             }
             checkIsDangerValue();
         }
@@ -116,8 +116,14 @@ namespace StardewSurvivalProject.source.model
 
         internal void resetPlayerHungerAndThirst()
         {
-            hunger.value = Hunger.DEFAULT_VALUE / 4;
-            thirst.value = Thirst.DEFAULT_VALUE / 4;
+            if (ModConfig.GetInstance().HungerEffectPercentageThreshold > 0)
+                hunger.value = Hunger.DEFAULT_VALUE * ModConfig.GetInstance().HungerEffectPercentageThreshold / 100;
+            else
+                hunger.value = Hunger.DEFAULT_VALUE / 4;
+            if (ModConfig.GetInstance().ThirstEffectPercentageThreshold > 0)
+                thirst.value = Thirst.DEFAULT_VALUE * ModConfig.GetInstance().ThirstEffectPercentageThreshold / 100;
+            else 
+                thirst.value = Thirst.DEFAULT_VALUE / 4;
         }
     }
 }

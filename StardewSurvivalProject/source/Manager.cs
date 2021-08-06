@@ -35,6 +35,10 @@ namespace StardewSurvivalProject.source
         public void onSecondUpdate()
         {
             //poition effect apply here
+            if (player.hunger.value <= (model.Hunger.DEFAULT_VALUE * ModConfig.GetInstance().HungerEffectPercentageThreshold / 100))
+                effects.EffectManager.applyEffect(effects.EffectManager.hungerEffectIndex);
+            if (player.thirst.value <= (model.Thirst.DEFAULT_VALUE * ModConfig.GetInstance().ThirstEffectPercentageThreshold / 100))
+                effects.EffectManager.applyEffect(effects.EffectManager.thirstEffectIndex);
             if (player.hunger.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.starvationEffectIndex);
             if (player.thirst.value <= 0) effects.EffectManager.applyEffect(effects.EffectManager.dehydrationEffectIndex);
             if (player.temp.value >= model.BodyTemp.HeatstrokeThreshold) effects.EffectManager.applyEffect(effects.EffectManager.heatstrokeEffectIndex);
@@ -157,7 +161,7 @@ namespace StardewSurvivalProject.source
             player.bindedFarmer.animateOnce(294);
 
             //set isEating to true to prevent constant drinking by spamming action button 
-            //FIXME: conflicted with spacecore's DoneEating event
+            //conflicted with spacecore's DoneEating event
             player.bindedFarmer.isEating = true;
             //Fixing by setting itemToEat to something that doesnt do anything to player HP and stamina (in this case, daffodil)
             player.bindedFarmer.itemToEat = (Item)new SObject(18, 1); 
@@ -196,13 +200,13 @@ namespace StardewSurvivalProject.source
             LogHelper.Debug("Reset player stats");
         }
 
-        public void onItemDrinkingUpdate(SObject gameObj, double overrideAddThirst = 0)
+        public void onItemDrinkingUpdate(SObject gameObj, double overrideAddThirst = 0, double coolingModifier = 1)
         {
             if (player == null) return;
             double addThirst = overrideAddThirst;
             if (addThirst == 0) addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
 
-            player.updateDrinking(addThirst);
+            player.updateDrinking(addThirst, coolingModifier);
             displayString = player.getStatStringUI();
         }
 

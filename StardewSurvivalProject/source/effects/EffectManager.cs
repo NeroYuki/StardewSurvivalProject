@@ -15,6 +15,9 @@ namespace StardewSurvivalProject.source.effects
         public const int dehydrationEffectIndex = 41;
         public const int feverEffectIndex = 42;
         public const int stomachacheEffectIndex = 43;
+        public const int thirstEffectIndex = 44;
+        public const int hungerEffectIndex = 45;
+        public const int wellFedEffectIndex = 46;
 
         //dictionary include effect index as key, a string int pair value for description and effect duration respectively
         public static Dictionary<int, KeyValuePair<string, int>> effectDescDictionary = new Dictionary<int, KeyValuePair<string, int>>();
@@ -29,6 +32,9 @@ namespace StardewSurvivalProject.source.effects
             effectDescDictionary.Add(dehydrationEffectIndex, new KeyValuePair<string, int>("You are as dry as a kindle. Please get yourself something to drink", 1000));
             effectDescDictionary.Add(feverEffectIndex, new KeyValuePair<string, int>("Someday you just feeling sick. You'd better not doing something to heavy", 480000));
             effectDescDictionary.Add(stomachacheEffectIndex, new KeyValuePair<string, int>("Your gut felt some pain, maybe cook your food next time", 10000));
+            effectDescDictionary.Add(thirstEffectIndex, new KeyValuePair<string, int>("Your throat is dried, it's begging for some liquid", 1000));
+            effectDescDictionary.Add(hungerEffectIndex, new KeyValuePair<string, int>("Your stomach is growling, better get something to eat", 1000));
+            effectDescDictionary.Add(wellFedEffectIndex, new KeyValuePair<string, int>("You feel fullfilled, life's good", 1000));
         }
 
         public static void addEffect(int effectIndex)
@@ -36,7 +42,13 @@ namespace StardewSurvivalProject.source.effects
             Buff effect = null;
             if (effectIndex == hypothermiaEffectIndex)
                 Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, "", ""));
-            else 
+            else if (effectIndex == hungerEffectIndex)
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, "", ""));
+            else if (effectIndex == thirstEffectIndex)
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
+            else if (effectIndex == wellFedEffectIndex)
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, "", ""));
+            else
                 Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
 
             effect.which = effectIndex;

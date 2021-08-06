@@ -1,6 +1,6 @@
 {
-    "Name": "Air Cooler",
-    "Description": "Now cool you down with water mist, also may make you dam in the process but who care lol",
+    "Name": "Ice Machine",
+    "Description": "Make ice from frozen tier. Fancy.",
     "Price": 1,
     "ProvidesLight": false,
     "ReserveNextIndex": false,

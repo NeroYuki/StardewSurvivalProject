@@ -12,6 +12,11 @@
     "value": 20
   },
   {
+    "name": "Ice Water Canteen",
+    "value": 20,
+    "coolingModifier": 5
+  },
+  {
     "name": "Ginger Ale",
     "value": 12
   },

@@ -141,5 +141,26 @@
     "coreTemp": 50.0,
     "effectiveRange": 2,
     "needActive": true
+  },
+  {
+    "name": "Portable Heater",
+    "deviceType": "heating",
+    "coreTemp": 60.0,
+    "effectiveRange": 6,
+    "needActive": true
+  },
+  {
+    "name": "Air Conditioner",
+    "deviceType": "general",
+    "coreTemp": 20.0,
+    "effectiveRange": 4,
+    "needActive": true
+  },
+  {
+    "name": "Tall Air Conditioner",
+    "deviceType": "general",
+    "coreTemp": 20.0,
+    "effectiveRange": 6,
+    "needActive": true
   }
 ]

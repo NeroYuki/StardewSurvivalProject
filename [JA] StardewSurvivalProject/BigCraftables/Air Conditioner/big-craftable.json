@@ -1,6 +1,6 @@
 {
-    "Name": "Air Cooler",
-    "Description": "Now cool you down with water mist, also may make you dam in the process but who care lol",
+    "Name": "Air Conditioner",
+    "Description": "Not sure if these things is that effective, and i wonder where those hose connect to",
     "Price": 1,
     "ProvidesLight": false,
     "ReserveNextIndex": false,
