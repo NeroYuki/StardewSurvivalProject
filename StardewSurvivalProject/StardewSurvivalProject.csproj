@@ -55,6 +55,8 @@
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="source\api\ConfigMenu.cs" />
+    <Compile Include="source\api\IGenericModConfigMenuApi.cs" />
     <Compile Include="source\commands\Commands.cs" />
     <Compile Include="source\data\ClothingTempResistantDictionary.cs" />
     <Compile Include="source\data\CustomEnvironmentDictionary.cs" />

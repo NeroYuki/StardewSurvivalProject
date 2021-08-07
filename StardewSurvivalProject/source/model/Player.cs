@@ -53,7 +53,6 @@ namespace StardewSurvivalProject.source.model
             }
         }
 
-        //TODO: update drain if player running, using tools
         public void updateActiveDrain(double deltaHunger, double deltaThirst)
         {
             hunger.value += deltaHunger;

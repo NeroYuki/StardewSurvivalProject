@@ -28,7 +28,6 @@ namespace StardewSurvivalProject.source.data
                 LogHelper.Error("Failed to load list");
                 return;
             }
-            //TODO: load this list from a file
             for (int i = 0; i < tempArray.Length; i++)
                 value_list.Add(tempArray[i].name, tempArray[i]);
             LogHelper.Debug("Healing Item Data loaded");

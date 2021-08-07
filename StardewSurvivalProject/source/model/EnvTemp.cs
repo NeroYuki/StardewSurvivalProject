@@ -8,7 +8,7 @@ namespace StardewSurvivalProject.source.model
 {
     public class EnvTemp
     {
-        private const double DEFAULT_VALUE = 25.0;
+        private static double DEFAULT_VALUE = ModConfig.GetInstance().EnvironmentBaseTemperature;
         public double value { get; set; }
         private Random rand = null;
 
@@ -20,36 +20,40 @@ namespace StardewSurvivalProject.source.model
 
         public void updateEnvTemp(int time, string season, int weatherIconId, GameLocation location = null, int currentMineLevel = 0)
         {
-            //TODO: temp follow a curve increase from morning to noon and decrease from noon to midnight, also depend on current season and current weather
-            const double BASE_VALUE = DEFAULT_VALUE;
+            
+            double BASE_VALUE = DEFAULT_VALUE;
             double value = BASE_VALUE;
-            double dayNightCycleTempDiffScale = 3;
-            double fluctuationTempScale = 1;
+            double dayNightCycleTempDiffScale = ModConfig.GetInstance().DefaultDayNightCycleTemperatureDiffScale;
+            double fluctuationTempScale = ModConfig.GetInstance().DefaultTemperatureFluctuationScale;
             bool fixedTemp = false;
 
             //LogHelper.Debug($"season={season} time={time} weatherId={weatherIconId}");
 
             //start with applying adjustment based on season
-            if (season.Equals("spring") || season.Equals("fall")) value *= 0.9;
-            else if (season.Equals("summer")) value *= 1.1;
-            else if (season.Equals("winter")) value *= 0.2;
+            if (season.Equals("spring")) value *= ModConfig.GetInstance().SpringSeasonTemperatureMultiplier;
+            else if (season.Equals("fall")) value *= ModConfig.GetInstance().FallSeasonTemperatureMultiplier ;
+            else if (season.Equals("summer")) value *= ModConfig.GetInstance().SummerSeasonTemperatureMultiplier;
+            else if (season.Equals("winter")) value *= ModConfig.GetInstance().WinterSeasonTemperatureMultiplier;
 
             //next, check for weather
             switch (weatherIconId)
             {
                 case (int)weatherIconType.SUNNY:
+                    value *= ModConfig.GetInstance().SunnyWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.FESTIVAL:
+                    value *= ModConfig.GetInstance().FestivalWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.WEDDING:
-                    value *= 1.2; break;
+                    value *= ModConfig.GetInstance().WeddingWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.STORM:
-                    value *= 0.8; break;
+                    value *= ModConfig.GetInstance().StormWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.RAIN:
-                    value *= 0.8; break;
+                    value *= ModConfig.GetInstance().RainWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.WINDY_SPRING:
+                    value *= ModConfig.GetInstance().WindySpringWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.WINDY_FALL:
-                    value *= 0.9; break;
+                    value *= ModConfig.GetInstance().WindySpringWeatherTemperatureMultiplier; break;
                 case (int)weatherIconType.SNOW:
-                    value = Math.Max(value - 20, -5); break;
+                    value *= ModConfig.GetInstance().SnowWeatherTemperatureMultiplier; break;
                 default: break;
             }
 
@@ -57,29 +61,32 @@ namespace StardewSurvivalProject.source.model
             //check for location
             if (location != null)
             {
-                LogHelper.Debug(location.Name);
-                data.LocationEnvironmentData locationData = data.CustomEnvironmentDictionary.GetEnvironmentData(location.Name);
-                if (locationData != null)
+                if (ModConfig.GetInstance().UseCustomLocationTemperatureData)
                 {
-                    value += locationData.tempModifierAdditive;
-                    value *= locationData.tempModifierMultiplicative;
-                    if (locationData.tempModifierFixedValue > -273)
+                    //LogHelper.Debug(location.Name);
+                    data.LocationEnvironmentData locationData = data.CustomEnvironmentDictionary.GetEnvironmentData(location.Name);
+                    if (locationData != null)
                     {
-                        value = locationData.tempModifierFixedValue;
-                        fixedTemp = true;
+                        value += locationData.tempModifierAdditive;
+                        value *= locationData.tempModifierMultiplicative;
+                        if (locationData.tempModifierFixedValue > -273)
+                        {
+                            value = locationData.tempModifierFixedValue;
+                            fixedTemp = true;
+                        }
+                        dayNightCycleTempDiffScale = locationData.tempModifierTimeDependentScale;
+                        fluctuationTempScale = locationData.tempModifierFluctuationScale;
                     }
-                    dayNightCycleTempDiffScale = locationData.tempModifierTimeDependentScale;
-                    fluctuationTempScale = locationData.tempModifierFluctuationScale;
                 }
 
-                if (!location.IsOutdoors)
+                if (!location.IsOutdoors && ModConfig.GetInstance().UseDefaultIndoorTemperatureModifier)
                 {
                     //cut temperature difference by half if indoor if outside is colder
                     value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
                 }
 
                 //special treatment for cave
-                if (location.Name.Contains("UndergroundMine"))
+                if (location.Name.Contains("UndergroundMine") && ModConfig.GetInstance().UseDefaultCaveTemperatureModifier)
                 {
                     if (currentMineLevel >= 0 && currentMineLevel < 40)
                     {
@@ -97,7 +104,7 @@ namespace StardewSurvivalProject.source.model
                         fixedTemp = true;
                     }
                 }
-                else if (location.Name.Equals("SkullCave"))
+                else if (location.Name.Equals("SkullCave") && ModConfig.GetInstance().UseDefaultSkullCavernTemperatureModifier)
                 {
                     value = DEFAULT_VALUE + 0.045 * currentMineLevel;
                     fixedTemp = true;
@@ -107,7 +114,7 @@ namespace StardewSurvivalProject.source.model
             //next, check for time
             //convert time to actual decimal format to run on a time-dependent function
             double decTime = ((double)(time / 100) + ((double)(time % 100) / 60.0));
-            LogHelper.Debug(decTime.ToString());
+            //LogHelper.Debug(decTime.ToString());
             //curve look good enough on desmos so YOLO
             double timeTempModifier = Math.Sin((decTime - 8.5) / (Math.PI * 1.2)) * dayNightCycleTempDiffScale; //TODO change number 3 to a season and location-dependent multiplier
             value += (fixedTemp) ? 0 : timeTempModifier;

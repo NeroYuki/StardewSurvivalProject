@@ -23,7 +23,6 @@ namespace StardewSurvivalProject.source.data
 
             String RelativePath = Path.Combine("customHydrationData.json");
             HydrationItemData[] tempArray = context.Helper.Data.ReadJsonFile<HydrationItemData[]>(RelativePath);
-            //TODO: load this list from a file
             if (tempArray == null)
             {
                 LogHelper.Warn("No hydration item entry is found");

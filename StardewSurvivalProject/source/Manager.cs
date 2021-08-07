@@ -55,17 +55,23 @@ namespace StardewSurvivalProject.source
                 //apply some effects' result every second
                 if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.stomachacheEffectIndex))
                 {
-                    player.updateActiveDrain(-model.Hunger.DEFAULT_VALUE * 0.01, 0);
+                    player.updateActiveDrain(-model.Hunger.DEFAULT_VALUE * (ModConfig.GetInstance().StomachacheHungerPercentageDrainPerSecond / 100), 0);
                 }
-                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.burnEffectIndex || e.which == effects.EffectManager.frostbiteEffectIndex))
+                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.burnEffectIndex))
                 {
-                    player.bindedFarmer.health -= 3;
+                    player.bindedFarmer.health -= ModConfig.GetInstance().HealthDrainOnBurnPerSecond;
                     Game1.currentLocation.playSound("ow");
-                    Game1.hitShakeTimer = 100 * 3;
+                    Game1.hitShakeTimer = 100 * ModConfig.GetInstance().HealthDrainOnBurnPerSecond;
+                }
+                else if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.frostbiteEffectIndex))
+                {
+                    player.bindedFarmer.health -= ModConfig.GetInstance().HealthDrainOnFrostbitePerSecond;
+                    Game1.currentLocation.playSound("ow");
+                    Game1.hitShakeTimer = 100 * ModConfig.GetInstance().HealthDrainOnFrostbitePerSecond;
                 }
                 if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.heatstrokeEffectIndex))
                 {
-                    player.updateActiveDrain(0, -0.8);
+                    player.updateActiveDrain(0, -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond);
                 }
             }
         }
@@ -81,7 +87,7 @@ namespace StardewSurvivalProject.source
         {
             if (player == null) return;
             player.updateDrain();
-            //TODO: update player body temp based on env temp, whether user is indoor and nearby heating / cooling source (light source / nearby big craftable)
+            
             if (ModConfig.GetInstance().UseTemperatureModule)
             {
                 player.updateBodyTemp(envTemp);
@@ -94,7 +100,7 @@ namespace StardewSurvivalProject.source
             if (player == null) return;
 
             //addition: if player is drinking a refillable container, give back the empty container item
-            if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen"))
+            if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen") || gameObj.name.Equals("Ice Water Canteen"))
             {
                 int itemId = data.ItemNameCache.getIDFromCache("Canteen");
                 if (itemId != -1)
@@ -106,7 +112,7 @@ namespace StardewSurvivalProject.source
             //check if eaten food is cooked or artisan product, if no apply chance for stomachache effect
             if (gameObj.Category != SObject.CookingCategory && gameObj.Category != SObject.artisanGoodsCategory)
             {
-                if (rand.NextDouble() * 100 >= (100 - 5))
+                if (rand.NextDouble() * 100 >= (100 - ModConfig.GetInstance().PercentageChanceGettingStomachache))
                     effects.EffectManager.applyEffect(effects.EffectManager.stomachacheEffectIndex);
             }
 
@@ -186,6 +192,7 @@ namespace StardewSurvivalProject.source
         public void updateOnRunning()
         {
             if (player == null || !ModConfig.GetInstance().UseOnRunningDrain) return;
+
             double THIRST_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningThirstDrainRate, HUNGER_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningHungerDrainRate;
             if (player.thirst.value <= THIRST_DRAIN_ON_RUNNING || player.hunger.value <= HUNGER_DRAIN_ON_RUNNING)
             {
@@ -243,11 +250,25 @@ namespace StardewSurvivalProject.source
             return this.envTemp.value;
         }
 
+        public string getPlayerBodyTempString()
+        {
+            if (ModConfig.GetInstance().TemperatureUnit.Equals("Fahrenheit")) return ((player.temp.value * 9 / 5) + 32).ToString("#.##") + "F";
+            else if (ModConfig.GetInstance().TemperatureUnit.Equals("Kelvin")) return (player.temp.value + 273).ToString("#.##") + "K";
+            return player.temp.value.ToString("#.##") + "C";
+        }
+
+        public string getEnvTempString()
+        {
+            if (ModConfig.GetInstance().TemperatureUnit.Equals("Fahrenheit")) return ((this.envTemp.value * 9 / 5) + 32).ToString("#.##") + "F";
+            else if (ModConfig.GetInstance().TemperatureUnit.Equals("Kelvin")) return (this.envTemp.value + 273).ToString("#.##") + "K";
+            return this.envTemp.value.ToString("#.##") + "C";
+        }
+
         public void updateOnToolUsed(StardewValley.Tool toolHold)
         {
             bool isFever = Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.feverEffectIndex);
             int power = (int)((player.bindedFarmer.toolHold + 20f) / 600f) + 1;
-            LogHelper.Debug($"Tool Power = {power}");
+            //LogHelper.Debug($"Tool Power = {power}");
 
             if (!ModConfig.GetInstance().UseOnToolUseDrain) return;
 
@@ -258,7 +279,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().AxeHungerDrain, -ModConfig.GetInstance().AxeThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.ForagingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.ForagingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -267,7 +288,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().HoeHungerDrain, -ModConfig.GetInstance().HoeThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -276,7 +297,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().PickaxeHungerDrain, -ModConfig.GetInstance().PickaxeThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.MiningLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= ((float)(2 * power) - (float)player.bindedFarmer.MiningLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -285,7 +306,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().MeleeWeaponHungerDrain, -ModConfig.GetInstance().MeleeWeaponThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * 2.0f;
+                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                 }
             }
             else if (toolHold is StardewValley.Tools.Slingshot)
@@ -293,7 +314,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().SlingshotHungerDrain, -ModConfig.GetInstance().SlingshotThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * 2.0f;
+                    player.bindedFarmer.stamina -= (1f - (float)player.bindedFarmer.CombatLevel * 0.08f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                 }
             }
             else if (toolHold is StardewValley.Tools.WateringCan)
@@ -301,7 +322,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().WateringCanHungerDrain, -ModConfig.GetInstance().WateringCanThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= ((float)(2 * (power + 1)) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= ((float)(2 * (power + 1)) - (float)player.bindedFarmer.FarmingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -310,7 +331,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().FishingPoleHungerDrain, -ModConfig.GetInstance().FishingPoleThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= (8f - (float)player.bindedFarmer.FishingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= (8f - (float)player.bindedFarmer.FishingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -319,7 +340,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().MilkPailHungerDrain, -ModConfig.GetInstance().MilkPailThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -328,7 +349,7 @@ namespace StardewSurvivalProject.source
                 player.updateActiveDrain(-ModConfig.GetInstance().ShearHungerDrain, -ModConfig.GetInstance().ShearThirstDrain);
                 if (isFever)
                 {
-                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * 2.0f;
+                    player.bindedFarmer.stamina -= (4f - (float)player.bindedFarmer.FarmingLevel * 0.1f) * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                     Game1.staminaShakeTimer += 100;
                 }
             }
@@ -374,7 +395,7 @@ namespace StardewSurvivalProject.source
         {
             double dice_roll = rand.NextDouble() * 100;
             //base chance of 2%, increase to +10% the less stamina player have at the end of the day
-            if (dice_roll >= 100 - 2 + 8 * (1 - player.bindedFarmer.stamina / player.bindedFarmer.maxStamina))
+            if (dice_roll >= 100 - (ModConfig.GetInstance().PercentageChanceGettingFever + ModConfig.GetInstance().PercentageChanceGettingFever * (1 - player.bindedFarmer.stamina / player.bindedFarmer.maxStamina)))
             {
                 effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
             }

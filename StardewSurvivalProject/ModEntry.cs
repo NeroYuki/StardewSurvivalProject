@@ -70,6 +70,8 @@ namespace StardewSurvivalProject
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             //for fever effect applying dice roll
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            //for initializing generic config menu
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -296,15 +298,15 @@ namespace StardewSurvivalProject
             b.Draw(this.BodyTempBar, body_temp_pos, new Rectangle(0, 0, this.BodyTempBar.Width, this.BodyTempBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
             //render indicators
-            const double ENV_TEMP_BOUND_LOW = -10;
-            const double ENV_TEMP_BOUND_HIGH = 50;
+            double ENV_TEMP_BOUND_LOW = ModConfig.GetInstance().EnvironmentTemperatureDisplayLowerBound;
+            double ENV_TEMP_BOUND_HIGH = ModConfig.GetInstance().EnvironmentTemperatureDisplayHigherBound;
 
             double x_coord_env_temp = ((instance.getEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
             Vector2 env_ind_pos = new Vector2(OffsetX + (float) x_coord_env_temp, OffsetY + this.HungerBar.Height * Scale * 2);
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
-            const double BODY_TEMP_BOUND_LOW = 28;
-            const double BODY_TEMP_BOUND_HIGH = 45;
+            double BODY_TEMP_BOUND_LOW = ModConfig.GetInstance().BodyTemperatureDisplayLowerBound;
+            double BODY_TEMP_BOUND_HIGH = ModConfig.GetInstance().BodyTemperatureDisplayHigherBound;
 
             double x_coord_body_temp = ((instance.getPlayerBodyTemp() - BODY_TEMP_BOUND_LOW) / (BODY_TEMP_BOUND_HIGH - BODY_TEMP_BOUND_LOW)) * (50 * Scale);
             Vector2 body_ind_pos = new Vector2(OffsetX + (float) x_coord_body_temp, OffsetY + this.HungerBar.Height * Scale * 3);
@@ -336,10 +338,10 @@ namespace StardewSurvivalProject
                 Game1.drawWithBorder(instance.getPlayerThirstStat(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
 
             if (Game1.getOldMouseX() >= (double)body_temp_hover_area.X && Game1.getOldMouseY() >= (double)body_temp_hover_area.Y && Game1.getOldMouseX() < (double)body_temp_hover_area.X + body_temp_hover_area.Width && Game1.getOldMouseY() < body_temp_hover_area.Y + body_temp_hover_area.Height)
-                Game1.drawWithBorder(instance.getPlayerBodyTemp().ToString("#.##"), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
+                Game1.drawWithBorder(instance.getPlayerBodyTempString(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
 
             if (Game1.getOldMouseX() >= (double)env_temp_hover_area.X && Game1.getOldMouseY() >= (double)env_temp_hover_area.Y && Game1.getOldMouseX() < (double)env_temp_hover_area.X + env_temp_hover_area.Width && Game1.getOldMouseY() < env_temp_hover_area.Y + env_temp_hover_area.Height)
-                Game1.drawWithBorder(instance.getEnvTemp().ToString("#.##"), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
+                Game1.drawWithBorder(instance.getEnvTempString(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
         }
 
         private void OnSecondPassed(object sender, OneSecondUpdateTickedEventArgs e)
@@ -430,6 +432,11 @@ namespace StardewSurvivalProject
         {
             instance.onExit();
             source.data.ItemNameCache.clearCache();
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            source.api.ConfigMenu.Init(this);
         }
     }
 }

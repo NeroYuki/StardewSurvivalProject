@@ -23,6 +23,7 @@ namespace StardewSurvivalProject.source.harmony_patches
 
         public static void DrawHoverText_Postfix(IClickableMenu __instance, SpriteBatch b, StringBuilder text, SpriteFont font, int xOffset, int yOffset, int moneyAmountToDisplayAtBottom, string boldTitleText, int healAmountToDisplay, string[] buffIconsToDisplay, ref Item hoveredItem, int currencySymbol, int extraItemToShowIndex, int extraItemToShowAmount, int overrideX, int overrideY, float alpha, CraftingRecipe craftingIngredients, IList<Item> additional_craft_materials)
         {
+            if (ModConfig.GetInstance().DisableModItemInfo) return;
             try
             {
                 double addThirst = 0;

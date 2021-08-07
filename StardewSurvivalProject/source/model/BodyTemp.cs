@@ -8,19 +8,19 @@ namespace StardewSurvivalProject.source.model
 {
     public class BodyTemp
     {
-        public const double DEFAULT_VALUE = 37.5;
+        public static double DEFAULT_VALUE = ModConfig.GetInstance().DefaultBodyTemperature;
 
-        public double MinComfortTemp = 16.0;
-        public double MaxComfortTemp = 24.0;
+        public double MinComfortTemp = ModConfig.GetInstance().DefaultMinComfortableTemperature;
+        public double MaxComfortTemp = ModConfig.GetInstance().DefaultMaxComfortableTemperature;
 
-        public double DefaultMinComfortTemp = 16.0;
-        public double DefaultMaxComfortTemp = 24.0;
-        public double DefaultAvgComfortTemp = 20.0;
+        public double DefaultMinComfortTemp = ModConfig.GetInstance().DefaultMinComfortableTemperature;
+        public double DefaultMaxComfortTemp = ModConfig.GetInstance().DefaultMaxComfortableTemperature;
+        //public double DefaultAvgComfortTemp = 20.0;
 
-        public static double HypotherminaThreshold = 35.0;
-        public static double FrostbiteThreshold = 30.0;
-        public static double HeatstrokeThreshold = 38.5;
-        public static double BurnThreshold = 41.0;
+        public static double HypotherminaThreshold = ModConfig.GetInstance().HypothermiaBodyTempThreshold;
+        public static double FrostbiteThreshold = ModConfig.GetInstance().FrostbiteBodyTempThreshold;
+        public static double HeatstrokeThreshold = ModConfig.GetInstance().HeatstrokeBodyTempThreshold;
+        public static double BurnThreshold = ModConfig.GetInstance().BurnBodyTempThreshold;
 
         public double value { get; set; }
 
@@ -37,32 +37,33 @@ namespace StardewSurvivalProject.source.model
 
         public void BodyTempCalc(EnvTemp envTemp, double fluctuation = 0)
         {
-            LogHelper.Debug($"{MinComfortTemp} {MaxComfortTemp}");
+            //LogHelper.Debug($"{MinComfortTemp} {MaxComfortTemp}");
             double envTempVal = envTemp.value;
             double targetBodyTemp = value;
             //currently follow a segmented linear function (adjust to look good on desmos xd)
             if (envTemp.value > MaxComfortTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = DEFAULT_VALUE + 0.09 * (envTempVal - MaxComfortTemp);
+                targetBodyTemp = DEFAULT_VALUE + ModConfig.GetInstance().HighTemperatureSlope * (envTempVal - MaxComfortTemp);
             }
             else if (envTemp.value < MinComfortTemp)
             {
                 // if more than maximum comfort temp
-                targetBodyTemp = DEFAULT_VALUE - 0.17 * (MinComfortTemp - envTempVal);
+                targetBodyTemp = DEFAULT_VALUE + ModConfig.GetInstance().LowTemperatureSlope * (MinComfortTemp - envTempVal);
             }
             else
             {
                 targetBodyTemp = DEFAULT_VALUE;
             }
             //gradual temp change instead of abrupted
-            value += (targetBodyTemp - value) / 2;
+            value += (targetBodyTemp - value) * ModConfig.GetInstance().TemperatureChangeEasing;
             //fluctuate a bit
             value += fluctuation;
         }
 
         internal void updateComfortTemp(string hat_name, string shirt_name, string pants_name, string boots_name)
         {
+            double DefaultAvgComfortTemp = (DefaultMinComfortTemp + DefaultMaxComfortTemp) / 2;
             double minComfortTempModifier = 1;
             double maxComfortTempModifier = 1;
 

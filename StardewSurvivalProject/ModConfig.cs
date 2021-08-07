@@ -8,13 +8,28 @@ namespace StardewSurvivalProject
 {
     public class ModConfig
     {
+        //Feature config
+        public bool UsePassiveDrain { get; set; } = true;
+        public bool UseOnRunningDrain { get; set; } = true;
+        public bool UseOnToolUseDrain { get; set; } = true;
+        public bool UseTemperatureModule { get; set; } = true;
+        public bool DisableHPHealingOnEatingFood { get; set; } = true;
+        public bool UseOvernightPassiveDrain { get; set; } = true;
+
         //UI config
         public int UIOffsetX { get; set; } = 10;
         public int UIOffsetY { get; set; } = 10;
         public float UIScale { get; set; } = 4.0f;
-        public bool IsAnchoredDown { get; set; } = false;
+        public bool IsAnchoredDown { get; set; } = false; //not working
+        public double EnvironmentTemperatureDisplayLowerBound { get; set; } = -10;
+        public double EnvironmentTemperatureDisplayHigherBound { get; set; } = 50;
+        public double BodyTemperatureDisplayLowerBound { get; set; } = 28;
+        public double BodyTemperatureDisplayHigherBound { get; set; } = 45;
+        public bool DisableModItemInfo { get; set; } = false;
+        public string TemperatureUnit { get; set; } = "Celcius";
 
-        //Difficulty config
+        //Difficulty Setting
+        //Thirst and Hunger
         public double PassiveHungerDrainRate { get; set; } = 0.2;
         public double PassiveThirstDrainRate { get; set; } = 0.3;
         public double RunningHungerDrainRate { get; set; } = 0.001;
@@ -51,20 +66,51 @@ namespace StardewSurvivalProject
         public double HungerWellFedEffectPercentageThreshold { get; set; } = 80;
         public double ThirstWellFedEffectPercentageThreshold { get; set; } = 80;
 
-        //Feature config
-        public bool UsePassiveDrain { get; set; } = true;
-        public bool UseOnRunningDrain { get; set; } = true;
-        public bool UseOnToolUseDrain { get; set; } = true;
-        public bool UseTemperatureModule { get; set; } = true;
-        public bool DisableHPHealingOnEatingFood { get; set; } = true;
-        public bool UseOvernightPassiveDrain { get; set; } = true;
-
-        //Advanced Number Tinkering
-        //Thirst and Hunger
-
         //Environmental Temperature
+        public double EnvironmentBaseTemperature { get; set; } = 25;
+        public double DefaultDayNightCycleTemperatureDiffScale { get; set; } = 3;
+        public double DefaultTemperatureFluctuationScale { get; set; } = 1;
+        //seasonal multiplier
+        public double SpringSeasonTemperatureMultiplier { get; set; } = 0.9;
+        public double SummerSeasonTemperatureMultiplier { get; set; } = 1.1;
+        public double FallSeasonTemperatureMultiplier { get; set; } = 0.9;
+        public double WinterSeasonTemperatureMultiplier { get; set; } = 0.2;
+        //weather multiplier
+        public double SunnyWeatherTemperatureMultiplier { get; set; } = 1.2;
+        public double FestivalWeatherTemperatureMultiplier { get; set; } = 1.2;
+        public double WeddingWeatherTemperatureMultiplier { get; set; } = 1.2;
+        public double StormWeatherTemperatureMultiplier { get; set; } = 0.8;
+        public double RainWeatherTemperatureMultiplier { get; set; } = 0.8;
+        public double WindySpringWeatherTemperatureMultiplier { get; set; } = 0.9;
+        public double WindyFallWeatherTemperatureMultiplier { get; set; } = 0.9;
+        public double SnowWeatherTemperatureMultiplier { get; set; } = -2;
+        //location setting
+        public bool UseCustomLocationTemperatureData { get; set; } = true;
+        public bool UseDefaultIndoorTemperatureModifier { get; set; } = true;
+        public bool UseDefaultCaveTemperatureModifier { get; set; } = true;
+        public bool UseDefaultSkullCavernTemperatureModifier { get; set; } = true;
 
         //Body Temperature
+        public double DefaultBodyTemperature { get; set; } = 37.5;
+        public double DefaultMinComfortableTemperature { get; set; } = 16;
+        public double DefaultMaxComfortableTemperature { get; set; } = 24;
+        public double HypothermiaBodyTempThreshold { get; set; } = 35;
+        public double FrostbiteBodyTempThreshold { get; set; } = 30;
+        public double HeatstrokeBodyTempThreshold { get; set; } = 38.5;
+        public double BurnBodyTempThreshold { get; set; } = 41;
+        public double LowTemperatureSlope { get; set; } = -0.17;
+        public double HighTemperatureSlope { get; set; } = 0.09;
+        public double TemperatureChangeEasing { get; set; } = 0.5;
+
+        //Custom Buff / Debuff
+        public double PercentageChanceGettingFever { get; set; } = 2;
+        public double AdditionalPercentageChanceGettingFever { get; set; } = 8;
+        public double HeatstrokeThirstDrainPerSecond { get; set; } = 0.8;
+        public double AdditionalPercentageStaminaDrainOnFever { get; set; } = 200;
+        public double StomachacheHungerPercentageDrainPerSecond { get; set; } = 1;
+        public double PercentageChanceGettingStomachache { get; set; } = 3;
+        public int HealthDrainOnBurnPerSecond { get; set; } = 3;
+        public int HealthDrainOnFrostbitePerSecond { get; set; } = 3;
 
         private static ModConfig _instance;
 
