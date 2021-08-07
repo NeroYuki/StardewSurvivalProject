@@ -48,6 +48,8 @@ namespace StardewSurvivalProject
         public double MaxThirst { get; set; } = 100;
         public double HungerEffectPercentageThreshold { get; set; } = 25;
         public double ThirstEffectPercentageThreshold { get; set; } = 25;
+        public double HungerWellFedEffectPercentageThreshold { get; set; } = 80;
+        public double ThirstWellFedEffectPercentageThreshold { get; set; } = 80;
 
         //Feature config
         public bool UsePassiveDrain { get; set; } = true;

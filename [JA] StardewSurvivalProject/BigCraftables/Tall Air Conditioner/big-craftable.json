@@ -7,11 +7,11 @@
     "Recipe": {
         "ResultCount": 1,
         "Ingredients": [{
-                "Object": 335,
-                "Count": 20
-            }, {
                 "Object": 336,
-                "Count": 10
+                "Count": 15
+            }, {
+                "Object": 337,
+                "Count": 5
             }, {
                 "Object": 338,
                 "Count": 30
@@ -19,10 +19,8 @@
         ],
         "CanPurchase": true,
         "PurchaseFrom": "Robin",
-        "PurchasePrice": 20000,
+        "PurchasePrice": 40000,
         "PurchaseRequirements": null
     },
-    "CanPurchase": true,
-    "PurchaseFrom": "Robin",
-    "PurchasePrice": 10000
+    "CanPurchase": false
 }

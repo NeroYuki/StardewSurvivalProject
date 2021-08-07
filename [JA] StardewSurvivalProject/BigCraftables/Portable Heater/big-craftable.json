@@ -8,21 +8,21 @@
         "ResultCount": 1,
         "Ingredients": [{
                 "Object": 335,
-                "Count": 20
+                "Count": 15
             }, {
                 "Object": 336,
-                "Count": 10
+                "Count": 5
             }, {
-                "Object": 338,
-                "Count": 30
+                "Object": 82,
+                "Count": 20
             }
         ],
         "CanPurchase": true,
         "PurchaseFrom": "Robin",
-        "PurchasePrice": 20000,
+        "PurchasePrice": 8000,
         "PurchaseRequirements": null
     },
     "CanPurchase": true,
     "PurchaseFrom": "Robin",
-    "PurchasePrice": 10000
+    "PurchasePrice": 5000
 }

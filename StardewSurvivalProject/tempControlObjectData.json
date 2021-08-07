@@ -147,20 +147,23 @@
     "deviceType": "heating",
     "coreTemp": 60.0,
     "effectiveRange": 6,
-    "needActive": true
+    "needActive": true,
+    "activeType": 1
   },
   {
     "name": "Air Conditioner",
     "deviceType": "general",
     "coreTemp": 20.0,
     "effectiveRange": 4,
-    "needActive": true
+    "needActive": true,
+    "activeType": 1
   },
   {
     "name": "Tall Air Conditioner",
     "deviceType": "general",
     "coreTemp": 20.0,
-    "effectiveRange": 6,
-    "needActive": true
+    "effectiveRange": 7,
+    "needActive": true,
+    "activeType": 1
   }
 ]

@@ -35,6 +35,9 @@ namespace StardewSurvivalProject.source
         public void onSecondUpdate()
         {
             //poition effect apply here
+            if (player.hunger.value >= model.Hunger.DEFAULT_VALUE * ModConfig.GetInstance().HungerWellFedEffectPercentageThreshold / 100 &&
+                player.thirst.value >= model.Thirst.DEFAULT_VALUE * ModConfig.GetInstance().ThirstWellFedEffectPercentageThreshold / 100)
+                effects.EffectManager.applyEffect(effects.EffectManager.wellFedEffectIndex);
             if (player.hunger.value <= (model.Hunger.DEFAULT_VALUE * ModConfig.GetInstance().HungerEffectPercentageThreshold / 100))
                 effects.EffectManager.applyEffect(effects.EffectManager.hungerEffectIndex);
             if (player.thirst.value <= (model.Thirst.DEFAULT_VALUE * ModConfig.GetInstance().ThirstEffectPercentageThreshold / 100))
