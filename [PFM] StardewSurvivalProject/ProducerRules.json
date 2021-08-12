@@ -93,6 +93,17 @@
         "OutputIdentifier": "Full Canteen",
         "Sounds": ["Ship"]
 	},
+	{
+		"ProducerName": "Furnace",
+        "InputIdentifier": "Canteen",
+        "InputStack": 5,
+		"FuelIdentifier": "Ice Cube",
+		"FuelStack": 5,
+        "MinutesUntilReady": 20,
+        "OutputIdentifier": "Full Canteen",
+		"OutputStack": 5,
+        "Sounds": ["Ship"]
+	},
 
     //Primitive Water Filter
     {
