@@ -14,7 +14,7 @@ using System.Text;
 namespace StardewSurvivalProject
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod, IAssetEditor
+    public class ModEntry : Mod
     {
         private source.Manager instance;
         private source.commands.Commands commandManager;
@@ -72,7 +72,9 @@ namespace StardewSurvivalProject
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             //for initializing generic config menu
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-            
+            //for loading and patching assets
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
+
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
@@ -137,47 +139,44 @@ namespace StardewSurvivalProject
             helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
         }
 
-        //patch game assets
-        public bool CanEdit<T>(IAssetInfo assets)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            return assets.AssetNameEquals("TileSheets/BuffsIcons");
-        }
-
-        public void Edit<T>(IAssetData assets)
-        {
-            if (assets.AssetNameEquals("TileSheets/BuffsIcons"))
+            if (e.Name.IsEquivalentTo("TileSheets/BuffsIcons"))
             {
-                var editor = assets.AsImage();
+                e.Edit(assets =>
+                {
+                    var editor = assets.AsImage();
 
-                Texture2D burnEffectIcon = this.Helper.Content.Load<Texture2D>("assets/BurnEffect.png");
-                Texture2D starvationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StarvationEffect.png");
-                Texture2D hypothermiaEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HypothermiaEffect.png");
-                Texture2D frostbiteEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FrostbiteEffect.png");
-                Texture2D heatstrokeEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HeatstrokeEffect.png");
-                Texture2D dehydrationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/DehydratedEffect.png");
-                Texture2D feverEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FeverEffect.png");
-                Texture2D stomachacheEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StomachacheEffect.png");
-                Texture2D thirstEffectIcon = this.Helper.Content.Load<Texture2D>("assets/ThirstEffect.png");
-                Texture2D hungerEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HungerEffect.png");
-                Texture2D wellFedEffectIcon = this.Helper.Content.Load<Texture2D>("assets/WellFedEffect.png");
+                    Texture2D burnEffectIcon = this.Helper.Content.Load<Texture2D>("assets/BurnEffect.png");
+                    Texture2D starvationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StarvationEffect.png");
+                    Texture2D hypothermiaEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HypothermiaEffect.png");
+                    Texture2D frostbiteEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FrostbiteEffect.png");
+                    Texture2D heatstrokeEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HeatstrokeEffect.png");
+                    Texture2D dehydrationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/DehydratedEffect.png");
+                    Texture2D feverEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FeverEffect.png");
+                    Texture2D stomachacheEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StomachaceEffect.png");
+                    Texture2D thirstEffectIcon = this.Helper.Content.Load<Texture2D>("assets/ThirstEffect.png");
+                    Texture2D hungerEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HungerEffect.png");
+                    Texture2D wellFedEffectIcon = this.Helper.Content.Load<Texture2D>("assets/WellFedEffect.png");
 
-                //extend the image to occupy a different row from other effects
-                int extraEffectYCoord = editor.Data.Height;
-                editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
+                    //extend the image to occupy a different row from other effects
+                    int extraEffectYCoord = editor.Data.Height;
+                    editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
 
-                editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(hypothermiaEffectIcon, targetArea: new Rectangle(2 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(frostbiteEffectIcon, targetArea: new Rectangle(3 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(heatstrokeEffectIcon, targetArea: new Rectangle(4 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
-                editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(hypothermiaEffectIcon, targetArea: new Rectangle(2 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(frostbiteEffectIcon, targetArea: new Rectangle(3 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(heatstrokeEffectIcon, targetArea: new Rectangle(4 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
 
-                this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
+                    this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
+                });
             }
         }
 
@@ -377,7 +376,7 @@ namespace StardewSurvivalProject
                 return;
 
             SObject ateItem = Game1.player.itemToEat as SObject;
-            this.Monitor.Log($"{Game1.player.name} ate {ateItem.name}");
+            //this.Monitor.Log($"{Game1.player.name} ate {ateItem.name}");
             instance.onEatingFood(ateItem);
 
             //for whatever reason the field determine whether a player can drink the "edible" is never exposed in the SObject field

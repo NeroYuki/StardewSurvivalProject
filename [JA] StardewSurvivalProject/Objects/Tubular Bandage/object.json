@@ -17,7 +17,7 @@
         "Speed": -1,
         "Defense": 0,
         "Attack": 0,
-        "Duration": 100,
+        "Duration": 30,
     },
     "Recipe": {
         "ResultCount": 1,

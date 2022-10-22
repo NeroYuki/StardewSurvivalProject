@@ -47,13 +47,6 @@ namespace StardewSurvivalProject.source.api
 
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
-                optionName: "Drain on running",
-                optionDesc: "Drain hunger and thirst on running (Default: Checked)",
-                optionGet: () => ModConfig.GetInstance().UseOnRunningDrain,
-                optionSet: value => ModConfig.GetInstance().UseOnRunningDrain = value
-            ) ;
-            api.RegisterSimpleOption(
-                mod: context.ModManifest,
                 optionName: "Passive drain",
                 optionDesc: "Enable hunger and thirst drain overtime - trigger every 10 minutes in-game (Default: Checked)",
                 optionGet: () => ModConfig.GetInstance().UsePassiveDrain,
