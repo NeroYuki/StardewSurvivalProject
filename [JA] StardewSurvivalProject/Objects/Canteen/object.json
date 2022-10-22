@@ -1,8 +1,8 @@
 {
   "Name": "Canteen",
   "Description": "An empty canteen. How about putting some water inside",
-  "Category": "ArtisanGoods",
-  "Edibility": 0,
+  "Category": "Crafting",
+  "Edibility": -300,
   "Price": 1,
   "IsColored": false,
   "Recipe": {

@@ -267,7 +267,7 @@ namespace StardewSurvivalProject
             else if (Game1.player.CurrentItem != null && Game1.player.CurrentItem.Name.Equals("Canteen") && isWater && !isOcean)
             {
                 //remove empty canteen
-                Game1.player.removeItemFromInventory(Game1.player.CurrentItem);
+                Game1.player.reduceActiveItemByOne();
                 //give dirty canteen
                 int itemId = source.data.ItemNameCache.getIDFromCache("Dirty Canteen");
                 if (itemId != -1)
