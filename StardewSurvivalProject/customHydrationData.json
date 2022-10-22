@@ -18,7 +18,8 @@
   },
   {
     "name": "Ginger Ale",
-    "value": 12
+    "value": 12,
+    "coolingModifier": -2
   },
   {
     "name": "Fish Stew",

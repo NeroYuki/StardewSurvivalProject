@@ -75,11 +75,20 @@ namespace StardewSurvivalProject.source.model
             if (addValue == 0) return;
             Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + addValue} Hydration", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
 
-            //cooling down player if water was drank
-            if (addValue > 0 || this.temp.value > BodyTemp.DEFAULT_VALUE)
+            if (addValue > 0)
             {
-                this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * cooling_modifier * addValue + 1));
+                if (this.temp.value >= BodyTemp.DEFAULT_VALUE && cooling_modifier > 0)
+                {
+                    //cooling down player if water was drank
+                    this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * cooling_modifier * addValue + 1));
+                }
+                if (this.temp.value < BodyTemp.DEFAULT_VALUE && cooling_modifier <= 0)
+                {
+                    //heating up player if hot drink was drank
+                    this.temp.value += ((BodyTemp.DEFAULT_VALUE) - this.temp.value) * (1 - 1 / (0.02 * (-cooling_modifier) * addValue + 1));
+                }
             }
+            
             checkIsDangerValue();
         }
 
