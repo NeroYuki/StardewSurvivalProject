@@ -7,23 +7,37 @@ namespace StardewSurvivalProject.source.effects
 {
     public class EffectManager
     {
-        public const int burnEffectIndex = 36;
-        public const int starvationEffectIndex = 37;
-        public const int hypothermiaEffectIndex = 38;
-        public const int frostbiteEffectIndex = 39;
-        public const int heatstrokeEffectIndex = 40;
-        public const int dehydrationEffectIndex = 41;
-        public const int feverEffectIndex = 42;
-        public const int stomachacheEffectIndex = 43;
-        public const int thirstEffectIndex = 44;
-        public const int hungerEffectIndex = 45;
-        public const int wellFedEffectIndex = 46;
+        public static int burnEffectIndex = 36;
+        public static int starvationEffectIndex = 37;
+        public static int hypothermiaEffectIndex = 38;
+        public static int frostbiteEffectIndex = 39;
+        public static int heatstrokeEffectIndex = 40;
+        public static int dehydrationEffectIndex = 41;
+        public static int feverEffectIndex = 42;
+        public static int stomachacheEffectIndex = 43;
+        public static int thirstEffectIndex = 44;
+        public static int hungerEffectIndex = 45;
+        public static int wellFedEffectIndex = 46;
 
         //dictionary include effect index as key, a string int pair value for description and effect duration respectively
         public static Dictionary<int, KeyValuePair<string, int>> effectDescDictionary = new Dictionary<int, KeyValuePair<string, int>>();
 
-        public static void initialize()
+        public static void initialize(int appendRow = 3)
         {
+            effectDescDictionary.Clear();
+
+            burnEffectIndex = appendRow * 12 + 0;
+            starvationEffectIndex = appendRow * 12 + 1;
+            hypothermiaEffectIndex = appendRow * 12 + 2;
+            frostbiteEffectIndex = appendRow * 12 + 3;
+            heatstrokeEffectIndex = appendRow * 12 + 4;
+            dehydrationEffectIndex = appendRow * 12 + 5;
+            feverEffectIndex = appendRow * 12 + 6;
+            stomachacheEffectIndex = appendRow * 12 + 7;
+            thirstEffectIndex = appendRow * 12 + 8;
+            hungerEffectIndex = appendRow * 12 + 9;
+            wellFedEffectIndex = appendRow * 12 + 10;
+
             effectDescDictionary.Add(burnEffectIndex, new KeyValuePair<string, int>("Holy crap you are on fire! Get away from the heat source NOW", 1000));
             effectDescDictionary.Add(starvationEffectIndex, new KeyValuePair<string, int>("You're starving. Please eat something...", 1000));
             effectDescDictionary.Add(hypothermiaEffectIndex, new KeyValuePair<string, int>("Your skin is getting colder. Please seek a shelter and a campfire.", 1000));

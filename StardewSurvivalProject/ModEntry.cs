@@ -24,6 +24,7 @@ namespace StardewSurvivalProject
         private Texture2D BodyTempBar;
         private Texture2D TempIndicator;
         private Texture2D fillRect;
+        private int buffIconAppendRow = 2;
         //expose for harmony patches
         public static Texture2D InfoIcon;
         public static Texture2D ModIcon;
@@ -72,8 +73,10 @@ namespace StardewSurvivalProject
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             //for initializing generic config menu
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-            //for loading and patching assets
+            //for loading and patching assets (buff icon in particular)
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
+            //for confirming buff icons has been loaded properly and initialize buff with proper index
+            helper.Events.Content.AssetReady += this.OnAssetReady;
 
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -93,8 +96,6 @@ namespace StardewSurvivalProject
             source.data.ClothingTempResistantDictionary.loadList(this);
 
             instance = new source.Manager();
-
-            source.effects.EffectManager.initialize();
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
@@ -121,15 +122,15 @@ namespace StardewSurvivalProject
             );
 
             //Load assets
-            this.HungerBar = helper.Content.Load<Texture2D>("assets/HungerBar.png");
-            this.ThirstBar = helper.Content.Load<Texture2D>("assets/ThirstBar.png");
-            this.EnvTempBar = helper.Content.Load<Texture2D>("assets/EnvTempBar.png");
-            this.BodyTempBar = helper.Content.Load<Texture2D>("assets/BodyTempBar.png");
-            this.TempIndicator = helper.Content.Load<Texture2D>("assets/TempIndicator.png");
-            this.fillRect = helper.Content.Load<Texture2D>("assets/fillRect.png");
-            
-            InfoIcon = helper.Content.Load<Texture2D>("assets/InfoIcon.png");
-            ModIcon = helper.Content.Load<Texture2D>("assets/ModIcon.png");
+            this.HungerBar = helper.ModContent.Load<Texture2D>("assets/HungerBar.png");
+            this.ThirstBar = helper.ModContent.Load<Texture2D>("assets/ThirstBar.png");
+            this.EnvTempBar = helper.ModContent.Load<Texture2D>("assets/EnvTempBar.png");
+            this.BodyTempBar = helper.ModContent.Load<Texture2D>("assets/BodyTempBar.png");
+            this.TempIndicator = helper.ModContent.Load<Texture2D>("assets/TempIndicator.png");
+            this.fillRect = helper.ModContent.Load<Texture2D>("assets/fillRect.png");
+
+            InfoIcon = helper.ModContent.Load<Texture2D>("assets/InfoIcon.png");
+            ModIcon = helper.ModContent.Load<Texture2D>("assets/ModIcon.png");
 
             //load command
             commandManager = new source.commands.Commands(instance);
@@ -147,17 +148,17 @@ namespace StardewSurvivalProject
                 {
                     var editor = assets.AsImage();
 
-                    Texture2D burnEffectIcon = this.Helper.Content.Load<Texture2D>("assets/BurnEffect.png");
-                    Texture2D starvationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StarvationEffect.png");
-                    Texture2D hypothermiaEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HypothermiaEffect.png");
-                    Texture2D frostbiteEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FrostbiteEffect.png");
-                    Texture2D heatstrokeEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HeatstrokeEffect.png");
-                    Texture2D dehydrationEffectIcon = this.Helper.Content.Load<Texture2D>("assets/DehydratedEffect.png");
-                    Texture2D feverEffectIcon = this.Helper.Content.Load<Texture2D>("assets/FeverEffect.png");
-                    Texture2D stomachacheEffectIcon = this.Helper.Content.Load<Texture2D>("assets/StomachaceEffect.png");
-                    Texture2D thirstEffectIcon = this.Helper.Content.Load<Texture2D>("assets/ThirstEffect.png");
-                    Texture2D hungerEffectIcon = this.Helper.Content.Load<Texture2D>("assets/HungerEffect.png");
-                    Texture2D wellFedEffectIcon = this.Helper.Content.Load<Texture2D>("assets/WellFedEffect.png");
+                    Texture2D burnEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/BurnEffect.png");
+                    Texture2D starvationEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/StarvationEffect.png");
+                    Texture2D hypothermiaEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HypothermiaEffect.png");
+                    Texture2D frostbiteEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/FrostbiteEffect.png");
+                    Texture2D heatstrokeEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HeatstrokeEffect.png");
+                    Texture2D dehydrationEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/DehydratedEffect.png");
+                    Texture2D feverEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/FeverEffect.png");
+                    Texture2D stomachacheEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/StomachaceEffect.png");
+                    Texture2D thirstEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/ThirstEffect.png");
+                    Texture2D hungerEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HungerEffect.png");
+                    Texture2D wellFedEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/WellFedEffect.png");
 
                     //extend the image to occupy a different row from other effects
                     int extraEffectYCoord = editor.Data.Height;
@@ -176,9 +177,24 @@ namespace StardewSurvivalProject
                     editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
 
                     this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
+
+                    buffIconAppendRow = extraEffectYCoord / 16;
+
+                    this.Monitor.Log("Buff Icons has been altered by StardewSurvivalProject, append at row = " + buffIconAppendRow, LogLevel.Info);
+                    source.effects.EffectManager.initialize(buffIconAppendRow);
                 });
             }
+
         }
+
+        private void OnAssetReady(object sender, AssetReadyEventArgs e)
+        {
+            if (e.Name.IsEquivalentTo("TileSheets/BuffsIcons"))
+            {
+                this.Monitor.Log("Buff Icon has been loaded, number of row " + buffIconAppendRow, LogLevel.Debug);
+
+            }
+        } 
 
         //handle events
         private void OnDayEnding(object sender, DayEndingEventArgs e)
