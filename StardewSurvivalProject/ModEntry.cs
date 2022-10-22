@@ -29,6 +29,20 @@ namespace StardewSurvivalProject
         public static Texture2D InfoIcon;
         public static Texture2D ModIcon;
 
+        public Texture2D GetAssetWithPreset(IModHelper helper, string assetFileName, string preset)
+        {
+            Texture2D tex = helper.ModContent.Load<Texture2D>(String.Format("assets/{0}", assetFileName));
+            try
+            {
+                if (!preset.Equals("default")) tex = helper.ModContent.Load<Texture2D>(String.Format("assets/{0}/{1}", preset, assetFileName));
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log(String.Format("Failed to load texture {0} from preset {1}, fallback to default", assetFileName, preset), LogLevel.Warn);
+            }
+            return tex;
+        }
+
         /*********
         ** Public methods
         *********/
@@ -122,15 +136,24 @@ namespace StardewSurvivalProject
             );
 
             //Load assets
-            this.HungerBar = helper.ModContent.Load<Texture2D>("assets/HungerBar.png");
-            this.ThirstBar = helper.ModContent.Load<Texture2D>("assets/ThirstBar.png");
-            this.EnvTempBar = helper.ModContent.Load<Texture2D>("assets/EnvTempBar.png");
-            this.BodyTempBar = helper.ModContent.Load<Texture2D>("assets/BodyTempBar.png");
-            this.TempIndicator = helper.ModContent.Load<Texture2D>("assets/TempIndicator.png");
-            this.fillRect = helper.ModContent.Load<Texture2D>("assets/fillRect.png");
+            string preset = ModConfig.GetInstance().RetexturePreset;
+            if (preset.Equals("auto"))
+            {
+                if (helper.ModRegistry.Get("ManaKirel.VintageInterface2") != null) preset = "vintage2";
+                else if (helper.ModRegistry.Get("Maraluna.OvergrownFloweryInterface") != null) preset = "overgrown";
+                else if (helper.ModRegistry.Get("DaisyNiko.EarthyRecolour") != null) preset = "earthy";
+                else preset = "default";
+            } 
 
-            InfoIcon = helper.ModContent.Load<Texture2D>("assets/InfoIcon.png");
-            ModIcon = helper.ModContent.Load<Texture2D>("assets/ModIcon.png");
+            this.HungerBar = GetAssetWithPreset(helper, "HungerBar.png", preset);
+            this.ThirstBar = GetAssetWithPreset(helper, "ThirstBar.png", preset);
+            this.EnvTempBar = GetAssetWithPreset(helper, "EnvTempBar.png", preset);
+            this.BodyTempBar = GetAssetWithPreset(helper, "BodyTempBar.png", preset);
+            this.TempIndicator = GetAssetWithPreset(helper, "TempIndicator.png", preset);
+            this.fillRect = GetAssetWithPreset(helper, "fillRect.png", preset);
+
+            InfoIcon = GetAssetWithPreset(helper, "InfoIcon.png", preset);
+            ModIcon = GetAssetWithPreset(helper, "ModIcon.png", preset);
 
             //load command
             commandManager = new source.commands.Commands(instance);
@@ -144,21 +167,30 @@ namespace StardewSurvivalProject
         {
             if (e.Name.IsEquivalentTo("TileSheets/BuffsIcons"))
             {
+                string preset = ModConfig.GetInstance().RetexturePreset;
+                if (preset.Equals("auto"))
+                {
+                    if (this.Helper.ModRegistry.Get("ManaKirel.VintageInterface2") != null) preset = "vintage2";
+                    else if (this.Helper.ModRegistry.Get("Maraluna.OvergrownFloweryInterface") != null) preset = "overgrown";
+                    else if (this.Helper.ModRegistry.Get("DaisyNiko.EarthyRecolour") != null) preset = "earthy";
+                    else preset = "default";
+                }
+
                 e.Edit(assets =>
                 {
                     var editor = assets.AsImage();
 
-                    Texture2D burnEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/BurnEffect.png");
-                    Texture2D starvationEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/StarvationEffect.png");
-                    Texture2D hypothermiaEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HypothermiaEffect.png");
-                    Texture2D frostbiteEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/FrostbiteEffect.png");
-                    Texture2D heatstrokeEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HeatstrokeEffect.png");
-                    Texture2D dehydrationEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/DehydratedEffect.png");
-                    Texture2D feverEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/FeverEffect.png");
-                    Texture2D stomachacheEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/StomachaceEffect.png");
-                    Texture2D thirstEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/ThirstEffect.png");
-                    Texture2D hungerEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/HungerEffect.png");
-                    Texture2D wellFedEffectIcon = this.Helper.ModContent.Load<Texture2D>("assets/WellFedEffect.png");
+                    Texture2D burnEffectIcon = GetAssetWithPreset(this.Helper, "BurnEffect.png", preset);
+                    Texture2D starvationEffectIcon = GetAssetWithPreset(this.Helper, "StarvationEffect.png", preset);
+                    Texture2D hypothermiaEffectIcon = GetAssetWithPreset(this.Helper, "HypothermiaEffect.png", preset);
+                    Texture2D frostbiteEffectIcon = GetAssetWithPreset(this.Helper, "FrostbiteEffect.png", preset);
+                    Texture2D heatstrokeEffectIcon = GetAssetWithPreset(this.Helper, "HeatstrokeEffect.png", preset);
+                    Texture2D dehydrationEffectIcon = GetAssetWithPreset(this.Helper, "DehydratedEffect.png", preset);
+                    Texture2D feverEffectIcon = GetAssetWithPreset(this.Helper, "FeverEffect.png", preset);
+                    Texture2D stomachacheEffectIcon = GetAssetWithPreset(this.Helper, "StomachaceEffect.png", preset);
+                    Texture2D thirstEffectIcon = GetAssetWithPreset(this.Helper, "ThirstEffect.png", preset);
+                    Texture2D hungerEffectIcon = GetAssetWithPreset(this.Helper, "HungerEffect.png", preset);
+                    Texture2D wellFedEffectIcon = GetAssetWithPreset(this.Helper, "WellFedEffect.png", preset);
 
                     //extend the image to occupy a different row from other effects
                     int extraEffectYCoord = editor.Data.Height;

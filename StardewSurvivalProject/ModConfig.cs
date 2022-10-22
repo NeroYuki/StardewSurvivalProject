@@ -27,6 +27,7 @@ namespace StardewSurvivalProject
         public double BodyTemperatureDisplayHigherBound { get; set; } = 45;
         public bool DisableModItemInfo { get; set; } = false;
         public string TemperatureUnit { get; set; } = "Celcius";
+        public string RetexturePreset { get; set; } = "auto";
 
         //Difficulty Setting
         //Thirst and Hunger
