@@ -12,6 +12,7 @@ namespace StardewSurvivalProject.source.model
         public Hunger hunger;
         public BodyTemp temp;
         public Thirst thirst;
+        public bool spouseFeed { get; set; } = false;
         private Random rand = new Random();
 
         public Player(Farmer farmer)

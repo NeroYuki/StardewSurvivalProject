@@ -80,6 +80,13 @@ namespace StardewSurvivalProject.source.api
                 optionGet: () => ModConfig.GetInstance().UsePassiveDrain,
                 optionSet: value => ModConfig.GetInstance().UsePassiveDrain = value
             );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Friendship penalty on not feeding spouse",
+                optionDesc: "Define how much friendship is lost when not feeding your spouse each day, set to 0 to disable this feature entirely (Default: 50)",
+                optionGet: () => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse,
+                optionSet: value => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse = value
+            );
 
             api.StartNewPage(context.ModManifest, "UI Configuration");
             api.RegisterParagraph(context.ModManifest, "Options to adjust how the mod's UI is displayed");

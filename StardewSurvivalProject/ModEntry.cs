@@ -5,7 +5,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using HarmonyLib;
 using SObject = StardewValley.Object;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -77,6 +76,8 @@ namespace StardewSurvivalProject
             source.events.CustomEvents.OnItemEaten += this.OnItemEaten;
             //for checking tool used
             source.events.CustomEvents.OnToolUsed += this.OnItemUsed;
+            //for feeding spouse event
+            source.events.CustomEvents.OnGiftGiven += this.OnGiftGiven;
             //for saving data to separate folder
             helper.Events.GameLoop.Saved += this.OnGameSaved;
             //for checking if player is running
@@ -99,10 +100,6 @@ namespace StardewSurvivalProject
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
 
-            source.harmony_patches.FarmerPatches.Initialize(this.Monitor);
-            source.harmony_patches.ObjectPatches.Initialize(this.Monitor);
-            source.harmony_patches.UIDrawPatches.Initialize(this.Monitor);
-
             source.data.HealingItemDictionary.loadList(this);
             source.data.CustomHydrationDictionary.loadList(this);
             source.data.CustomEnvironmentDictionary.loadList(this);
@@ -111,29 +108,8 @@ namespace StardewSurvivalProject
 
             instance = new source.Manager();
 
-            var harmony = new Harmony(this.ModManifest.UniqueID);
-
-            // TODO: move this somewhere else lol
-            harmony.Patch(
-               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.doneEating)),
-               postfix: new HarmonyMethod(typeof(source.harmony_patches.FarmerPatches), nameof(source.harmony_patches.FarmerPatches.DoneEating_PostFix))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.EndUsingTool)),
-                postfix: new HarmonyMethod(typeof(source.harmony_patches.FarmerPatches), nameof(source.harmony_patches.FarmerPatches.EndUsingTool_PostFix))
-             );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.healthRecoveredOnConsumption)),
-                prefix: new HarmonyMethod(typeof(source.harmony_patches.ObjectPatches), nameof(source.harmony_patches.ObjectPatches.CalculateHPGain_Prefix))
-            );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Menus.IClickableMenu), nameof(StardewValley.Menus.IClickableMenu.drawHoverText),
-                new Type[] { typeof(SpriteBatch), typeof(StringBuilder), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>) }),
-                postfix: new HarmonyMethod(typeof(source.harmony_patches.UIDrawPatches), nameof(source.harmony_patches.UIDrawPatches.DrawHoverText_Postfix))
-            );
+            this.Monitor.Log("Initiating Harmony patches", LogLevel.Debug);
+            source.harmony_patches.HarmonyPatches.InitPatches(this.ModManifest.UniqueID, this.Monitor);
 
             //Load assets
             string preset = ModConfig.GetInstance().RetexturePreset;
@@ -455,6 +431,14 @@ namespace StardewSurvivalProject
             instance.updateOnToolUsed(Game1.player.CurrentTool);
         }
 
+        private void OnGiftGiven(object sender, source.events.GiftEventArgs e)
+        {
+            if (sender != Game1.player)
+                return;
+
+            instance.updateOnGiftGiven(e.Npc, e.Gift);
+        }
+
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             instance.dayStartProcedure();
@@ -468,6 +452,7 @@ namespace StardewSurvivalProject
             source.data.ItemNameCache.cacheItem("Canteen");
             source.data.ItemNameCache.cacheItem("Full Canteen");
             source.data.ItemNameCache.cacheItem("Dirty Canteen");
+            source.data.ItemNameCache.cacheItem("Ice Water Canteen");
         }
 
         private void OnGameSaved(object sender, SavedEventArgs e)

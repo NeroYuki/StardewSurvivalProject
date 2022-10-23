@@ -184,9 +184,18 @@ namespace StardewSurvivalProject.source
             //clear all buff on day ending (bug-free?)
             Game1.buffsDisplay.clearAllBuffs();
 
-            if (player == null || !ModConfig.GetInstance().UseOvernightPassiveDrain || player.bindedFarmer.passedOut) return;
+            if (player == null) return;
+
+            if (!player.spouseFeed && player.bindedFarmer.getSpouse() != null)
+            {
+                player.bindedFarmer.changeFriendship(-ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse, player.bindedFarmer.getSpouse());
+                player.spouseFeed = false;
+            }
+
+            if (!ModConfig.GetInstance().UseOvernightPassiveDrain || player.bindedFarmer.passedOut) return;
             //24 mean 240 minutes of sleep (from 2am to 6am)
             player.updateActiveDrain(-ModConfig.GetInstance().PassiveHungerDrainRate * 24, -ModConfig.GetInstance().PassiveThirstDrainRate * 24);
+
         }
 
         public void updateOnRunning()
@@ -409,6 +418,17 @@ namespace StardewSurvivalProject.source
         public void onUseButton()
         {
 
+        }
+
+        public void updateOnGiftGiven(NPC npc, SObject gift)
+        {
+            if (npc == player.bindedFarmer.getSpouse())
+            {
+                if (gift.Category == SObject.CookingCategory)
+                {
+                    player.spouseFeed = true;
+                }
+            }
         }
     }
 }

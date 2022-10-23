@@ -15,6 +15,7 @@ namespace StardewSurvivalProject
         public bool UseTemperatureModule { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
+        public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
 
         //UI config
         public int UIOffsetX { get; set; } = 10;
@@ -69,7 +70,7 @@ namespace StardewSurvivalProject
 
         //Environmental Temperature
         public double EnvironmentBaseTemperature { get; set; } = 25;
-        public double DefaultDayNightCycleTemperatureDiffScale { get; set; } = 3;
+        public double DefaultDayNightCycleTemperatureDiffScale { get; set; } = 4;
         public double DefaultTemperatureFluctuationScale { get; set; } = 1;
         //seasonal multiplier
         public double SpringSeasonTemperatureMultiplier { get; set; } = 0.9;
