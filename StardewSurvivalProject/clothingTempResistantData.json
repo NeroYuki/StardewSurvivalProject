@@ -15,7 +15,7 @@
     {
       "name": "Jacket",
       "pattern": "postfix",
-      "heatInsulationModifier": 0.2,
+      "heatInsulationModifier": 0,
       "coldInsulationModifier": 0.2
     },
     {

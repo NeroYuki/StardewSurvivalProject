@@ -98,16 +98,16 @@ namespace StardewSurvivalProject.source.model
                         value = -0.01 * Math.Pow(currentMineLevel - 60, 2) - 6;
                         fixedTemp = true;
                     }
-                    else if (currentMineLevel >= 80)
+                    else if (currentMineLevel >= 80 && currentMineLevel < 121)
                     {
-                        value = 1.1 * (currentMineLevel - 50);
+                        value = 1.1 * Math.Pow(currentMineLevel - 60, 1.05);
                         fixedTemp = true;
                     }
-                }
-                else if (location.Name.Equals("SkullCave") && ModConfig.GetInstance().UseDefaultSkullCavernTemperatureModifier)
-                {
-                    value = DEFAULT_VALUE + 0.045 * currentMineLevel;
-                    fixedTemp = true;
+                    else if (currentMineLevel >= 121)
+                    {
+                        value = DEFAULT_VALUE + 0.045 * currentMineLevel;
+                        fixedTemp = true;
+                    }
                 }
             }
 
@@ -167,7 +167,7 @@ namespace StardewSurvivalProject.source.model
                     if ((tempControl.deviceType.Equals("heating") && tempControl.coreTemp < value) || (tempControl.deviceType.Equals("cooling") && tempControl.coreTemp > value)) continue;
 
                     //dealing with target temp value here?
-                    double distance_sqr = distance_square(o.Value.tileLocation.X, o.Value.tileLocation.Y, playerTileX, playerTileY);
+                    double distance_sqr = distance_square(o.Value.TileLocation.X, o.Value.TileLocation.Y, playerTileX, playerTileY);
                     //LogHelper.Debug($"Distance square from player to {o.Key} is {distance_sqr}");
 
                     double effRange = tempControl.effectiveRange;
