@@ -2,7 +2,7 @@
   {
     "name": "Torch",
     "deviceType": "heating",
-    "coreTemp": 40.0,
+    "coreTemp": 35.0,
     "effectiveRange": 1
   },
   {
@@ -69,7 +69,8 @@
     "coreTemp": 18.0,
     "effectiveRange": 4,
     "needActive": true,
-    "activeType": 1
+    "activeType": 1,
+    "ambientCoefficient": 1.25
   },
   {
     "name": "Charcoal Kiln",
@@ -148,22 +149,27 @@
     "coreTemp": 60.0,
     "effectiveRange": 6,
     "needActive": true,
-    "activeType": 1
+    "activeType": 1,
+    "ambientCoefficient": 1.25
   },
   {
     "name": "Air Conditioner",
     "deviceType": "general",
-    "coreTemp": 20.0,
+    "coreTemp": 25.0,
     "effectiveRange": 4,
     "needActive": true,
-    "activeType": 1
+    "activeType": 1,
+    "operationalRange": 15,
+    "ambientCoefficient": 2
   },
   {
     "name": "Tall Air Conditioner",
     "deviceType": "general",
-    "coreTemp": 20.0,
+    "coreTemp": 25.0,
     "effectiveRange": 7,
     "needActive": true,
-    "activeType": 1
+    "activeType": 1,
+    "operationalRange": 20,
+    "ambientCoefficient": 4
   }
 ]
