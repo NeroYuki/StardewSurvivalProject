@@ -19,6 +19,16 @@
         "Sounds": ["Ship"]
 	},
 	
+	//Passive Cooler
+	{
+		"ProducerName": "Passive Cooler",
+        "InputIdentifier": "388",
+        "InputStack": 10,
+        "MinutesUntilReady": 180,
+        "OutputIdentifier": "168",
+        "Sounds": ["Ship"]
+	},
+	
 	//Air Cooler
 	{
 		"ProducerName": "Air Cooler",

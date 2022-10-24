@@ -64,6 +64,15 @@
     "activeType": 1
   },
   {
+    "name": "Passive Cooler",
+    "deviceType": "cooling",
+    "coreTemp": 20.0,
+    "effectiveRange": 3,
+    "needActive": true,
+    "activeType": 1,
+    "ambientCoefficient": 0.75
+  },
+  {
     "name": "Air Cooler",
     "deviceType": "cooling",
     "coreTemp": 18.0,
