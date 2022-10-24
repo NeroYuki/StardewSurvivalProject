@@ -167,6 +167,7 @@ namespace StardewSurvivalProject
                     Texture2D thirstEffectIcon = GetAssetWithPreset(this.Helper, "ThirstEffect.png", preset);
                     Texture2D hungerEffectIcon = GetAssetWithPreset(this.Helper, "HungerEffect.png", preset);
                     Texture2D wellFedEffectIcon = GetAssetWithPreset(this.Helper, "WellFedEffect.png", preset);
+                    Texture2D refreshingEffectIcon = GetAssetWithPreset(this.Helper, "RefreshingEffect.png", preset);
 
                     //extend the image to occupy a different row from other effects
                     int extraEffectYCoord = editor.Data.Height;
@@ -183,6 +184,7 @@ namespace StardewSurvivalProject
                     editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
                     editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
                     editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
+                    editor.PatchImage(refreshingEffectIcon, targetArea: new Rectangle(11 * 16, extraEffectYCoord, 16, 16));
 
                     this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
 

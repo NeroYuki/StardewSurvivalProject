@@ -18,6 +18,7 @@ namespace StardewSurvivalProject.source.effects
         public static int thirstEffectIndex = 44;
         public static int hungerEffectIndex = 45;
         public static int wellFedEffectIndex = 46;
+        public static int refreshingEffectIndex = 47;
 
         //dictionary include effect index as key, a string int pair value for description and effect duration respectively
         public static Dictionary<int, KeyValuePair<string, int>> effectDescDictionary = new Dictionary<int, KeyValuePair<string, int>>();
@@ -37,6 +38,7 @@ namespace StardewSurvivalProject.source.effects
             thirstEffectIndex = appendRow * 12 + 8;
             hungerEffectIndex = appendRow * 12 + 9;
             wellFedEffectIndex = appendRow * 12 + 10;
+            refreshingEffectIndex = appendRow * 12 + 11;
 
             effectDescDictionary.Add(burnEffectIndex, new KeyValuePair<string, int>("Holy crap you are on fire! Get away from the heat source NOW", 1000));
             effectDescDictionary.Add(starvationEffectIndex, new KeyValuePair<string, int>("You're starving. Please eat something...", 1000));
@@ -49,6 +51,7 @@ namespace StardewSurvivalProject.source.effects
             effectDescDictionary.Add(thirstEffectIndex, new KeyValuePair<string, int>("Your throat is dried, it's begging for some liquid", 1000));
             effectDescDictionary.Add(hungerEffectIndex, new KeyValuePair<string, int>("Your stomach is growling, better get something to eat", 1000));
             effectDescDictionary.Add(wellFedEffectIndex, new KeyValuePair<string, int>("You feel fullfilled, life's good", 1000));
+            effectDescDictionary.Add(refreshingEffectIndex, new KeyValuePair<string, int>("Lovely temperature, make you so ready for work", 1000));
         }
 
         public static void addEffect(int effectIndex)
@@ -62,6 +65,8 @@ namespace StardewSurvivalProject.source.effects
                 Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
             else if (effectIndex == wellFedEffectIndex)
                 Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, "", ""));
+            else if (effectIndex == refreshingEffectIndex)
+                Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 20, 1, 1, 0, 0, 0, "", ""));
             else
                 Game1.buffsDisplay.addOtherBuff(effect = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""));
 

@@ -95,7 +95,7 @@ namespace StardewSurvivalProject
         //Body Temperature
         public double DefaultBodyTemperature { get; set; } = 37.5;
         public double DefaultMinComfortableTemperature { get; set; } = 16;
-        public double DefaultMaxComfortableTemperature { get; set; } = 24;
+        public double DefaultMaxComfortableTemperature { get; set; } = 26;
         public double HypothermiaBodyTempThreshold { get; set; } = 35;
         public double FrostbiteBodyTempThreshold { get; set; } = 30;
         public double HeatstrokeBodyTempThreshold { get; set; } = 38.5;
