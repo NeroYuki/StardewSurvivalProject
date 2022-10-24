@@ -33,6 +33,8 @@ namespace StardewSurvivalProject.source.harmony_patches
                 double coreTemp = -274;
                 string deviceType = "general";
                 double effectiveRange = 0;
+                double ambientCoefficient = 1;
+                double operationalRange = 0;
 
                 data.ClothingTempResistantData tempResistData = null;
                 data.TempControlObject tempControlData = null;
@@ -101,6 +103,8 @@ namespace StardewSurvivalProject.source.harmony_patches
                     coreTemp = tempControlData.coreTemp;
                     deviceType = tempControlData.deviceType;
                     effectiveRange = tempControlData.effectiveRange;
+                    ambientCoefficient = tempControlData.ambientCoefficient;
+                    operationalRange = tempControlData.operationalRange;
                 }
 
                 //draw the UI
@@ -131,10 +135,16 @@ namespace StardewSurvivalProject.source.harmony_patches
                 if (heatResistant != 0 && coldResistant != 0) { UIHeight += 40; }
 
                 //more temporary fix
-                if (coreTemp > -274) { UIHeight = 104; UIWidth = 168; }
+                if (coreTemp > -274) { 
+                    UIHeight = 104; UIWidth = 168;
+                    //even more temporary fix
+                    if (operationalRange != 0) { UIHeight = 104; UIWidth = 260; }
+                    if (ambientCoefficient != 1) { UIHeight = 104; UIWidth = 300; }
+                }
                 Rectangle iconTarget = new Rectangle(70, 0, 10, 10);
                 if (deviceType.Equals("heating")) iconTarget = new Rectangle(50, 0, 10, 10);
                 if (deviceType.Equals("cooling")) iconTarget = new Rectangle(60, 0, 10, 10);
+
                 
 
                 y4 -= UIHeight + 16;
@@ -174,11 +184,11 @@ namespace StardewSurvivalProject.source.harmony_patches
                 }
                 if (coreTemp > -274)
                 {
-                    string coreTempText = $"{coreTemp}C";
+                    string coreTempText = String.Format("{0}C {1}", coreTemp, (deviceType.Equals("general")) ? $"({coreTemp - operationalRange}C - {coreTemp + operationalRange}C)" : "");
                     Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), iconTarget, Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
                     Utility.drawTextWithShadow(b, coreTempText, font, new Vector2(startX + 34, startY), Game1.textColor);
                     startY += 36;
-                    string effectiveRangeText = $"{effectiveRange} tile{(effectiveRange >= 1 && effectiveRange <= -1 ? "" : "s")}";
+                    string effectiveRangeText = $"{effectiveRange} tile{(effectiveRange >= 1 && effectiveRange <= -1 ? "" : "s")} {(ambientCoefficient != 1 ? $"({Math.Floor(ambientCoefficient * 100)}% Eff.)" : "")}";
                     Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(40, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
                     Utility.drawTextWithShadow(b, effectiveRangeText, font, new Vector2(startX + 34, startY), Game1.textColor);
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using StardewSurvivalProject.source.utils;
 using StardewValley;
 using System.Collections.Generic;
@@ -79,11 +80,11 @@ namespace StardewSurvivalProject.source.model
                     }
                 }
 
-                if (!location.IsOutdoors && ModConfig.GetInstance().UseDefaultIndoorTemperatureModifier)
-                {
-                    //cut temperature difference by half if indoor if outside is colder
-                    value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
-                }
+                //if (!location.IsOutdoors && ModConfig.GetInstance().UseDefaultIndoorTemperatureModifier)
+                //{
+                //    //cut temperature difference by half if indoor if outside is colder
+                //    value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
+                //}
 
                 //special treatment for cave
                 if (location.Name.Contains("UndergroundMine") && ModConfig.GetInstance().UseDefaultCaveTemperatureModifier)
@@ -121,6 +122,80 @@ namespace StardewSurvivalProject.source.model
 
             //finally, add some randomness XD
             value += rand.NextDouble() * fluctuationTempScale - 0.5 * fluctuationTempScale;
+
+            if (!location.IsOutdoors)
+            {
+                if (ModConfig.GetInstance().UseDefaultIndoorTemperatureModifier)
+                    //cut temperature difference by half if indoor if outside is colder (assume wall can block heat)
+                    value += Math.Min((DEFAULT_VALUE - value) / 2, 0);
+
+                // aggregate a list of weather control item to calculate indoor temperature
+                List<data.TempControlObject> tempControlDevices = new List<data.TempControlObject>();
+
+                foreach (SObject obj in location.objects.Values)
+                {
+                    data.TempControlObject tempControl = data.TempControlObjectDictionary.GetTempControlData(obj.name);
+                    if (tempControl != null)
+                    {
+                        LogHelper.Debug(obj.name);
+                        //if this item need to be active
+                        if (tempControl.needActive)
+                        {
+                            if (checkIfItemIsActive(new KeyValuePair<int, SObject>(obj.GetHashCode(), obj), tempControl.activeType) == false) continue;    
+                        }
+                        tempControlDevices.Add(tempControl);
+
+                    }
+                }
+
+                foreach (SObject obj in location.furniture)
+                {
+                    data.TempControlObject tempControl = data.TempControlObjectDictionary.GetTempControlData(obj.name);
+                    if (tempControl != null)
+                    {
+                        LogHelper.Debug(obj.name);
+                        //if this item need to be active
+                        if (tempControl.needActive)
+                        {
+                            if (checkIfItemIsActive(new KeyValuePair<int, SObject>(obj.GetHashCode(), obj), tempControl.activeType) == false) continue;
+                        }
+                        tempControlDevices.Add(tempControl);
+
+                    }
+                }
+
+                LogHelper.Debug(tempControlDevices.Count.ToString());
+
+                int area = location.Map.GetLayer("Back").Tiles.Array.Length;
+                LogHelper.Debug("temp = " + value);
+
+                double power = area * value;
+
+                foreach (data.TempControlObject tempControlObj in tempControlDevices)
+                {
+                    LogHelper.Debug(tempControlObj.name);
+                    //calculate indoor heating power base on core temp and range (assume full effectiveness if object is placed indoor)
+                    if (tempControlObj.deviceType.Equals("general"))
+                    {
+                        double perfectAmbientPower = area * DEFAULT_VALUE;
+                        double maxPowerFromDevice = tempControlObj.operationalRange * (tempControlObj.effectiveRange * 2 + 1) * (tempControlObj.effectiveRange * 2 + 1) * tempControlObj.ambientCoefficient;
+                        if (perfectAmbientPower > power)
+                            power = Math.Min(perfectAmbientPower, power + maxPowerFromDevice);
+                        else
+                            power = Math.Max(perfectAmbientPower, power - maxPowerFromDevice);
+                    }
+                    else power += (tempControlObj.coreTemp - DEFAULT_VALUE) * (tempControlObj.effectiveRange * 2 + 1) * (tempControlObj.effectiveRange * 2 + 1) * tempControlObj.ambientCoefficient; 
+
+                    
+                }
+
+                // modify indoor temp base on area and the heating / cooling power of all temperature control devices
+
+                value = power / area;
+
+                LogHelper.Debug("final temp = " + value);
+            }
+
             this.value = value;
         }
 
@@ -131,8 +206,11 @@ namespace StardewSurvivalProject.source.model
 
             //check in player proximity for any object (AxA tile square around player position
             //should change based on the biggest effectiveRange entry)
+
+
             int proximityCheckBound = (int)Math.Ceiling(data.TempControlObjectDictionary.maxEffectiveRange); 
             Dictionary<int, SObject> nearbyObject = new Dictionary<int, SObject>();
+
             for (int i = playerTileX - proximityCheckBound; i <= playerTileX + proximityCheckBound; i++)
             {
                 for (int j = playerTileY - proximityCheckBound; j <= proximityCheckBound + proximityCheckBound; j++)
@@ -163,7 +241,7 @@ namespace StardewSurvivalProject.source.model
                             continue;                        
                     }
 
-                    //prioritize ambient temp
+                    //prioritize ambient temp if it exceed device's core temp
                     if ((tempControl.deviceType.Equals("heating") && tempControl.coreTemp < value) || (tempControl.deviceType.Equals("cooling") && tempControl.coreTemp > value)) continue;
 
                     //dealing with target temp value here?
@@ -194,7 +272,7 @@ namespace StardewSurvivalProject.source.model
             if (checkType == 1)
             {
                 //check if said big craftable is being used
-                if (o.Value.minutesUntilReady >= 0 && o.Value.heldObject.Value != null)
+                if (o.Value.MinutesUntilReady >= 0 && o.Value.heldObject.Value != null)
                 {
                     //LogHelper.Debug($"there is an active {o.Value.name} nearby (machine)");
                     return true;
@@ -208,7 +286,7 @@ namespace StardewSurvivalProject.source.model
             else
             {
                 //if not big craftable (assuming furniture), check if said furniture is active
-                if (o.Value.isOn)
+                if (o.Value.IsOn)
                 {
                     //LogHelper.Debug($"there is an active {o.Value.name} nearby");
                     return true;

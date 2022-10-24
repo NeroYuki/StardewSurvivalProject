@@ -14,6 +14,7 @@ namespace StardewSurvivalProject.source.data
         public double tempModifierFixedValue { get; set; } = -274; //ignore value
         public double tempModifierTimeDependentScale { get; set; } = 3;
         public double tempModifierFluctuationScale { get; set; } = 1;
+        public int area { get; set; } = 400;
     }
 
     public class CustomEnvironmentDictionary

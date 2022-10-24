@@ -18,7 +18,12 @@ namespace StardewSurvivalProject.source.data
         public bool needActive { get; set; } = false;
         //0 for normal detection (for furniture), 1 for machine detection (need power)
         public int activeType { get; set; } = 0;
+        //ambient temp manipulation
+        public double ambientCoefficient { get; set; } = 1;
+        
         public string deviceType { get; set; } = "general";
+        //operational range, only valid with general devices
+        public double operationalRange { get; set; } = 0;
     }
     public class TempControlObjectDictionary
     {
