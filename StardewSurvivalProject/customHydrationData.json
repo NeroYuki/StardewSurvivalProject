@@ -27,7 +27,7 @@
   },
   {
     "name": "Artichoke Dip",
-    "value": 8
+    "value": 6
   },
   {
     "name": "Chowder",
@@ -89,6 +89,33 @@
     "name": "Coffee",
     "value": 5
   },
+  //PPJA Items
+  {
+    "name": "Algae Soup",
+    "value": 3,
+    "coolingModifier": 2
+  },
+  {
+    "name": "Basil Tomato Soup",
+    "value": 5
+  },
+  {
+    "name": "Bean Hotpot",
+    "value": 4,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Beef Stock",
+    "value": 3
+  },
+  {
+    "name": "Broth",
+    "value": 3
+  },
+  {
+    "name": "Chicken Stock",
+    "value": 3
+  }
   //{
   //  "name": "Alexander Cocktail",
   //  "value": 5
