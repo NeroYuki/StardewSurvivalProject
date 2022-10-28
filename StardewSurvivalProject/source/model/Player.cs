@@ -12,6 +12,8 @@ namespace StardewSurvivalProject.source.model
         public Hunger hunger;
         public BodyTemp temp;
         public Thirst thirst;
+        public Mood mood;
+        public int healthPoint { get; set; } = 100;
         public bool spouseFeed { get; set; } = false;
         private Random rand = new Random();
 
@@ -20,6 +22,8 @@ namespace StardewSurvivalProject.source.model
             hunger = new Hunger();
             temp = new BodyTemp();
             thirst = new Thirst();
+            healthPoint = farmer.maxHealth;
+            mood = new Mood();
             bindedFarmer = farmer;
         }
 

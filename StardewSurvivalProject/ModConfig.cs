@@ -13,9 +13,12 @@ namespace StardewSurvivalProject
         public bool UseOnRunningDrain { get; set; } = true;
         public bool UseOnToolUseDrain { get; set; } = true;
         public bool UseTemperatureModule { get; set; } = true;
+        public bool UseReworkedStaminaDrain { get; set; } = true;
+        public bool UseMoodExtension { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
+        public int HealthRestoreOnSleep { get; set; } = 20;
 
         //UI config
         public int UIOffsetX { get; set; } = 10;
@@ -29,6 +32,7 @@ namespace StardewSurvivalProject
         public bool DisableModItemInfo { get; set; } = false;
         public string TemperatureUnit { get; set; } = "Celcius";
         public string RetexturePreset { get; set; } = "auto";
+        public bool IndicateComfortableTemperatureRange { get; set; } = true;
 
         //Difficulty Setting
         //Thirst and Hunger
@@ -59,7 +63,7 @@ namespace StardewSurvivalProject
         public double HydrationGainOnEnvironmentWaterDrinking { get; set; } = 5.0;
         public double HungerGainMultiplierFromItemEdibility { get; set; } = 1.0;
         public int HealthPenaltyOnDehydration { get; set; } = 10;
-        public int StaminaPenaltyOnStarvation { get; set; } = 10;
+        public int StaminaPenaltyOnStarvation { get; set; } = 20;
 
         public double MaxHunger { get; set; } = 100;
         public double MaxThirst { get; set; } = 100;
@@ -113,6 +117,19 @@ namespace StardewSurvivalProject
         public double PercentageChanceGettingStomachache { get; set; } = 3;
         public int HealthDrainOnBurnPerSecond { get; set; } = 3;
         public int HealthDrainOnFrostbitePerSecond { get; set; } = 3;
+
+        //Reworked Stamina
+        public double StaminaRegenOnNotMovingPerSecond { get; set; } = 2;
+        public double StaminaRegenOnNotRunningPerSecond { get; set; } = 1;
+        public double AdditionalDrainOnToolUse { get; set; } = 100;
+        public double StaminaDrainOnRunningPerTick { get; set; } = 0.002;
+        public double StaminaDrainOnSprintingPerTick { get; set; } = 0.02;
+
+        //Mood mechanic
+        public double MoodThresholdForBreakdown { get; set; } = 0;
+        public double MoodThresholdForUnhappy { get; set; } = 30;
+        public double MoodThresholdForHappy { get; set; } = 70;
+        public double MoodThresholdForVeryHappy { get; set; } = 100;
 
         private static ModConfig _instance;
 

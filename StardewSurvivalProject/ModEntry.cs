@@ -23,6 +23,7 @@ namespace StardewSurvivalProject
         private Texture2D BodyTempBar;
         private Texture2D TempIndicator;
         private Texture2D fillRect;
+        private Texture2D TempRangeIndicator;
         private int buffIconAppendRow = 2;
         //expose for harmony patches
         public static Texture2D InfoIcon;
@@ -127,6 +128,7 @@ namespace StardewSurvivalProject
             this.BodyTempBar = GetAssetWithPreset(helper, "BodyTempBar.png", preset);
             this.TempIndicator = GetAssetWithPreset(helper, "TempIndicator.png", preset);
             this.fillRect = GetAssetWithPreset(helper, "fillRect.png", preset);
+            this.TempRangeIndicator = GetAssetWithPreset(helper, "TempRangeIndicator.png", preset);
 
             InfoIcon = GetAssetWithPreset(helper, "InfoIcon.png", preset);
             ModIcon = GetAssetWithPreset(helper, "ModIcon.png", preset);
@@ -309,6 +311,7 @@ namespace StardewSurvivalProject
             int OffsetX = ModConfig.GetInstance().UIOffsetX;
             int OffsetY = ModConfig.GetInstance().UIOffsetY;
             float Scale = ModConfig.GetInstance().UIScale;
+            bool overlayComfyTemp = ModConfig.GetInstance().IndicateComfortableTemperatureRange;
 
             Vector2 hunger_pos = new Vector2(OffsetX, OffsetY);
             b.Draw(this.HungerBar, hunger_pos, new Rectangle(0, 0, this.HungerBar.Width, this.HungerBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
@@ -328,6 +331,19 @@ namespace StardewSurvivalProject
 
             double x_coord_env_temp = ((instance.getEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
             Vector2 env_ind_pos = new Vector2(OffsetX + (float) x_coord_env_temp, OffsetY + this.HungerBar.Height * Scale * 2);
+
+            double x_coord_min_comf_temp = ((instance.getMinComfyEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
+            Vector2 min_env_ind_pos = new Vector2(OffsetX + (float)x_coord_min_comf_temp, OffsetY + (this.HungerBar.Height + 5) * Scale * 2);
+
+            double x_coord_max_comf_temp = ((instance.getMaxComfyEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
+            Vector2 max_env_ind_pos = new Vector2(OffsetX + (float)x_coord_max_comf_temp, OffsetY + (this.HungerBar.Height - 5) * Scale * 2);
+
+            if (overlayComfyTemp)
+            {
+                b.Draw(this.fillRect, env_temp_pos + new Vector2(min_env_ind_pos.X, 5 * Scale), new Rectangle(0, 0, (int)(Math.Max(max_env_ind_pos.X - min_env_ind_pos.X, 0)), (int)(6 * Scale)), new Color(Color.Green, 0.3f));
+            }
+            
+            
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
             double BODY_TEMP_BOUND_LOW = ModConfig.GetInstance().BodyTemperatureDisplayLowerBound;

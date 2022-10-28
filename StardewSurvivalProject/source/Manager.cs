@@ -74,6 +74,11 @@ namespace StardewSurvivalProject.source
                 {
                     player.updateActiveDrain(0, -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond);
                 }
+
+                //if (ModConfig.GetInstance().UseReworkedStaminaDrain && !player.bindedFarmer.isMoving())
+                //{
+                //    player.bindedFarmer.stamina += Math.Min(player.bindedFarmer.maxStamina, player.bindedFarmer.)
+                //}
             }
         }
 
@@ -197,6 +202,9 @@ namespace StardewSurvivalProject.source
             //24 mean 240 minutes of sleep (from 2am to 6am)
             player.updateActiveDrain(-ModConfig.GetInstance().PassiveHungerDrainRate * 24, -ModConfig.GetInstance().PassiveThirstDrainRate * 24);
 
+            //get current hp and + set amount of hp instead of full
+            player.healthPoint = Math.Min(player.bindedFarmer.health + ModConfig.GetInstance().HealthRestoreOnSleep, player.bindedFarmer.maxHealth);
+
         }
 
         public void updateOnRunning()
@@ -258,6 +266,16 @@ namespace StardewSurvivalProject.source
         public double getEnvTemp()
         {
             return this.envTemp.value;
+        }
+
+        public double getMinComfyEnvTemp()
+        {
+            return this.player.temp.MinComfortTemp;
+        }
+
+        public double getMaxComfyEnvTemp()
+        {
+            return this.player.temp.MaxComfortTemp;
         }
 
         public string getPlayerBodyTempString()
@@ -374,12 +392,16 @@ namespace StardewSurvivalProject.source
             public model.Hunger hunger;
             public model.Thirst thirst;
             public model.BodyTemp bodyTemp;
+            public int healthPoint;
+            public model.Mood mood;
 
-            public SaveData(model.Hunger h, model.Thirst t, model.BodyTemp bt)
+            public SaveData(model.Hunger h, model.Thirst t, model.BodyTemp bt, int hp, model.Mood m)
             {
                 this.hunger = h;
                 this.thirst = t;
                 this.bodyTemp = bt;
+                this.healthPoint = hp;
+                this.mood = m;
             }
         }
 
@@ -391,13 +413,15 @@ namespace StardewSurvivalProject.source
                 this.player.hunger = saveData.hunger;
                 this.player.thirst = saveData.thirst;
                 this.player.temp = saveData.bodyTemp;
+                if (saveData.healthPoint > 0) this.player.healthPoint = saveData.healthPoint;
+                if (saveData.mood != null) this.player.mood = saveData.mood;
             }
         }
 
         public void saveData(Mod context)
         {
 
-            SaveData savingData = new SaveData(this.player.hunger, this.player.thirst, this.player.temp);
+            SaveData savingData = new SaveData(this.player.hunger, this.player.thirst, this.player.temp, this.player.healthPoint, this.player.mood);
             context.Helper.Data.WriteJsonFile<SaveData>(this.RelativeDataPath, savingData);
         }
 
@@ -405,10 +429,12 @@ namespace StardewSurvivalProject.source
         {
             double dice_roll = rand.NextDouble() * 100;
             //base chance of 2%, increase to +10% the less stamina player have at the end of the day
-            if (dice_roll >= 100 - (ModConfig.GetInstance().PercentageChanceGettingFever + ModConfig.GetInstance().PercentageChanceGettingFever * (1 - player.bindedFarmer.stamina / player.bindedFarmer.maxStamina)))
+            if (dice_roll >= 100 - (ModConfig.GetInstance().PercentageChanceGettingFever + ModConfig.GetInstance().PercentageChanceGettingFever * (1 - player.bindedFarmer.stamina / player.bindedFarmer.MaxStamina)))
             {
                 effects.EffectManager.applyEffect(effects.EffectManager.feverEffectIndex);
             }
+
+            player.bindedFarmer.health = player.healthPoint;
         }
 
         public void onActionButton()

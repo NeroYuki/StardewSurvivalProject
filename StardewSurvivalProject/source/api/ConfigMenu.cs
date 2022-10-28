@@ -68,6 +68,13 @@ namespace StardewSurvivalProject.source.api
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
+                optionName: "Use Temperature Module",
+                optionDesc: "Enable Environment and Body Temperature mechanic (Default: Checked)",
+                optionGet: () => ModConfig.GetInstance().UseTemperatureModule,
+                optionSet: value => ModConfig.GetInstance().UseTemperatureModule = value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
                 optionName: "Disable Item HP Regen.",
                 optionDesc: "Disable HP Regeneration from all in-game item except item from modded and some whitelisted items (Default: Checked)",
                 optionGet: () => ModConfig.GetInstance().DisableHPHealingOnEatingFood,
@@ -162,6 +169,14 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Disable All Mod-related info when hover on items. Not recommended (Default: Unchecked)",
                 optionGet: () => ModConfig.GetInstance().DisableModItemInfo,
                 optionSet: value => ModConfig.GetInstance().DisableModItemInfo = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Overlay Comfortable Temperature",
+                optionDesc: "Player can see the comfortable temperature range in the environment temperature meter (Default: Checked)",
+                optionGet: () => ModConfig.GetInstance().IndicateComfortableTemperatureRange,
+                optionSet: value => ModConfig.GetInstance().IndicateComfortableTemperatureRange = value
             );
 
 
