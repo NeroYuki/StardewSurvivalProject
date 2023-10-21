@@ -111,6 +111,12 @@ namespace StardewSurvivalProject.source
                 int itemId = data.ItemNameCache.getIDFromCache("Canteen");
                 if (itemId != -1)
                 {
+                    if (player.bindedFarmer.isInventoryFull())
+                    {
+                        // attempt to drop the empty canteen on the ground if the inventory is full
+                        Game1.createItemDebris(new SObject(itemId, 1), player.bindedFarmer.getStandingPosition(), player.bindedFarmer.FacingDirection, null);
+                    }
+
                     player.bindedFarmer.addItemToInventory(new SObject(itemId, 1));
                 }
             }
