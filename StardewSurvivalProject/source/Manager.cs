@@ -155,6 +155,12 @@ namespace StardewSurvivalProject.source
             player.temp.value = v;
         }
 
+        public void setPlayerMood(double v)
+        {
+            if (player == null || v < -40 || v > 120) return;
+            player.mood.Value = v;
+        }
+
         public string getDisplayString()
         {
             return displayString;
@@ -296,6 +302,13 @@ namespace StardewSurvivalProject.source
             if (ModConfig.GetInstance().TemperatureUnit.Equals("Fahrenheit")) return ((this.envTemp.value * 9 / 5) + 32).ToString("#.##") + "F";
             else if (ModConfig.GetInstance().TemperatureUnit.Equals("Kelvin")) return (this.envTemp.value + 273).ToString("#.##") + "K";
             return this.envTemp.value.ToString("#.##") + "C";
+        }
+
+        public int getPlayerMoodIndex()
+        {
+            // clamp level to 0-7
+            int level = Math.Max(0, Math.Min(7, (int)player.mood.Level));
+            return level;
         }
 
         public void updateOnToolUsed(StardewValley.Tool toolHold)

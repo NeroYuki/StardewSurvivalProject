@@ -17,6 +17,7 @@ namespace StardewSurvivalProject
         public bool UseMoodExtension { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
+        public bool UseSanityModule { get; set; } = false;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
         public int HealthRestoreOnSleep { get; set; } = 20;
 

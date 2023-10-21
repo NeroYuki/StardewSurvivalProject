@@ -9,6 +9,7 @@ using SObject = StardewValley.Object;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+using StardewSurvivalProject.source;
 
 namespace StardewSurvivalProject
 {
@@ -24,6 +25,7 @@ namespace StardewSurvivalProject
         private Texture2D TempIndicator;
         private Texture2D fillRect;
         private Texture2D TempRangeIndicator;
+        private List<Texture2D> MoodIcons;
         private int buffIconAppendRow = 2;
         //expose for harmony patches
         public static Texture2D InfoIcon;
@@ -93,6 +95,8 @@ namespace StardewSurvivalProject
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
             //for confirming buff icons has been loaded properly and initialize buff with proper index
             helper.Events.Content.AssetReady += this.OnAssetReady;
+            //for sanity feature
+            source.events.CustomEvents.OnItemPlaced += this.OnItemPlaced;
 
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -129,6 +133,17 @@ namespace StardewSurvivalProject
             this.TempIndicator = GetAssetWithPreset(helper, "TempIndicator.png", preset);
             this.fillRect = GetAssetWithPreset(helper, "fillRect.png", preset);
             this.TempRangeIndicator = GetAssetWithPreset(helper, "TempRangeIndicator.png", preset);
+            this.MoodIcons = new List<Texture2D> { 
+                GetAssetWithPreset(helper, "MoodMentalBreak.png", preset),
+                GetAssetWithPreset(helper, "MoodDistress.png", preset),
+                GetAssetWithPreset(helper, "MoodSad.png", preset),
+                GetAssetWithPreset(helper, "MoodDiscontent.png", preset),
+                GetAssetWithPreset(helper, "MoodNeutral.png", preset),
+                GetAssetWithPreset(helper, "MoodContent.png", preset),
+                GetAssetWithPreset(helper, "MoodHappy.png", preset),
+                GetAssetWithPreset(helper, "MoodOverjoy.png", preset),
+            };
+
 
             InfoIcon = GetAssetWithPreset(helper, "InfoIcon.png", preset);
             ModIcon = GetAssetWithPreset(helper, "ModIcon.png", preset);
@@ -139,6 +154,7 @@ namespace StardewSurvivalProject
             helper.ConsoleCommands.Add("player_setthirst", "Set your hydration level to a specified amount", commandManager.SetThirstCmd);
             helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
             helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
+            helper.ConsoleCommands.Add("player_setmood", "Set your mood to a specified value", commandManager.SetMood);
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -325,6 +341,12 @@ namespace StardewSurvivalProject
             Vector2 body_temp_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 3);
             b.Draw(this.BodyTempBar, body_temp_pos, new Rectangle(0, 0, this.BodyTempBar.Width, this.BodyTempBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
 
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                Vector2 mood_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 4);
+                b.Draw(this.MoodIcons[instance.getPlayerMoodIndex()], mood_pos, new Rectangle(0, 0, this.MoodIcons[instance.getPlayerMoodIndex()].Width, this.MoodIcons[instance.getPlayerMoodIndex()].Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
+            }
+
             //render indicators
             double ENV_TEMP_BOUND_LOW = ModConfig.GetInstance().EnvironmentTemperatureDisplayLowerBound;
             double ENV_TEMP_BOUND_HIGH = ModConfig.GetInstance().EnvironmentTemperatureDisplayHigherBound;
@@ -455,6 +477,14 @@ namespace StardewSurvivalProject
                 return;
 
             instance.updateOnGiftGiven(e.Npc, e.Gift);
+        }
+
+        private void OnItemPlaced(object sender, EventArgs e)
+        {
+            // cast sender to StardewValley.Object
+            SObject obj = sender as SObject;
+            // check if object is seed crop
+            LogHelper.Info($"Item placed: {obj.Name}");
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
