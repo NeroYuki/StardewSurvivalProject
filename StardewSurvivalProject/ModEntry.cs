@@ -448,7 +448,7 @@ namespace StardewSurvivalProject
             double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
             double coolingModifier = source.data.CustomHydrationDictionary.getCoolingModifierValue(ateItem.name);
 
-            var arrInfo = Game1.objectInformation[ateItem.parentSheetIndex].Split('/');
+            var arrInfo = Game1.objectInformation[ateItem.ParentSheetIndex].Split('/');
             if (addThirst != 0)
             {
                 instance.onItemDrinkingUpdate(ateItem, addThirst, coolingModifier);
