@@ -41,10 +41,10 @@ namespace StardewSurvivalProject.source.harmony_patches
                 prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.CalculateHPGain_Prefix))
             );
 
-            //harmony.Patch(
-            //    original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction), new Type[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }),
-            //    postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.ItemPlace_PostFix))
-            //);
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction), new Type[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }),
+                postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.ItemPlace_PostFix))
+            );
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(StardewValley.Menus.IClickableMenu), nameof(StardewValley.Menus.IClickableMenu.drawHoverText),

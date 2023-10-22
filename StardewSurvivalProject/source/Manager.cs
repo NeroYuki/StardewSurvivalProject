@@ -98,6 +98,10 @@ namespace StardewSurvivalProject.source
             {
                 player.updateBodyTemp(envTemp);
             }
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                player.mood.CheckForMentalBreak();
+            }
             displayString = player.getStatStringUI();
         }
 
@@ -439,7 +443,7 @@ namespace StardewSurvivalProject.source
                 this.player.thirst = saveData.thirst;
                 this.player.temp = saveData.bodyTemp;
                 if (saveData.healthPoint > 0) this.player.healthPoint = saveData.healthPoint;
-                if (saveData.mood != null) this.player.mood = saveData.mood;
+                if (saveData.mood != null) this.player.mood = new model.Mood(saveData.mood, this.player.OnFarmerMentalBreak);
             }
         }
 

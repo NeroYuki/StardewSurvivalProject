@@ -24,6 +24,8 @@ namespace StardewSurvivalProject.source.events
 
         public static event EventHandler OnItemPlaced;
 
+        public static event EventHandler OnMentalBreak;
+
         public static event EventHandler<GiftEventArgs> OnGiftGiven;
 
         internal static void InvokeOnItemEaten(Farmer farmer)
@@ -35,6 +37,27 @@ namespace StardewSurvivalProject.source.events
             var name = "CustomEvents.onItemEaten";
 
             foreach (EventHandler handler in CustomEvents.OnItemEaten.GetInvocationList())
+            {
+                try
+                {
+                    handler.Invoke(farmer, args);
+                }
+                catch (Exception e)
+                {
+                    LogHelper.Error($"Exception while handling event {name}:\n{e}");
+                }
+            }
+        }
+
+        internal static void InvokeOnMentalBreak(Farmer farmer)
+        {
+            if (CustomEvents.OnMentalBreak == null || !farmer.IsLocalPlayer)
+                return;
+
+            var args = new EventArgs();
+            var name = "CustomEvents.onMentalBreak";
+
+            foreach (EventHandler handler in CustomEvents.OnMentalBreak.GetInvocationList())
             {
                 try
                 {

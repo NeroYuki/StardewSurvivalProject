@@ -97,6 +97,8 @@ namespace StardewSurvivalProject
             helper.Events.Content.AssetReady += this.OnAssetReady;
             //for sanity feature
             source.events.CustomEvents.OnItemPlaced += this.OnItemPlaced;
+            //mental breakdown event
+            source.events.CustomEvents.OnMentalBreak += this.OnMentalBreak;
 
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -155,6 +157,13 @@ namespace StardewSurvivalProject
             helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
             helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
             helper.ConsoleCommands.Add("player_setmood", "Set your mood to a specified value", commandManager.SetMood);
+        }
+
+        private void OnMentalBreak(object sender, EventArgs e)
+        {
+            if (sender != Game1.player) return;
+
+            this.Monitor.Log("Player is having mental breakdown", LogLevel.Debug);
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)

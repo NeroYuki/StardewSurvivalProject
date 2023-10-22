@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
+using static StardewValley.LocationRequest;
+
+public delegate void Callback();
 
 namespace StardewSurvivalProject.source.model
 {
@@ -21,6 +25,32 @@ namespace StardewSurvivalProject.source.model
     public class Mood
     {
         private double _value = 50;
+
+        // Name, value, number of minutes to expire (-1 is never expire)
+        private List<Tuple<string, double, double>> MoodElements = new List<Tuple<string, double, double>>();
+
+        private readonly Callback _onMentalBreakCallback;
+
+        [JsonConstructor]
+        public Mood(double value, MoodLevel level)
+        {
+            this.Value = value;
+            this.Level = level;
+        }
+
+        // for new player
+        public Mood(Callback OnMentalBreakCallback)
+        {
+            _onMentalBreakCallback = OnMentalBreakCallback;
+        }
+
+        // for save data
+        public Mood(Mood mood, Callback OnMentalBreakCallback)
+        {
+            this.Value = mood.Value;
+            // dont really need to assign level since it will be calculated from value
+            _onMentalBreakCallback = OnMentalBreakCallback;
+        }
 
         public double Value
         {
@@ -51,22 +81,35 @@ namespace StardewSurvivalProject.source.model
 
         public MoodLevel GetMoodLevel(double value)
         {
-            if (Value < 0)
-                return MoodLevel.MentalBreak;
-            if (Value < 10)
+            if (value < 10)
                 return MoodLevel.Distress;
-            if (Value < 25)
+            if (value < 25)
                 return MoodLevel.Sad;
-            if (Value < 40)
+            if (value < 40)
                 return MoodLevel.Discontent;
-            if (Value < 50)
+            if (value < 50)
                 return MoodLevel.Neutral;
-            if (Value < 65)
+            if (value < 65)
                 return MoodLevel.Content;
-            if (Value < 75)
+            if (value < 75)
                 return MoodLevel.Happy;
             else
                 return MoodLevel.Overjoy;
+        }
+
+        public void CheckForMentalBreak()
+        {
+            var rand = new Random();
+            var out_val = rand.NextDouble();
+            // roll the dice every 10 minutes, 1% if discontent, 5% if sad, 20% if distress
+            if (Level == MoodLevel.Discontent && out_val < 0.01
+                || Level == MoodLevel.Sad && out_val < 0.05
+                || Level == MoodLevel.Distress && out_val < 0.2)
+            {
+                Level = MoodLevel.MentalBreak;
+                _onMentalBreakCallback();
+            }
+
         }
     }
 }

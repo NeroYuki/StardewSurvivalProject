@@ -23,8 +23,13 @@ namespace StardewSurvivalProject.source.model
             temp = new BodyTemp();
             thirst = new Thirst();
             healthPoint = farmer.maxHealth;
-            mood = new Mood();
+            mood = new Mood(OnFarmerMentalBreak);
             bindedFarmer = farmer;
+        }
+
+        public void OnFarmerMentalBreak()
+        {
+            events.CustomEvents.InvokeOnMentalBreak(bindedFarmer);
         }
 
         //update drain passively, should happen every 10 in-game minutes
