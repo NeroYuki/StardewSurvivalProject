@@ -163,7 +163,20 @@ namespace StardewSurvivalProject
         {
             if (sender != Game1.player) return;
 
-            this.Monitor.Log("Player is having mental breakdown", LogLevel.Debug);
+            Game1.addHUDMessage(new HUDMessage("Player is had mental breakdown, they spent 1 hour contemplating their life", HUDMessage.error_type));
+
+            // If in single player, advance the time by 1 hour
+            if (!Context.IsMultiplayer)
+            {
+                Game1.timeOfDay += 100;
+            }
+            else
+            {
+                // If in multiplayer, lock the player from moving for 1 hour in-game
+                Game1.player.freezePause = 3600;
+            }
+            
+
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -337,6 +350,7 @@ namespace StardewSurvivalProject
             int OffsetY = ModConfig.GetInstance().UIOffsetY;
             float Scale = ModConfig.GetInstance().UIScale;
             bool overlayComfyTemp = ModConfig.GetInstance().IndicateComfortableTemperatureRange;
+            bool overlaySaturation = ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal;
 
             Vector2 hunger_pos = new Vector2(OffsetX, OffsetY);
             b.Draw(this.HungerBar, hunger_pos, new Rectangle(0, 0, this.HungerBar.Width, this.HungerBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
@@ -372,7 +386,7 @@ namespace StardewSurvivalProject
             if (overlayComfyTemp)
             {
                 b.Draw(this.fillRect, env_temp_pos + new Vector2(min_env_ind_pos.X, 5 * Scale), new Rectangle(0, 0, (int)(Math.Max(max_env_ind_pos.X - min_env_ind_pos.X, 0)), (int)(6 * Scale)), new Color(Color.Green, 0.3f));
-            }
+            }            
             
             
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
@@ -395,7 +409,14 @@ namespace StardewSurvivalProject
                 float perc = (float)instance.getPlayerThirstPercentage();
                 b.Draw(this.fillRect, thirst_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
             }
-            
+
+            // overlay saturation over hunger
+            if (instance.getPlayerHungerPercentage() > 0)
+            {
+                float perc = (float)instance.getPlayerHungerSaturationStat();
+                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 9 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(2 * Scale)), new Color(Color.Yellow, 0.3f));
+            }
+
             Rectangle hunger_hover_area = new Rectangle((int) hunger_pos.X, (int) hunger_pos.Y, (int) (this.HungerBar.Width * Scale), (int) (this.HungerBar.Height * Scale));
             Rectangle thirst_hover_area = new Rectangle((int) thirst_pos.X, (int) thirst_pos.Y, (int) (this.ThirstBar.Width * Scale), (int) (this.ThirstBar.Height * Scale));
             Rectangle env_temp_hover_area = new Rectangle((int) env_temp_pos.X, (int) env_temp_pos.Y, (int) (this.EnvTempBar.Width * Scale), (int) (this.EnvTempBar.Height * Scale));
