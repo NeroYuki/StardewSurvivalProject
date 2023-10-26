@@ -80,7 +80,7 @@ namespace StardewSurvivalProject.source.model
             {
                 addValue = addValue * Math.Max(1 - hunger.saturation / 100, 0);
                 // saturation is increased by 21.6 * ln(addValue + 1), capped at 100, if saturation is > 0, attempt to get the addValue from saturation before add the current addValue
-                double saturationAddValue = Math.Min(21.6 * Math.Log(addValue + 1), 100 - hunger.saturation);
+                double saturationAddValue = Math.Min(18.95 * Math.Log(addValue + 1), 100 - hunger.saturation);
 
                 hunger.saturation += saturationAddValue;
             }
