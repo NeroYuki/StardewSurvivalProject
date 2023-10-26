@@ -94,6 +94,20 @@ namespace StardewSurvivalProject.source.api
                 optionGet: () => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse,
                 optionSet: value => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse = value
             );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Hunger restored scaled with saturation stat",
+                optionDesc: "Saturation is scaled with hunger restored to penalize low quality food, also make stomachache more severe",
+                optionGet: () => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal,
+                optionSet: value => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal = value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "(EXPERIMENTAL) Mood/Sanity Meter",
+                optionDesc: "Hahahaha let's not talk about this one!",
+                optionGet: () => ModConfig.GetInstance().UseSanityModule,
+                optionSet: value => ModConfig.GetInstance().UseSanityModule = value
+            );
 
             api.StartNewPage(context.ModManifest, "UI Configuration");
             api.RegisterParagraph(context.ModManifest, "Options to adjust how the mod's UI is displayed");

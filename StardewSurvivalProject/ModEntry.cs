@@ -99,6 +99,10 @@ namespace StardewSurvivalProject
             source.events.CustomEvents.OnItemPlaced += this.OnItemPlaced;
             //mental breakdown event
             source.events.CustomEvents.OnMentalBreak += this.OnMentalBreak;
+            //for forwarding mod config to multiplayer client
+            helper.Events.Multiplayer.PeerConnected += this.OnPeerConnected;
+            //for receiving mod config from host
+            helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
 
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -157,6 +161,24 @@ namespace StardewSurvivalProject
             helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
             helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
             helper.ConsoleCommands.Add("player_setmood", "Set your mood to a specified value", commandManager.SetMood);
+        }
+
+        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            // if the message doesn't have the right format, ignore it
+            if (e.FromModID != this.ModManifest.UniqueID || e.Type != "SyncModConfig")
+                return;
+
+            // deserialize the message data
+            ModConfig config = e.ReadAs<ModConfig>();
+            // set the config
+            ModConfig.GetInstance().SetConfig(config);
+        }
+
+        private void OnPeerConnected(object sender, PeerConnectedEventArgs e)
+        {
+            // send the mod config to the client
+            this.Helper.Multiplayer.SendMessage(ModConfig.GetInstance(), "SyncModConfig", modIDs: new[] { this.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
         }
 
         private void OnMentalBreak(object sender, EventArgs e)
