@@ -61,11 +61,14 @@ namespace StardewSurvivalProject.source.model
             }
         }
 
-        public void updateHungerThirstDrain(double deltaHunger, double deltaThirst)
+        public void updateHungerThirstDrain(double deltaHunger, double deltaThirst, bool reduceSaturation = true)
         {
             hunger.value += deltaHunger;
             thirst.value += deltaThirst;
-            hunger.saturation = Math.Max(hunger.saturation + deltaHunger * 3, 0);
+            if (reduceSaturation)
+            {
+                hunger.saturation = Math.Max(hunger.saturation + deltaHunger * 3, 0);
+            }
             checkIsDangerValue();
         }
 
