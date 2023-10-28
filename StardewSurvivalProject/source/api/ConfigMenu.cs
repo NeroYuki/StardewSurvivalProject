@@ -96,14 +96,14 @@ namespace StardewSurvivalProject.source.api
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
-                optionName: "(EXPERIMENTAL) Hunger restored scaled with saturation stat",
+                optionName: "Experimental - Saturation Stat.",
                 optionDesc: "Saturation is scaled with hunger restored to penalize low quality food, also make stomachache more severe",
                 optionGet: () => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal,
                 optionSet: value => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal = value
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
-                optionName: "(EXPERIMENTAL) Stamina rework",
+                optionName: "Experimental - Stamina rework",
                 optionDesc: "Stamina will drain at an accelarated pace, but also regen overtime, and you have access to sprinting",
                 optionGet: () => ModConfig.GetInstance().UseStaminaRework,
                 optionSet: value => ModConfig.GetInstance().UseStaminaRework = value
@@ -117,7 +117,7 @@ namespace StardewSurvivalProject.source.api
             );   
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
-                optionName: "(EXPERIMENTAL) Mood/Sanity Meter",
+                optionName: "Experimental - Sanity Meter",
                 optionDesc: "Hahahaha let's not talk about this one!",
                 optionGet: () => ModConfig.GetInstance().UseSanityModule,
                 optionSet: value => ModConfig.GetInstance().UseSanityModule = value
