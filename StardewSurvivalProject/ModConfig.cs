@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +15,13 @@ namespace StardewSurvivalProject
         public bool UseOnRunningDrain { get; set; } = true;
         public bool UseOnToolUseDrain { get; set; } = true;
         public bool UseTemperatureModule { get; set; } = true;
-        public bool UseReworkedStaminaDrain { get; set; } = true;
+        // public bool UseReworkedStaminaDrain { get; set; } = true;
         public bool UseMoodExtension { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
         public bool UseSanityModule { get; set; } = false;
         public bool UseStaminaRework { get; set; } = true;
+        public SButton SprintButton { get; set; } = (SButton) Keys.LeftControl;
         public bool ScaleHungerRestoredWithTimeFromLastMeal { get; set; } = false;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
         public int HealthRestoreOnSleep { get; set; } = 20;

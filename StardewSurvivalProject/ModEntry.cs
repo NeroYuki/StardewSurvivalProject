@@ -283,7 +283,10 @@ namespace StardewSurvivalProject
 
             if (Game1.player.running && Game1.player.isMoving())
             {
-                instance.updateOnRunning();
+                // check if player is holding the sprint button
+                // TODO: check for controller button (should be locked)
+                bool isSprinting = ModConfig.GetInstance().UseStaminaRework && Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SprintButton);
+                instance.updateOnRunning(isSprinting);
             }
             if (Game1.player.health <= 0 || Game1.player.stamina <= -15)
             {

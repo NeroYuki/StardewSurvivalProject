@@ -14,6 +14,7 @@ namespace StardewSurvivalProject.source
         private model.EnvTemp envTemp;
         private String displayString = "";
         private Random rand = null;
+        private bool isSprinting = false;
 
         private string RelativeDataPath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
 
@@ -26,6 +27,7 @@ namespace StardewSurvivalProject.source
         public void init(Farmer farmer)
         {
             player = new model.Player(farmer);
+            isSprinting = false;
             envTemp = new model.EnvTemp();
             displayString = player.getStatStringUI();
             LogHelper.Debug("Manager initialized");
@@ -75,10 +77,11 @@ namespace StardewSurvivalProject.source
                     player.updateHungerThirstDrain(0, -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond);
                 }
 
-                //if (ModConfig.GetInstance().UseReworkedStaminaDrain && !player.bindedFarmer.isMoving())
-                //{
-                //    player.bindedFarmer.stamina += Math.Min(player.bindedFarmer.maxStamina, player.bindedFarmer.)
-                //}
+                if (ModConfig.GetInstance().UseStaminaRework && !player.bindedFarmer.isMoving())
+                {
+                    // TODO: make this adjustable
+                    player.bindedFarmer.stamina = Math.Min(player.bindedFarmer.MaxStamina, player.bindedFarmer.stamina + 2f);
+                }
             }
         }
 
@@ -229,18 +232,42 @@ namespace StardewSurvivalProject.source
 
         }
 
-        public void updateOnRunning()
+        public void updateOnRunning(bool isSprinting = false)
         {
             if (player == null || !ModConfig.GetInstance().UseOnRunningDrain) return;
 
-            double THIRST_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningThirstDrainRate * (270f / player.bindedFarmer.MaxStamina) ;
-            double HUNGER_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningHungerDrainRate * (270f / player.bindedFarmer.MaxStamina);
-            if (player.thirst.value <= THIRST_DRAIN_ON_RUNNING || player.hunger.value <= HUNGER_DRAIN_ON_RUNNING)
+            double thirstDrainOnRunning = ModConfig.GetInstance().RunningThirstDrainRate * (270f / player.bindedFarmer.MaxStamina) ;
+            double hungerDrainOnRunning = ModConfig.GetInstance().RunningHungerDrainRate * (270f / player.bindedFarmer.MaxStamina);
+            if (player.thirst.value <= thirstDrainOnRunning || player.hunger.value <= hungerDrainOnRunning)
             {
                 player.bindedFarmer.setRunning(false, true);
-                return;
             }
-            player.updateRunningDrain();
+            else
+            {
+                player.updateRunningDrain();
+            }
+
+            if (ModConfig.GetInstance().UseStaminaRework)
+            {
+                float staminaDrainOnRunning = 0.01f * (isSprinting ? 2 : 1);
+                if (player.bindedFarmer.stamina <= staminaDrainOnRunning)
+                {
+                    player.bindedFarmer.setRunning(false, true);
+                }
+                player.bindedFarmer.stamina -= staminaDrainOnRunning;
+                if (isSprinting && this.isSprinting == false)
+                {
+                    this.isSprinting = true;
+                    // play sprinting sound effect
+                    Game1.playSound("daggerswipe");
+                    player.bindedFarmer.addedSpeed += 2;
+                }
+                else if (!isSprinting && this.isSprinting == true)
+                {
+                    this.isSprinting = false;
+                    player.bindedFarmer.addedSpeed -= 2;
+                }
+            }
         }
 
         internal void ResetPlayerHungerAndThirst()
@@ -340,7 +367,6 @@ namespace StardewSurvivalProject.source
             float staminaDrainOnToolUsed = 0;
 
             //yea this is terrible
-            //TODO: more generic code
             if (toolHold is StardewValley.Tools.Axe)
             {
                 hungerDrainOnToolUsed = ModConfig.GetInstance().AxeHungerDrain;
@@ -401,10 +427,21 @@ namespace StardewSurvivalProject.source
             {
                 player.updateHungerThirstDrain(-hungerDrainOnToolUsed, -thirstDrainOnToolUsed);
             }
+
+            // stamina draining final calculation and application
+            if (ModConfig.GetInstance().UseStaminaRework)
+            {
+                staminaDrainOnToolUsed *= 2;
+            }
+
             if (isFever)
             {
                 player.bindedFarmer.stamina -= staminaDrainOnToolUsed * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                 Game1.staminaShakeTimer += 100;
+            }
+            else
+            {
+                player.bindedFarmer.stamina -= staminaDrainOnToolUsed;
             }
 
             displayString = player.getStatStringUI();
