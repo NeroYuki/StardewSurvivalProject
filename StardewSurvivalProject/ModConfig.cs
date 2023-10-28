@@ -46,9 +46,9 @@ namespace StardewSurvivalProject
         public double PassiveThirstDrainRate { get; set; } = 0.3;
         public double RunningHungerDrainRate { get; set; } = 0.001;
         public double RunningThirstDrainRate { get; set; } = 0.002;
-        public double MeleeWeaponHungerDrain { get; set; } = 0.5;
+        public double MeleeWeaponHungerDrain { get; set; } = 0.3;
         public double MeleeWeaponThirstDrain { get; set; } = 0.2;
-        public double SlingshotHungerDrain { get; set; } = 0.5;
+        public double SlingshotHungerDrain { get; set; } = 0.3;
         public double SlingshotThirstDrain { get; set; } = 0.2;
         public double PickaxeHungerDrain { get; set; } = 0.5;
         public double PickaxeThirstDrain { get; set; } = 0.2;
