@@ -18,7 +18,8 @@ namespace StardewSurvivalProject
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
         public bool UseSanityModule { get; set; } = false;
-        public bool ScaleHungerRestoredWithTimeFromLastMeal { get; set; } = true;
+        public bool UseStaminaRework { get; set; } = true;
+        public bool ScaleHungerRestoredWithTimeFromLastMeal { get; set; } = false;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
         public int HealthRestoreOnSleep { get; set; } = 20;
 
@@ -148,7 +149,7 @@ namespace StardewSurvivalProject
             return _instance;
         }
 
-        public void SetConfig(ModConfig input)
+        public void SetConfig(ModConfig input, bool CopyUIConfig = false)
         {
             if (_instance == null)
             {
