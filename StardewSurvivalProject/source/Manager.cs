@@ -56,23 +56,23 @@ namespace StardewSurvivalProject.source
             if (!Game1.eventUp && (Game1.activeClickableMenu == null || Game1.IsMultiplayer) && !Game1.paused)
             {
                 //apply some effects' result every second
-                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.stomachacheEffectIndex))
+                if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/stomachache"))
                 {
                     player.updateHungerThirstDrain(-model.Hunger.DEFAULT_VALUE * (ModConfig.GetInstance().StomachacheHungerPercentageDrainPerSecond / 100), 0, reduceSaturation: false);
                 }
-                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.burnEffectIndex))
+                if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/burn"))
                 {
                     player.bindedFarmer.health -= ModConfig.GetInstance().HealthDrainOnBurnPerSecond;
                     Game1.currentLocation.playSound("ow");
                     Game1.hitShakeTimer = 100 * ModConfig.GetInstance().HealthDrainOnBurnPerSecond;
                 }
-                else if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.frostbiteEffectIndex))
+                else if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/frostbite"))
                 {
                     player.bindedFarmer.health -= ModConfig.GetInstance().HealthDrainOnFrostbitePerSecond;
                     Game1.currentLocation.playSound("ow");
                     Game1.hitShakeTimer = 100 * ModConfig.GetInstance().HealthDrainOnFrostbitePerSecond;
                 }
-                if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.heatstrokeEffectIndex))
+                if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/heatstroke"))
                 {
                     player.updateHungerThirstDrain(0, -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond);
                 }
@@ -89,7 +89,7 @@ namespace StardewSurvivalProject.source
         {
             if (!ModConfig.GetInstance().UseTemperatureModule) return;
             envTemp.updateEnvTemp(time, season, weatherIconId, location, currentMineLevel);
-            envTemp.updateLocalEnvTemp(player.bindedFarmer.getTileX(), player.bindedFarmer.getTileY());
+            envTemp.updateLocalEnvTemp((int) player.bindedFarmer.Tile.X, (int) player.bindedFarmer.Tile.Y);
         }
 
         public void onClockUpdate()
@@ -115,8 +115,8 @@ namespace StardewSurvivalProject.source
             //addition: if player is drinking a refillable container, give back the empty container item
             if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen") || gameObj.name.Equals("Ice Water Canteen"))
             {
-                int itemId = data.ItemNameCache.getIDFromCache("Canteen");
-                if (itemId != -1)
+                string itemId = data.ItemNameCache.getIDFromCache("Canteen");
+                if (itemId != "-1")
                 {
                     if (player.bindedFarmer.isInventoryFull())
                     {
@@ -198,7 +198,7 @@ namespace StardewSurvivalProject.source
             //conflicted with spacecore's DoneEating event
             player.bindedFarmer.isEating = true;
             //Fixing by setting itemToEat to something that doesnt do anything to player HP and stamina (in this case, daffodil)
-            player.bindedFarmer.itemToEat = (Item)new SObject(18, 1); 
+            player.bindedFarmer.itemToEat = new SObject("(O)18", 1); 
 
             player.updateDrinking(addThirst);
             displayString = player.getStatStringUI();
@@ -207,13 +207,13 @@ namespace StardewSurvivalProject.source
         public void onDayEnding()
         {
             //specifically remove refreshing buff to prevent permanent stamina increase
-            if (Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.refreshingEffectIndex))
+            if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/refreshing"))
             {
-                Game1.buffsDisplay.removeOtherBuff(effects.EffectManager.refreshingEffectIndex);
+                Game1.player.buffs.Remove("neroyuki.rlvalley/refreshing");
             }
 
             //clear all buff on day ending (bug-free?) - not bug-free, funky stuff happen with max stamina buff
-            Game1.buffsDisplay.clearAllBuffs();
+            Game1.player.buffs.Clear();
 
             if (player == null) return;
 
@@ -356,7 +356,7 @@ namespace StardewSurvivalProject.source
 
         public void updateOnToolUsed(StardewValley.Tool toolHold)
         {
-            bool isFever = Game1.buffsDisplay.otherBuffs.Exists(e => e.which == effects.EffectManager.feverEffectIndex);
+            bool isFever = Game1.player.buffs.IsApplied("neroyuki.rlvalley/fever");
             int power = (int)((player.bindedFarmer.toolHold + 20f) / 600f) + 1;
             //LogHelper.Debug($"Tool Power = {power}");
 

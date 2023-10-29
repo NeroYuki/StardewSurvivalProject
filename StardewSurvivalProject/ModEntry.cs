@@ -231,29 +231,46 @@ namespace StardewSurvivalProject
                     Texture2D wellFedEffectIcon = GetAssetWithPreset(this.Helper, "WellFedEffect.png", preset);
                     Texture2D refreshingEffectIcon = GetAssetWithPreset(this.Helper, "RefreshingEffect.png", preset);
 
+                    // add them all into a key value list
+                    Dictionary<string, Texture2D> effectIcons = new Dictionary<string, Texture2D>
+                    {
+                        { "Burn", burnEffectIcon },
+                        { "Starvation", starvationEffectIcon },
+                        { "Hypothermia", hypothermiaEffectIcon },
+                        { "Frostbite", frostbiteEffectIcon },
+                        { "Heatstroke", heatstrokeEffectIcon },
+                        { "Dehydration", dehydrationEffectIcon },
+                        { "Fever", feverEffectIcon },
+                        { "Stomachache", stomachacheEffectIcon },
+                        { "Thirst", thirstEffectIcon },
+                        { "Hunger", hungerEffectIcon },
+                        { "WellFed", wellFedEffectIcon },
+                        { "Refreshing", refreshingEffectIcon }
+                    };
+
                     //extend the image to occupy a different row from other effects
-                    int extraEffectYCoord = editor.Data.Height;
-                    editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
+                    //int extraEffectYCoord = editor.Data.Height;
+                    //editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
 
-                    editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(hypothermiaEffectIcon, targetArea: new Rectangle(2 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(frostbiteEffectIcon, targetArea: new Rectangle(3 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(heatstrokeEffectIcon, targetArea: new Rectangle(4 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
-                    editor.PatchImage(refreshingEffectIcon, targetArea: new Rectangle(11 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(hypothermiaEffectIcon, targetArea: new Rectangle(2 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(frostbiteEffectIcon, targetArea: new Rectangle(3 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(heatstrokeEffectIcon, targetArea: new Rectangle(4 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
+                    //editor.PatchImage(refreshingEffectIcon, targetArea: new Rectangle(11 * 16, extraEffectYCoord, 16, 16));
 
-                    this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
+                    //this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
 
-                    buffIconAppendRow = extraEffectYCoord / 16;
+                    //buffIconAppendRow = extraEffectYCoord / 16;
 
-                    this.Monitor.Log("Buff Icons has been altered by StardewSurvivalProject, append at row = " + buffIconAppendRow, LogLevel.Info);
-                    source.effects.EffectManager.initialize(buffIconAppendRow);
+                    //this.Monitor.Log("Buff Icons has been altered by StardewSurvivalProject, append at row = " + buffIconAppendRow, LogLevel.Info);
+                    source.effects.EffectManager.initialize(effectIcons);
                 });
             }
 
@@ -344,8 +361,8 @@ namespace StardewSurvivalProject
                 //remove empty canteen
                 Game1.player.reduceActiveItemByOne();
                 //give dirty canteen
-                int itemId = source.data.ItemNameCache.getIDFromCache("Dirty Canteen");
-                if (itemId != -1)
+                string itemId = source.data.ItemNameCache.getIDFromCache("Dirty Canteen");
+                if (itemId != "-1")
                 {
                     Game1.player.addItemToInventory(new SObject(itemId, 1));
                 }
@@ -503,17 +520,15 @@ namespace StardewSurvivalProject
             double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
             double coolingModifier = source.data.CustomHydrationDictionary.getCoolingModifierValue(ateItem.name);
 
-            var arrInfo = Game1.objectInformation[ateItem.ParentSheetIndex].Split('/');
+            // var arrInfo = Game1.objectInformation[ateItem.ParentSheetIndex].Split('/');
+            var isDrinkable = Game1.objectData[ateItem.ItemId].IsDrink;
             if (addThirst != 0)
             {
                 instance.onItemDrinkingUpdate(ateItem, addThirst, coolingModifier);
             }
-            else if (arrInfo.Length > 6)
+            else if (isDrinkable)
             {
-                if (arrInfo[6].Equals("drink"))
-                {
-                    instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems, coolingModifier);
-                }
+                instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems, coolingModifier);
             }
         }
 

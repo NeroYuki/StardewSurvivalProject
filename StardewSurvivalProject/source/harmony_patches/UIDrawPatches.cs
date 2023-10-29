@@ -52,17 +52,11 @@ namespace StardewSurvivalProject.source.harmony_patches
                     //TODO: document this weird anomaly
                     if (data.HealingItemDictionary.getHealingValue(hoveredItem.Name) > 0 && edibility == 1) addHunger = 0;
 
-                    //FIXME: not all object info is in objectInformation dict
-                    string[] arrInfo = { };
-                    if (Game1.objectInformation.ContainsKey(hoveredItem.ParentSheetIndex))
+                    if (Game1.objectData.ContainsKey(hoveredItem.ItemId))
                     {
-                        arrInfo = Game1.objectInformation[hoveredItem.ParentSheetIndex].Split('/');
-                        if (arrInfo.Length > 6)
-                        {
-                            if (arrInfo[6].Equals("drink") && addThirst == 0)
-                            {
-                                addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
-                            }
+                        var isDrinkable = Game1.objectData[hoveredItem.ItemId].IsDrink;
+                        if (isDrinkable) { 
+                            addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
                         }
                     }
 
@@ -78,9 +72,9 @@ namespace StardewSurvivalProject.source.harmony_patches
 
                     StardewValley.Objects.Clothing clothingInfo = (StardewValley.Objects.Clothing)hoveredItem;
                     //using DisplayName instead of Name, may break on other languages usage
-                    if (clothingInfo.clothesType.Value == 0)
+                    if (clothingInfo.clothesType.Value == StardewValley.Objects.Clothing.ClothesType.SHIRT)
                         tempResistData = getClothingTempResistInfo(hoveredItem.DisplayName, "shirt");
-                    else if (clothingInfo.clothesType.Value == 1)
+                    else if (clothingInfo.clothesType.Value == StardewValley.Objects.Clothing.ClothesType.PANTS)
                         tempResistData = getClothingTempResistInfo(hoveredItem.DisplayName, "pants");
                 }
                 else if (hoveredItem is StardewValley.Objects.Hat)
