@@ -9,6 +9,7 @@ using StardewValley;
 using StardewValley.Menus;
 using SObject = StardewValley.Object;
 using Newtonsoft.Json;
+using Netcode;
 
 namespace StardewSurvivalProject.source.harmony_patches
 {
@@ -21,7 +22,7 @@ namespace StardewSurvivalProject.source.harmony_patches
             Monitor = monitor;
         }
 
-        public static void DrawHoverText_Postfix(IClickableMenu __instance, SpriteBatch b, StringBuilder text, SpriteFont font, int xOffset, int yOffset, int moneyAmountToDisplayAtBottom, string boldTitleText, int healAmountToDisplay, string[] buffIconsToDisplay, ref Item hoveredItem, int currencySymbol, int extraItemToShowIndex, int extraItemToShowAmount, int overrideX, int overrideY, float alpha, CraftingRecipe craftingIngredients, IList<Item> additional_craft_materials)
+        public static void DrawHoverText_Postfix(IClickableMenu __instance, SpriteBatch b, StringBuilder text, SpriteFont font, int xOffset, int yOffset, int moneyAmountToDisplayAtBottom, string boldTitleText, int healAmountToDisplay, string[] buffIconsToDisplay, ref Item hoveredItem, int currencySymbol, string extraItemToShowIndex, int extraItemToShowAmount, int overrideX, int overrideY, float alpha, CraftingRecipe craftingIngredients, IList<Item> additional_craft_materials, Texture2D boxTexture, Rectangle? boxSourceRect, Color? textColor, Color? textShadowColor)
         {
             if (ModConfig.GetInstance().DisableModItemInfo) return;
             try
