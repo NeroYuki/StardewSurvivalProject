@@ -5,6 +5,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Buffs;
+using StardewValley.Locations;
 
 namespace StardewSurvivalProject.source.effects
 {
@@ -156,17 +157,17 @@ namespace StardewSurvivalProject.source.effects
         public static void addEffect(int effectIndex)
         {
             if (effectIndex == hypothermiaEffectIndex)
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(hypothermiaEffectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(hypothermiaEffectIndex));
             else if (effectIndex == hungerEffectIndex)
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(hungerEffectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(hungerEffectIndex));
             else if (effectIndex == thirstEffectIndex)
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(thirstEffectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(thirstEffectIndex));
             else if (effectIndex == wellFedEffectIndex)
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(wellFedEffectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(wellFedEffectIndex));
             else if (effectIndex == refreshingEffectIndex)
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(refreshingEffectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(refreshingEffectIndex));
             else
-                Game1.player.applyBuff(effectDictionary.GetValueSafe(effectIndex));
+                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(effectIndex));
         }
 
         public static void applyEffect(int effectIndex)

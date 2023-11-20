@@ -50,7 +50,8 @@ namespace StardewSurvivalProject.source
             if (player.temp.value <= model.BodyTemp.HypotherminaThreshold) effects.EffectManager.applyEffect(effects.EffectManager.hypothermiaEffectIndex);
             if (player.temp.value >= model.BodyTemp.BurnThreshold) effects.EffectManager.applyEffect(effects.EffectManager.burnEffectIndex);
             if (player.temp.value <= model.BodyTemp.FrostbiteThreshold) effects.EffectManager.applyEffect(effects.EffectManager.frostbiteEffectIndex);
-            if (envTemp.value >= player.temp.MinComfortTemp && envTemp.value <= player.temp.MaxComfortTemp) effects.EffectManager.applyEffect(effects.EffectManager.refreshingEffectIndex);
+            if (envTemp.value >= player.temp.MinComfortTemp && envTemp.value <= player.temp.MaxComfortTemp) 
+                effects.EffectManager.applyEffect(effects.EffectManager.refreshingEffectIndex);
 
             //the real isPause code xd
             if (!Game1.eventUp && (Game1.activeClickableMenu == null || Game1.IsMultiplayer) && !Game1.paused)
