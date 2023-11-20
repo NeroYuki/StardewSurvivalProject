@@ -248,28 +248,6 @@ namespace StardewSurvivalProject
                         { "Refreshing", refreshingEffectIcon }
                     };
 
-                    //extend the image to occupy a different row from other effects
-                    //int extraEffectYCoord = editor.Data.Height;
-                    //editor.ExtendImage(minWidth: editor.Data.Width, minHeight: extraEffectYCoord + 16);
-
-                    //editor.PatchImage(burnEffectIcon, targetArea: new Rectangle(0 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(starvationEffectIcon, targetArea: new Rectangle(1 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(hypothermiaEffectIcon, targetArea: new Rectangle(2 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(frostbiteEffectIcon, targetArea: new Rectangle(3 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(heatstrokeEffectIcon, targetArea: new Rectangle(4 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(dehydrationEffectIcon, targetArea: new Rectangle(5 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(feverEffectIcon, targetArea: new Rectangle(6 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(stomachacheEffectIcon, targetArea: new Rectangle(7 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(thirstEffectIcon, targetArea: new Rectangle(8 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(hungerEffectIcon, targetArea: new Rectangle(9 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(wellFedEffectIcon, targetArea: new Rectangle(10 * 16, extraEffectYCoord, 16, 16));
-                    //editor.PatchImage(refreshingEffectIcon, targetArea: new Rectangle(11 * 16, extraEffectYCoord, 16, 16));
-
-                    //this.Monitor.Log("Patched effect icon to game assets", LogLevel.Debug);
-
-                    //buffIconAppendRow = extraEffectYCoord / 16;
-
-                    //this.Monitor.Log("Buff Icons has been altered by StardewSurvivalProject, append at row = " + buffIconAppendRow, LogLevel.Info);
                     source.effects.EffectManager.initialize(effectIcons);
                 });
             }

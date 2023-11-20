@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Force.DeepCloner;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -25,7 +26,7 @@ namespace StardewSurvivalProject.source.effects
         public static int refreshingEffectIndex = 47;
 
         //dictionary include effect index as key, a string int pair value for description and effect duration respectively
-        public static Dictionary<int, Buff> effectDictionary = new Dictionary<int, Buff>();
+        public static Dictionary<int, CustomEffect> effectDictionary = new Dictionary<int, CustomEffect>();
 
         public static void initialize(Dictionary<string, Texture2D> effectIcons)
         {
@@ -45,129 +46,155 @@ namespace StardewSurvivalProject.source.effects
             wellFedEffectIndex = appendRow * 12 + 10;
             refreshingEffectIndex = appendRow * 12 + 11;
 
-            effectDictionary.Add(burnEffectIndex, new Buff(
+            effectDictionary.Add(burnEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/burn",
-                displayName: "burn",
+                displayName: "Burn",
                 description: "Holy crap you are on fire! Get away from the heat source NOW",
                 iconTexture: effectIcons.GetValueSafe("Burn"),
                 duration: 1_000
             ));
 
             // starvation effect, desc: You're starving. Please eat something...
-            effectDictionary.Add(starvationEffectIndex, new Buff(
+            effectDictionary.Add(starvationEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/starvation",
-                displayName: "starvation",
+                displayName: "Starvation",
                 description: "You're starving. Please eat something...",
                 iconTexture: effectIcons.GetValueSafe("Starvation"),
                 duration: 1_000
             ));
 
             // hypothermia effect, desc: Your skin is getting colder. Please seek a shelter and a campfire.
-            effectDictionary.Add(hypothermiaEffectIndex, new Buff(
+            effectDictionary.Add(hypothermiaEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/hypothermia",
-                displayName: "hypothermia",
+                displayName: "Hypothermia",
                 description: "Your skin is getting colder. Please seek a shelter and a campfire.",
                 iconTexture: effectIcons.GetValueSafe("Hypothermia"),
                 duration: 1_000
             ));
 
             // frostbite effect, desc: Your mind is getting numb. I hope your shelter is nearby...
-            effectDictionary.Add(frostbiteEffectIndex, new Buff(
+            var test = new CustomEffect(
                 id: "neroyuki.rlvalley/frostbite",
-                displayName: "frostbite",
+                displayName: "Frostbite",
                 description: "Your mind is getting numb. I hope your shelter is nearby...",
                 iconTexture: effectIcons.GetValueSafe("Frostbite"),
-                duration: 1_000
-            ));
+                duration: 1_000,
+                isDebuff: true,
+                effects: new BuffEffects
+                {
+                    Speed = { -2 }
+                }
+            );
             
             // heatstroke effect, desc: The heat is so bad, you begin to sweat non-stop
-            effectDictionary.Add(heatstrokeEffectIndex, new Buff(
+            effectDictionary.Add(heatstrokeEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/heatstroke",
-                displayName: "heatstroke",
+                displayName: "Heatstroke",
                 description: "The heat is so bad, you begin to sweat non-stop",
                 iconTexture: effectIcons.GetValueSafe("Heatstroke"),
                 duration: 1_000
             ));
 
             // dehydration effect, desc: You are as dry as a kindle. Please get yourself something to drink
-            effectDictionary.Add(dehydrationEffectIndex, new Buff(
+            effectDictionary.Add(dehydrationEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/dehydration",
-                displayName: "dehydration",
+                displayName: "Dehydration",
                 description: "You are as dry as a kindle. Please get yourself something to drink",
                 iconTexture: effectIcons.GetValueSafe("Dehydration"),
                 duration: 1_000
             ));
 
             // fever effect, desc: Someday you just feeling sick. You'd better not doing something to heavy
-            effectDictionary.Add(feverEffectIndex, new Buff(
+            effectDictionary.Add(feverEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/fever",
-                displayName: "fever",
+                displayName: "Fever",
                 description: "Someday you just feeling sick. You'd better not doing something to heavy",
                 iconTexture: effectIcons.GetValueSafe("Fever"),
+                isDebuff: true,
                 duration: 4_800_000
             ));
 
             // stomachache effect, desc: Your gut felt some pain, maybe cook your food next time
-            effectDictionary.Add(stomachacheEffectIndex, new Buff(
+            effectDictionary.Add(stomachacheEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/stomachache",
-                displayName: "stomachache",
+                displayName: "Stomachache",
                 description: "Your gut felt some pain, maybe cook your food next time",
                 iconTexture: effectIcons.GetValueSafe("Stomachache"),
-                duration: 1_000
+                isDebuff: true,
+                duration: 10_000
             ));
 
             // thirst effect, desc: Your throat is dried, it's begging for some liquid
-            effectDictionary.Add(thirstEffectIndex, new Buff(
+            effectDictionary.Add(thirstEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/thirst",
-                displayName: "thirst",
+                displayName: "Thirst",
                 description: "Your throat is dried, it's begging for some liquid",
                 iconTexture: effectIcons.GetValueSafe("Thirst"),
-                duration: 1_000
+                duration: 1_000,
+                effects: new BuffEffects
+                {
+                    MiningLevel = { -1 },
+                    ForagingLevel = { -1 },
+                }
             ));
 
             // hunger effect, desc: Your stomach is growling, better get something to eat
-            effectDictionary.Add(hungerEffectIndex, new Buff(
+            effectDictionary.Add(hungerEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/hunger",
-                displayName: "hunger",
+                displayName: "Hunger",
                 description: "Your stomach is growling, better get something to eat",
                 iconTexture: effectIcons.GetValueSafe("Hunger"),
-                duration: 1_000
+                duration: 1_000,
+                effects: new BuffEffects
+                {
+                    Attack = { -1 },
+                    Defense = { -1 },
+                }
             ));
 
             // well fed effect, desc: You feel fullfilled, life's good
-            effectDictionary.Add(wellFedEffectIndex, new Buff(
+            effectDictionary.Add(wellFedEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/wellfed",
-                displayName: "well fed",
+                displayName: "Well Fed",
                 description: "You feel fullfilled, life's good",
                 iconTexture: effectIcons.GetValueSafe("WellFed"),
-                duration: 1_000
+                duration: 1_000,
+                effects: new BuffEffects
+                {
+                    Attack = { 1 },
+                    Defense = { 1 },
+                }
             ));
 
             // refreshing effect, desc: Lovely temperature, make you so ready for work
-            effectDictionary.Add(refreshingEffectIndex, new Buff(
+            effectDictionary.Add(refreshingEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/refreshing",
-                displayName: "refreshing",
+                displayName: "Refreshing",
                 description: "Lovely temperature, make you so ready for work",
                 iconTexture: effectIcons.GetValueSafe("Refreshing"),
-                duration: 1_000
+                duration: 1_000,
+                effects: new BuffEffects
+                {
+                    Speed = { 1 },
+                    MagneticRadius = { 1 },
+                    MaxStamina = { 20 }
+                }
             ));
 
         }
 
         public static void addEffect(int effectIndex)
         {
-            if (effectIndex == hypothermiaEffectIndex)
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(hypothermiaEffectIndex));
-            else if (effectIndex == hungerEffectIndex)
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(hungerEffectIndex));
-            else if (effectIndex == thirstEffectIndex)
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(thirstEffectIndex));
-            else if (effectIndex == wellFedEffectIndex)
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(wellFedEffectIndex));
-            else if (effectIndex == refreshingEffectIndex)
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(refreshingEffectIndex));
-            else
-                Game1.player.buffs.Apply(effectDictionary.GetValueSafe(effectIndex));
+            var customEff = effectDictionary.GetValueSafe(effectIndex);
+            Game1.player.applyBuff(new Buff(
+                id: customEff.id,
+                displayName: customEff.displayName,
+                description: customEff.description,
+                iconTexture: customEff.iconTexture,
+                duration: customEff.duration,
+                isDebuff: customEff.isDebuff,
+                effects: customEff.effects
+            ));
         }
 
         public static void applyEffect(int effectIndex)
