@@ -125,11 +125,13 @@ namespace StardewSurvivalProject
         public int HealthDrainOnFrostbitePerSecond { get; set; } = 3;
 
         //Reworked Stamina
-        public double StaminaRegenOnNotMovingPerSecond { get; set; } = 2;
-        public double StaminaRegenOnNotRunningPerSecond { get; set; } = 1;
-        public double AdditionalDrainOnToolUse { get; set; } = 100;
-        public double StaminaDrainOnRunningPerTick { get; set; } = 0.002;
-        public double StaminaDrainOnSprintingPerTick { get; set; } = 0.02;
+        public float StaminaRegenOnNotMovingPerSecond { get; set; } = 2f;
+        public float StaminaExtraRegenOnSittingPerSecond { get; set; } = 1f;
+        public float StaminaExtraRegenOnNappingPerSecond { get; set; } = 2f;
+        //public float StaminaRegenOnNotRunningPerSecond { get; set; } = 1f;
+        public double AdditionalDrainOnToolUse { get; set; } = 200;
+        public float StaminaDrainOnRunningPerTick { get; set; } = 0.01f;
+        public float StaminaDrainOnSprintingPerTick { get; set; } = 0.03f;
 
         //Mood mechanic
         public double MoodThresholdForBreakdown { get; set; } = 0;

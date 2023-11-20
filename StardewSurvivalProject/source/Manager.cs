@@ -78,10 +78,23 @@ namespace StardewSurvivalProject.source
                     player.updateHungerThirstDrain(0, -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond);
                 }
 
-                if (ModConfig.GetInstance().UseStaminaRework && !player.bindedFarmer.isMoving())
+                if (ModConfig.GetInstance().UseStaminaRework)
                 {
                     // TODO: make this adjustable
-                    player.bindedFarmer.stamina = Math.Min(player.bindedFarmer.MaxStamina, player.bindedFarmer.stamina + 2f);
+                    var restoredStaminaPerSecond = 0f;
+                    if (!player.bindedFarmer.isMoving())
+                    {
+                        restoredStaminaPerSecond += ModConfig.GetInstance().StaminaRegenOnNotMovingPerSecond;
+                    }
+                    if (player.bindedFarmer.IsSitting())
+                    {
+                        restoredStaminaPerSecond += ModConfig.GetInstance().StaminaExtraRegenOnSittingPerSecond;
+                    }
+                    if (player.bindedFarmer.isInBed.Value)
+                    {
+                        restoredStaminaPerSecond += ModConfig.GetInstance().StaminaExtraRegenOnNappingPerSecond;
+                    }
+                    player.bindedFarmer.stamina = Math.Min(player.bindedFarmer.MaxStamina, player.bindedFarmer.stamina + restoredStaminaPerSecond);
                 }
             }
         }
@@ -250,7 +263,7 @@ namespace StardewSurvivalProject.source
 
             if (ModConfig.GetInstance().UseStaminaRework)
             {
-                float staminaDrainOnRunning = 0.01f * (isSprinting ? 2 : 1);
+                float staminaDrainOnRunning = isSprinting ? ModConfig.GetInstance().StaminaDrainOnSprintingPerTick : ModConfig.GetInstance().StaminaDrainOnRunningPerTick;
                 if (player.bindedFarmer.stamina <= staminaDrainOnRunning)
                 {
                     player.bindedFarmer.setRunning(false, true);
@@ -432,7 +445,7 @@ namespace StardewSurvivalProject.source
             // stamina draining final calculation and application
             if (ModConfig.GetInstance().UseStaminaRework)
             {
-                staminaDrainOnToolUsed *= 2;
+                staminaDrainOnToolUsed *= (float)(ModConfig.GetInstance().AdditionalDrainOnToolUse / 100);
             }
 
             if (isFever)
