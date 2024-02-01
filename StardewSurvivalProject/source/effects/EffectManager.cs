@@ -24,6 +24,7 @@ namespace StardewSurvivalProject.source.effects
         public static int hungerEffectIndex = 45;
         public static int wellFedEffectIndex = 46;
         public static int refreshingEffectIndex = 47;
+        public static int sprintingEffectIndex = 48;
 
         //dictionary include effect index as key, a string int pair value for description and effect duration respectively
         public static Dictionary<int, CustomEffect> effectDictionary = new Dictionary<int, CustomEffect>();
@@ -45,6 +46,7 @@ namespace StardewSurvivalProject.source.effects
             hungerEffectIndex = appendRow * 12 + 9;
             wellFedEffectIndex = appendRow * 12 + 10;
             refreshingEffectIndex = appendRow * 12 + 11;
+            sprintingEffectIndex = appendRow * 12 + 12;
 
             effectDictionary.Add(burnEffectIndex, new CustomEffect(
                 id: "neroyuki.rlvalley/burn",
@@ -181,6 +183,17 @@ namespace StardewSurvivalProject.source.effects
                 }
             ));
 
+            effectDictionary.Add(sprintingEffectIndex, new CustomEffect(
+                id: "neroyuki.rlvalley/sprinting",
+                displayName: "Sprinting",
+                description: "Zoooooommmmmmm",
+                iconTexture: effectIcons.GetValueSafe("Sprinting"),
+                duration: 100,
+                effects: new BuffEffects
+                {
+                    Speed = { 2 }
+                }
+            ));    
         }
 
         public static void addEffect(int effectIndex)

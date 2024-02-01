@@ -197,8 +197,6 @@ namespace StardewSurvivalProject
                 // If in multiplayer, lock the player from moving for 1 hour in-game
                 Game1.player.freezePause = 3600;
             }
-            
-
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -230,6 +228,7 @@ namespace StardewSurvivalProject
                     Texture2D hungerEffectIcon = GetAssetWithPreset(this.Helper, "HungerEffect.png", preset);
                     Texture2D wellFedEffectIcon = GetAssetWithPreset(this.Helper, "WellFedEffect.png", preset);
                     Texture2D refreshingEffectIcon = GetAssetWithPreset(this.Helper, "RefreshingEffect.png", preset);
+                    Texture2D sprintingEffectIcon = GetAssetWithPreset(this.Helper, "SprintingEffect.png", preset);
 
                     // add them all into a key value list
                     Dictionary<string, Texture2D> effectIcons = new Dictionary<string, Texture2D>
@@ -245,7 +244,8 @@ namespace StardewSurvivalProject
                         { "Thirst", thirstEffectIcon },
                         { "Hunger", hungerEffectIcon },
                         { "WellFed", wellFedEffectIcon },
-                        { "Refreshing", refreshingEffectIcon }
+                        { "Refreshing", refreshingEffectIcon },
+                        { "Sprinting", sprintingEffectIcon }
                     };
 
                     source.effects.EffectManager.initialize(effectIcons);

@@ -14,7 +14,6 @@ namespace StardewSurvivalProject.source
         private model.EnvTemp envTemp;
         private String displayString = "";
         private Random rand = null;
-        private bool isSprinting = false;
 
         private string RelativeDataPath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
 
@@ -27,7 +26,6 @@ namespace StardewSurvivalProject.source
         public void init(Farmer farmer)
         {
             player = new model.Player(farmer);
-            isSprinting = false;
             envTemp = new model.EnvTemp();
             displayString = player.getStatStringUI();
             LogHelper.Debug("Manager initialized");
@@ -269,17 +267,11 @@ namespace StardewSurvivalProject.source
                     player.bindedFarmer.setRunning(false, true);
                 }
                 player.bindedFarmer.stamina -= staminaDrainOnRunning;
-                if (isSprinting && this.isSprinting == false)
+                if (isSprinting)
                 {
-                    this.isSprinting = true;
                     // play sprinting sound effect
                     Game1.playSound("daggerswipe");
-                    player.bindedFarmer.addedSpeed += 2;
-                }
-                else if (!isSprinting && this.isSprinting == true)
-                {
-                    this.isSprinting = false;
-                    player.bindedFarmer.addedSpeed -= 2;
+                    effects.EffectManager.applyEffect(effects.EffectManager.sprintingEffectIndex);
                 }
             }
         }
