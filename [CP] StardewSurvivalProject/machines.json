@@ -247,32 +247,6 @@
                         "MinutesUntilReady": 1200
                     }],
                     "AllowFairyDust": false
-                },
-                "(BC)13": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Furnace",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Dirty_Canteen"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 20
-                    }
-                    // TODO: canteen + ice cube rule when possible
-                    ],
-                    "AdditionalConsumedItems": [
-                        {
-                            "ItemId": "(O)388"
-                        }
-                    ],
-                    "AllowFairyDust": true
                 }
             }
         }
