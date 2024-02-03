@@ -1,0 +1,17 @@
+{
+    "Format": "1.30.0",
+    "Changes": [
+		{
+			"Action": "Include",
+			"FromFile": "items.json"
+		},
+		{
+			"Action": "Include",
+			"FromFile": "crafting.json"
+		},
+		{
+			"Action": "Include",
+			"FromFile": "asset.json"
+		}
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "Changes": [
+		{
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "neroyuki.rlvalleycpitems_Canteen": "(O)334 3/Field/neroyuki.rlvalleycpitems_Canteen/false/default/",
+                "neroyuki.rlvalleycpitems_Bandage": "(O)766 2 (O)92 1 (O)711 1/Field/neroyuki.rlvalleycpitems_Bandage/false/none/"
+            }
+        }
+	]
+}
