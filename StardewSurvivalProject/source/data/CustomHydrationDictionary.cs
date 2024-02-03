@@ -17,6 +17,7 @@ namespace StardewSurvivalProject.source.data
     {
         //load a whitelist of item that can be used to heal player (healing value is separated from edibility)
         public static Dictionary<String, HydrationItemData> value_list = new Dictionary<string, HydrationItemData>();
+        public static Dictionary<String, HydrationItemData> wildcard_value_list = new Dictionary<string, HydrationItemData>();
 
         public static void loadList(Mod context)
         {
@@ -29,7 +30,10 @@ namespace StardewSurvivalProject.source.data
                 return;
             }
             for (int i = 0; i < tempArray.Length; i++)
-                value_list.Add(tempArray[i].name, tempArray[i]);
+                if (tempArray[i].name.Contains("*"))
+                    wildcard_value_list.Add(tempArray[i].name, tempArray[i]);
+                else
+                    value_list.Add(tempArray[i].name, tempArray[i]);
             LogHelper.Debug("Hydration Item Data loaded");
         }
 
@@ -41,6 +45,25 @@ namespace StardewSurvivalProject.source.data
             }
             else
             {
+                // iterate through wildcard list
+                foreach (KeyValuePair<string, HydrationItemData> entry in wildcard_value_list)
+                {
+                    // contain match
+                    if (entry.Key.StartsWith("*") && entry.Key.EndsWith("*") && itemName.Contains(entry.Key.Substring(1, entry.Key.Length - 2)))
+                    {
+                        return entry.Value.value;
+                    }
+                    // prefix match
+                    else if (entry.Key.StartsWith("*") && itemName.EndsWith(entry.Key.Substring(1)))
+                    {
+                        return entry.Value.value;
+                    }
+                    // postfix match
+                    else if (entry.Key.EndsWith("*") && itemName.StartsWith(entry.Key.Substring(0, entry.Key.Length - 1)))
+                    {
+                        return entry.Value.value;
+                    }
+                }
                 return 0;
             }
         }
