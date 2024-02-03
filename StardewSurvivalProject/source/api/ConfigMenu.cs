@@ -321,7 +321,7 @@ namespace StardewSurvivalProject.source.api
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
                 optionName: "Hydration on Item Drinking",
-                optionDesc: "Default hydration value restored for player by drinking any items (Default: 10)",
+                optionDesc: "Default hydration value restored for player by drinking any items, items with custom hydration value also scale with this (Default: 10)",
                 optionGet: () => (float)ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems,
                 optionSet: value => ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems = (double)value
             );

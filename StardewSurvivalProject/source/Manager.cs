@@ -287,7 +287,7 @@ namespace StardewSurvivalProject.source
         public void onItemDrinkingUpdate(SObject gameObj, double overrideAddThirst = 0, double coolingModifier = 1)
         {
             if (player == null) return;
-            double addThirst = overrideAddThirst;
+            double addThirst = overrideAddThirst * (ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems / 10);
             if (addThirst == 0) addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
 
             player.updateDrinking(addThirst, coolingModifier);
