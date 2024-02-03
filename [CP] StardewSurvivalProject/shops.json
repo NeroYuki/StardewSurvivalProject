@@ -74,7 +74,7 @@
                     "IsRecipe": true
                 },
                 "neroyuki.rlvalleycpitems_Tall_Air_Conditioner_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner_Receipe",
+                    "Id": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner_Recipe",
                     "ItemId": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner",
                     "Price": 40000,
                     "IsRecipe": true
@@ -86,6 +86,43 @@
             "Target": "Data/Shops",
             "TargetField": [ "Hospital", "Items"  ],
             "Entries": {
+                "neroyuki.rlvalleycpitems_Advanced_Medkit": {
+                    "Id": "neroyuki.rlvalleycpitems_Advanced_Medkit",
+                    "ItemId": "neroyuki.rlvalleycpitems_Advanced_Medkit",
+                    "Price": 1000
+                },
+                "neroyuki.rlvalleycpitems_Bandage": {
+                    "Id": "neroyuki.rlvalleycpitems_Bandage",
+                    "ItemId": "neroyuki.rlvalleycpitems_Bandage",
+                    "Price": 100
+                },
+                "neroyuki.rlvalleycpitems_Bandage_Recipe": {
+                    "Id": "neroyuki.rlvalleycpitems_Bandage_Recipe",
+                    "ItemId": "neroyuki.rlvalleycpitems_Bandage",
+                    "Price": 3000,
+                    "IsRecipe": true
+                },
+                "neroyuki.rlvalleycpitems_Painkiller": {
+                    "Id": "neroyuki.rlvalleycpitems_Painkiller",
+                    "ItemId": "neroyuki.rlvalleycpitems_Painkiller",
+                    "Price": 400
+                },
+                "neroyuki.rlvalleycpitems_Regular_Medkit": {
+                    "Id": "neroyuki.rlvalleycpitems_Regular_Medkit",
+                    "ItemId": "neroyuki.rlvalleycpitems_Regular_Medkit",
+                    "Price": 600
+                },
+                "neroyuki.rlvalleycpitems_Tubular_Bandage": {
+                    "Id": "neroyuki.rlvalleycpitems_Tubular_Bandage",
+                    "ItemId": "neroyuki.rlvalleycpitems_Tubular_Bandage",
+                    "Price": 250
+                },
+                "neroyuki.rlvalleycpitems_Tubular_Bandage_Recipe": {
+                    "Id": "neroyuki.rlvalleycpitems_Tubular_Bandage_Recipe",
+                    "ItemId": "neroyuki.rlvalleycpitems_Tubular_Bandage",
+                    "Price": 3000,
+                    "IsRecipe": true
+                }
             }
         },
         {

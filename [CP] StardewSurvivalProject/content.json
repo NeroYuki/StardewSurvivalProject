@@ -12,6 +12,14 @@
 		{
 			"Action": "Include",
 			"FromFile": "asset.json"
+		},
+		{
+			"Action": "Include",
+			"FromFile": "shops.json"
+		},
+		{
+			"Action": "Include",
+			"FromFile": "machines.json"
 		}
     ]
 }
