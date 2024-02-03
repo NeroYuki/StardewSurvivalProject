@@ -71,7 +71,11 @@ namespace StardewSurvivalProject.source.effects
                 displayName: "Hypothermia",
                 description: "Your skin is getting colder. Please seek a shelter and a campfire.",
                 iconTexture: effectIcons.GetValueSafe("Hypothermia"),
-                duration: 1_000
+                duration: 1_000,
+                effects: new BuffEffects
+                {
+                    Speed = { -2 }
+                }
             ));
 
             // frostbite effect, desc: Your mind is getting numb. I hope your shelter is nearby...
