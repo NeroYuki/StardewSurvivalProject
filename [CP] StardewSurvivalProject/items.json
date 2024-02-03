@@ -227,9 +227,9 @@
                 "neroyuki.rlvalleycpitems_Portable_Heater": {
                     "Name": "Portable Heater",
                     "Displayname": "Portable Heater",
-                    "Description": "Warm you up in cold winter days",
+                    "Description": "Better heating on the go with electricity my friend",
                     "Price": 1,
-                    "Texture": "Better heating on the go with electricity my friend",
+                    "Texture": "Mods/neroyuki.rlvalleycpitems/Portable_Heater",
                     "SpriteIndex": 0
                 },
                 "neroyuki.rlvalleycpitems_Primitive_Water_Filter": {
