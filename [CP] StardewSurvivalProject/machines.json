@@ -4,7 +4,7 @@
             "Action": "EditData",
             "Target": "Data/Machines",
             "Entries": {
-                "neroyuki.rlvalleycpitems_Air_Conditioner": {
+                "(BC)neroyuki.rlvalleycpitems_Air_Conditioner": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Air_Conditioner",
                         "Triggers": [
@@ -23,7 +23,7 @@
                     }],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Air_Cooler": {
+                "(BC)neroyuki.rlvalleycpitems_Air_Cooler": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Air_Cooler",
                         "Triggers": [
@@ -42,7 +42,7 @@
                     }],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Fan": {
+                "(BC)neroyuki.rlvalleycpitems_Fan": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Fan",
                         "Triggers": [
@@ -61,7 +61,7 @@
                     }],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Groundwater_Collector": {
+                "(BC)neroyuki.rlvalleycpitems_Groundwater_Collector": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Groundwater_Collector",
                         "Triggers": [
@@ -80,7 +80,7 @@
                     }],
                     "AllowFairyDust": true
                 },
-                "neroyuki.rlvalleycpitems_Ice_Machine": {
+                "(BC)neroyuki.rlvalleycpitems_Ice_Machine": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Ice_Machine",
                         "Triggers": [
@@ -99,7 +99,7 @@
                     }],
                     "AllowFairyDust": true
                 },
-                "neroyuki.rlvalleycpitems_Magical_Medicine_Stove": {
+                "(BC)neroyuki.rlvalleycpitems_Magical_Medicine_Stove": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Magical_Medicine_Stove",
                         "Triggers": [
@@ -126,7 +126,7 @@
                     ],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Medicine_Worktable": {
+                "(BC)neroyuki.rlvalleycpitems_Medicine_Worktable": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Medicine_Worktable",
                         "Triggers": [
@@ -151,7 +151,7 @@
                     ],
                     "AllowFairyDust": true
                 },
-                "neroyuki.rlvalleycpitems_Passive_Cooler": {
+                "(BC)neroyuki.rlvalleycpitems_Passive_Cooler": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Passive_Cooler",
                         "Triggers": [
@@ -171,7 +171,7 @@
                     }],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Portable_Heater": {
+                "(BC)neroyuki.rlvalleycpitems_Portable_Heater": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Portable_Heater",
                         "Triggers": [
@@ -190,7 +190,7 @@
                     }],
                     "AllowFairyDust": false
                 },
-                "neroyuki.rlvalleycpitems_Primitive_Water_Filter": {
+                "(BC)neroyuki.rlvalleycpitems_Primitive_Water_Filter": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Primitive_Water_Filter",
                         "Triggers": [
@@ -209,14 +209,14 @@
                     }],
                     "AllowFairyDust": true
                 },
-                "neroyuki.rlvalleycpitems_Rain_Collector": {
+                "(BC)neroyuki.rlvalleycpitems_Rain_Collector": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Rain_Collector",
                         "Triggers": [
                             {
                                 "Id": "Cond1",
                                 "RequiredItemId": "neroyuki.rlvalleycpitems_Canteen",
-                                "Condition": "\"ANY \"WEATHER Rain\" \"WEATHER Storm\"\" LOCATION_IS_OUTDOOR Target"
+                                "Condition": "ANY \"WEATHER Target Rain\" \"WEATHER Target Storm\", LOCATION_IS_OUTDOORS Target"
                             }
                         ],
                         "OutputItem": [
@@ -229,7 +229,7 @@
                     }],
                     "AllowFairyDust": true
                 },
-                "neroyuki.rlvalleycpitems_Tall_Air_Conditioner": {
+                "(BC)neroyuki.rlvalleycpitems_Tall_Air_Conditioner": {
                     "OutputRules": [{
                         "Id": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner",
                         "Triggers": [
