@@ -45,6 +45,7 @@
                     "Category": -81,    //Greens
                     "Price": 20,
                     "Edibility": 0,
+                    "IsDrink": true,
                     "Texture": "Mods/neroyuki.rlvalleycpitems/Dirty_Canteen",
                     "SpriteIndex": 0
                 },
@@ -56,6 +57,7 @@
                     "Category": -26,    // ArtisanGoods
                     "Price": 20,
                     "Edibility": 0,
+                    "IsDrink": true,
                     "Texture": "Mods/neroyuki.rlvalleycpitems/Joja_Fresh_Water",
                     "SpriteIndex": 0
                 },
@@ -67,6 +69,7 @@
                     "Category": -26,    // ArtisanGoods
                     "Price": 20,
                     "Edibility": 0,
+                    "IsDrink": true,
                     "Texture": "Mods/neroyuki.rlvalleycpitems/Full_Canteen",
                     "SpriteIndex": 0
                 },
@@ -100,6 +103,7 @@
                     "Category": -26,    // ArtisanGoods
                     "Price": 20,
                     "Edibility": 0,
+                    "IsDrink": true,
                     "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Water_Canteen",
                     "SpriteIndex": 0
                 },
