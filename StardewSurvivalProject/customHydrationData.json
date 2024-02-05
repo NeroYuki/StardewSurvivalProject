@@ -4,16 +4,29 @@
     "value": 8
   },
   {
+    "name": "Joja Sport Drink",
+    "value": 18
+  },
+  {
     "name": "Full Canteen",
     "value": 20
   },
   {
     "name": "Dirty Canteen",
-    "value": 20
+    "value": 15
   },
   {
     "name": "Ice Water Canteen",
-    "value": 20,
+    "value": 22,
+    "coolingModifier": 5
+  },
+  {
+    "name": "Ionized Full Canteen",
+    "value": 30
+  },
+  {
+    "name": "Ice Ionized Water Canteen",
+    "value": 35,
     "coolingModifier": 5
   },
   {
@@ -89,7 +102,28 @@
     "name": "Coffee",
     "value": 5
   },
+  {
+    "name": "Joja Cola",
+    "value": 5
+  },
   //PPJA Items
+  {
+    "name": "*Soda",
+    "value": 8
+  },
+  {
+    "name": "*Cocktail",
+    "value": 5
+  },
+  {
+    "name": "*Tea",
+    "value": 5
+  },
+  {
+    "name": "*Hot Cocoa",
+    "value": 5,
+    "coolingModifier": -2
+  },
   {
     "name": "Algae Soup",
     "value": 3,

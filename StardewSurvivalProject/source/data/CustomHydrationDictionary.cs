@@ -31,17 +31,34 @@ namespace StardewSurvivalProject.source.data
             }
             for (int i = 0; i < tempArray.Length; i++)
                 if (tempArray[i].name.Contains("*"))
-                    wildcard_value_list.Add(tempArray[i].name, tempArray[i]);
+                    wildcard_value_list.TryAdd(tempArray[i].name, tempArray[i]);
                 else
-                    value_list.Add(tempArray[i].name, tempArray[i]);
+                    value_list.TryAdd(tempArray[i].name, tempArray[i]);
             LogHelper.Debug("Hydration Item Data loaded");
         }
 
         public static double getHydrationValue(string itemName)
         {
+            return getItemData(itemName)?.value ?? 0;
+        }
+
+        public static double getCoolingModifierValue(string itemName)
+        {
+            return getItemData(itemName)?.coolingModifier ?? 1;
+        }
+
+        public static (double, double) getHydrationAndCoolingModifierValue(string itemName, bool isDrinkable)
+        {
+            HydrationItemData data = getItemData(itemName);
+            return (data?.value ?? (isDrinkable ? ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems : 0), data?.coolingModifier ?? 0);
+        }
+
+        public static HydrationItemData getItemData(string itemName)
+        {
+            // should we match case-insensitive?
             if (value_list.ContainsKey(itemName))
             {
-                return value_list[itemName].value;
+                return value_list[itemName];
             }
             else
             {
@@ -51,45 +68,19 @@ namespace StardewSurvivalProject.source.data
                     // contain match
                     if (entry.Key.StartsWith("*") && entry.Key.EndsWith("*") && itemName.Contains(entry.Key.Substring(1, entry.Key.Length - 2)))
                     {
-                        return entry.Value.value;
+                        return entry.Value;
                     }
                     // prefix match
                     else if (entry.Key.StartsWith("*") && itemName.EndsWith(entry.Key.Substring(1)))
                     {
-                        return entry.Value.value;
+                        return entry.Value;
                     }
                     // postfix match
                     else if (entry.Key.EndsWith("*") && itemName.StartsWith(entry.Key.Substring(0, entry.Key.Length - 1)))
                     {
-                        return entry.Value.value;
+                        return entry.Value;
                     }
                 }
-                return 0;
-            }
-        }
-
-        public static double getCoolingModifierValue(string itemName)
-        {
-            if (value_list.ContainsKey(itemName))
-            {
-                double res = value_list[itemName].coolingModifier;
-                if (res < 0) return 1;
-                else return res;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-
-        public static HydrationItemData getItemData(string itemName)
-        {
-            if (value_list.ContainsKey(itemName))
-            {
-                return value_list[itemName];
-            }
-            else
-            {
                 return null;
             }
         }
