@@ -21,7 +21,8 @@
                 "neroyuki.rlvalleycpitems_Primitive_Water_Filter": "(O)388 50 (O)169 2 (O)771 5 (O)382 5/Field/neroyuki.rlvalleycpitems_Primitive_Water_Filter/true/default/",
                 "neroyuki.rlvalleycpitems_Rain_Collector": "(O)771 20 (O)388 30 (O)169 2/Field/neroyuki.rlvalleycpitems_Rain_Collector/true/default/",
                 "neroyuki.rlvalleycpitems_Rain_Collector_2": "(O)771 20 (O)388 30 (O)709 1/Field/neroyuki.rlvalleycpitems_Rain_Collector/true/default/",
-                "neroyuki.rlvalleycpitems_Tall_Air_Conditioner": "(O)336 15 (O)337 5 (O)338 30/Field/neroyuki.rlvalleycpitems_Tall_Air_Conditioner/true/none/"
+                "neroyuki.rlvalleycpitems_Tall_Air_Conditioner": "(O)336 15 (O)337 5 (O)338 30/Field/neroyuki.rlvalleycpitems_Tall_Air_Conditioner/true/none/",
+                "neroyuki.rlvalleycpitems_Ionizing_Machine": "((O)335 10 (O)334 10 (O)787 2/Field/neroyuki.rlvalleycpitems_Ionizing_Machine/true/none/"
             }
         }
 	]

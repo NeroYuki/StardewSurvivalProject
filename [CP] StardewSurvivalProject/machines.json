@@ -247,6 +247,40 @@
                         "MinutesUntilReady": 1200
                     }],
                     "AllowFairyDust": false
+                },
+                "(BC)neroyuki.rlvalleycpitems_Ionizing_Machine": {
+                    "OutputRules": [{
+                        "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine",
+                        "Triggers": [
+                            {
+                                "Id": "Cond1",
+                                "RequiredItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
+                            }
+                        ],
+                        "OutputItem": [
+                            {
+                                "Id": "Out1",
+                                "ItemId": "neroyuki.rlvalleycpitems_Ionized_Full_Canteen"
+                            }
+                        ],
+                        "MinutesUntilReady": 20
+                    }, {
+                        "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine_2",
+                        "Triggers": [
+                            {
+                                "Id": "Cond1",
+                                "RequiredItemId": "neroyuki.rlvalleycpitems_Ice_Water_Canteen"
+                            }
+                        ],
+                        "OutputItem": [
+                            {
+                                "Id": "Out1",
+                                "ItemId": "neroyuki.rlvalleycpitems_Ice_Ionized_Water_Canteen"
+                            }
+                        ],
+                        "MinutesUntilReady": 20
+                    }],
+                    "AllowFairyDust": true
                 }
             }
         }

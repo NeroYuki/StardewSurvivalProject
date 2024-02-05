@@ -124,6 +124,26 @@
             "Action": "Load",
             "Target": "Mods/neroyuki.rlvalleycpitems/Tall_Air_Conditioner",
             "FromFile": "assets/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/neroyuki.rlvalleycpitems/Ionized_Full_Canteen",
+            "FromFile": "assets/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/neroyuki.rlvalleycpitems/Ice_Ionized_Water_Canteen",
+            "FromFile": "assets/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/neroyuki.rlvalleycpitems/Ionizing_Machine",
+            "FromFile": "assets/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/neroyuki.rlvalleycpitems/Joja_Sport_Drink",
+            "FromFile": "assets/{{TargetWithoutPath}}.png"
         }
     ]
 }

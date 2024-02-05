@@ -52,7 +52,7 @@
                 "neroyuki.rlvalleycpitems_Joja_Fresh_Water": {
                     "Name": "Joja Fresh Water",
                     "Displayname": "Joja Fresh Water",
-                    "Description": "A bottle of Joja\'s fresh water brand. I hope they don\'t put anything weird inside",
+                    "Description": "A bottle of Joja's fresh water brand. I hope they don't put anything weird inside",
                     "Type": "Basic",
                     "Category": -26,    // ArtisanGoods
                     "Price": 20,
@@ -157,6 +157,42 @@
                         }
                     },
                     "SpriteIndex": 0
+                },
+                "neroyuki.rlvalleycpitems_Ice_Ionized_Water_Canteen": {
+                    "Name": "Ice Ionized Water Canteen",
+                    "Displayname": "Ice Ionized Water Canteen",
+                    "Description": "Ionized water, now with the power of ice. It's like drinking a thunderstorm!",
+                    "Type": "Basic",
+                    "Category": -26,    // ArtisanGoods
+                    "Price": 30,
+                    "Edibility": 0,
+                    "IsDrink": true,
+                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Ionized_Water_Canteen",
+                    "SpriteIndex": 0
+                },
+                "neroyuki.rlvalleycpitems_Ionized_Full_Canteen": {
+                    "Name": "Ionized Full Canteen",
+                    "Displayname": "Ionized Full Canteen",
+                    "Description": "Ionized water, now with the power of electricity. It's electrifying!",
+                    "Type": "Basic",
+                    "Category": -26,    // ArtisanGoods
+                    "Price": 30,
+                    "Edibility": 0,
+                    "IsDrink": true,
+                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ionized_Full_Canteen",
+                    "SpriteIndex": 0
+                },
+                "neroyuki.rlvalleycpitems_Joja_Sport_Drink": {
+                    "Name": "Joja Sport Drink",
+                    "Displayname": "Joja Sport Drink",
+                    "Description": "A bottle of Joja's sport drink. Energize yourself like never before!",
+                    "Type": "Basic",
+                    "Category": -26,    // ArtisanGoods
+                    "Price": 30,
+                    "Edibility": 0,
+                    "IsDrink": true,
+                    "Texture": "Mods/neroyuki.rlvalleycpitems/Joja_Sport_Drink",
+                    "SpriteIndex": 0
                 }
             }
         },
@@ -258,6 +294,14 @@
                     "Description": "Taller, better, look good in your house as well",
                     "Price": 1,
                     "Texture": "Mods/neroyuki.rlvalleycpitems/Tall_Air_Conditioner",
+                    "SpriteIndex": 0
+                },
+                "neroyuki.rlvalleycpitems_Ionizing_Machine": {
+                    "Name": "Ionizing Machine",
+                    "Displayname": "Ionizing Machine",
+                    "Description": "Ionize your water, take the lighting to your bottle!",
+                    "Price": 1,
+                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ionizing_Machine",
                     "SpriteIndex": 0
                 }
             }

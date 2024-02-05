@@ -15,6 +15,12 @@
                     "ItemId": "neroyuki.rlvalleycpitems_Ice_Machine",
                     "Price": 15000,
                     "IsRecipe": true
+                },
+                "neroyuki.rlvalleycpitems_Ionizing_Machine_Recipe": {
+                    "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine_Recipe",
+                    "ItemId": "neroyuki.rlvalleycpitems_Ionizing_Machine",
+                    "Price": 15000,
+                    "IsRecipe": true
                 }
             }
         },
@@ -134,6 +140,11 @@
                     "Id": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
                     "ItemId": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
                     "Price": 45
+                },
+                "neroyuki.rlvalleycpitems_Joja_Sports_Drink": {
+                    "Id": "neroyuki.rlvalleycpitems_Joja_Sports_Drink",
+                    "ItemId": "neroyuki.rlvalleycpitems_Joja_Sports_Drink",
+                    "Price": 100
                 }
             }
         }
