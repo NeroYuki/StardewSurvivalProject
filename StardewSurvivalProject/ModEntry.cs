@@ -116,6 +116,7 @@ namespace StardewSurvivalProject
             source.data.CustomEnvironmentDictionary.loadList(this);
             source.data.TempControlObjectDictionary.loadList(this);
             source.data.ClothingTempResistantDictionary.loadList(this);
+            source.data.CustomHungerDictionary.loadList(this);
 
             instance = new source.Manager();
 
@@ -492,22 +493,6 @@ namespace StardewSurvivalProject
             SObject ateItem = Game1.player.itemToEat as SObject;
             //this.Monitor.Log($"{Game1.player.name} ate {ateItem.name}");
             instance.onEatingFood(ateItem);
-
-            //for whatever reason the field determine whether a player can drink the "edible" is never exposed in the SObject field
-            //the result is this abhorent
-            double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
-            double coolingModifier = source.data.CustomHydrationDictionary.getCoolingModifierValue(ateItem.name);
-
-            // var arrInfo = Game1.objectInformation[ateItem.ParentSheetIndex].Split('/');
-            var isDrinkable = Game1.objectData[ateItem.ItemId].IsDrink;
-            if (addThirst != 0)
-            {
-                instance.onItemDrinkingUpdate(ateItem, addThirst, coolingModifier);
-            }
-            else if (isDrinkable)
-            {
-                instance.onItemDrinkingUpdate(ateItem, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems, coolingModifier);
-            }
         }
 
         private void OnItemUsed(object sender, EventArgs e)

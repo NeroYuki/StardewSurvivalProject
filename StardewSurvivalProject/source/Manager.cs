@@ -140,24 +140,43 @@ namespace StardewSurvivalProject.source
                 }
             }
 
-            //check if eaten food is cooked or artisan product, if no apply chance for stomachache effect
+            //check if eaten food is cooked or artisan product, if not apply chance for stomachache effect
             if (gameObj.Category != SObject.CookingCategory && gameObj.Category != SObject.artisanGoodsCategory)
             {
                 if (rand.NextDouble() * 100 >= (100 - ModConfig.GetInstance().PercentageChanceGettingStomachache))
                     effects.EffectManager.applyEffect(effects.EffectManager.stomachacheEffectIndex);
             }
 
+            // handle thirst restoration (default 0, 0) 
+            var isDrinkable = Game1.objectData[gameObj.ItemId].IsDrink;
+            (double addThirst, double coolingModifier) = data.CustomHydrationDictionary.getHydrationAndCoolingModifierValue(gameObj.Name, isDrinkable);
+
+            if (addThirst != 0)
+            {
+                onItemDrinkingUpdate(gameObj, addThirst, coolingModifier);
+            }
+            else if (isDrinkable)
+            {
+                // all drinkable should cool player down very slightly
+                coolingModifier = 1;
+                onItemDrinkingUpdate(gameObj, ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems, coolingModifier);
+            }
+
             //band-aid fix coming, if edibility is 1 and healing value is not 0, dont add hunger
             //TODO: document this weird anomaly
             int healingValue = data.HealingItemDictionary.getHealingValue(gameObj.name);
             if (healingValue > 0 && gameObj.Edibility == 1) return;
+            // fix for painkiller
             if (healingValue > 0 && gameObj.Edibility < 0 && gameObj.Edibility != -300)
             {
                 player.bindedFarmer.health = Math.Min(player.bindedFarmer.maxHealth, player.bindedFarmer.health + healingValue);
             }
 
-            double addHunger = (gameObj.Edibility >= 0)? (gameObj.Edibility * ModConfig.GetInstance().HungerGainMultiplierFromItemEdibility) + (gameObj.Quality / 2.5 * gameObj.Edibility) : 0;
-            player.updateEating(addHunger);
+            // handle hunger restoration (default 1, 0)
+            (double addHunger, double hungerCoolingModifier) = data.CustomHungerDictionary.getHungerModifierAndCoolingModifierValue(gameObj, isDrinkable);
+
+            // if coolerModifier is non-default value, do not apply the hungerCoolingModifier further
+            player.updateEating(addHunger, coolingModifier == 0 ? hungerCoolingModifier : 0);
                 
             displayString = player.getStatStringUI();
         }
