@@ -1,5 +1,11 @@
 {
     "Format": "1.30.0",
+	"ConfigSchema": {
+      "Spriteset": {
+         "AllowValues": "Default, Legacy",
+         "Default": "Default"
+      }
+   },
     "Changes": [
 		{
 			"Action": "Include",

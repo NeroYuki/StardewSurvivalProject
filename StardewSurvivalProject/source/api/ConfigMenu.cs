@@ -125,7 +125,7 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Change UI Texture of the mod to fit better with popular re-texture mods (Default: Auto - Auto-detect re-texture mods in the game and pick the appropriate preset) - Save and restart the game to apply this change",
                 optionGet: () => ModConfig.GetInstance().RetexturePreset,
                 optionSet: value => ModConfig.GetInstance().RetexturePreset = value,
-                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy" }
+                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy", "legacy"}
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
