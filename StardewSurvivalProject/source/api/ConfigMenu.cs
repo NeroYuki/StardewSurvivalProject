@@ -535,6 +535,16 @@ namespace StardewSurvivalProject.source.api
                 optionGet: () => (float)ModConfig.GetInstance().EnvironmentBaseTemperature,
                 optionSet: value => ModConfig.GetInstance().EnvironmentBaseTemperature = (double)value
             );
+            api.RegisterClampedOption(
+                mod: context.ModManifest,
+                optionName: "Indoor Temperature Multiplier",
+                optionDesc: "Impact of the building on temperature",
+                optionGet: () => (float)ModConfig.GetInstance().IndoorTemperatureMultiplier,
+                optionSet: value => ModConfig.GetInstance().IndoorTemperatureMultiplier = (double)value,
+                min: 0f,
+                max: 1f,
+                interval: 0.1f
+            );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
                 optionName: "Day/Night Cycle Scale",
