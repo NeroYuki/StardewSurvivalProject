@@ -538,12 +538,22 @@ namespace StardewSurvivalProject.source.api
             api.RegisterClampedOption(
                 mod: context.ModManifest,
                 optionName: "Indoor Temperature Multiplier",
-                optionDesc: "Impact of the building on temperature",
+                optionDesc: "Impact of the building on temperature (Default: 0.5)",
                 optionGet: () => (float)ModConfig.GetInstance().IndoorTemperatureMultiplier,
                 optionSet: value => ModConfig.GetInstance().IndoorTemperatureMultiplier = (double)value,
                 min: 0f,
                 max: 1f,
-                interval: 0.1f
+                interval: 0.01f
+            );
+            api.RegisterClampedOption(
+                mod: context.ModManifest,
+                optionName: "Farm Indoor Temperature Multiplier",
+                optionDesc: "Impact of the farm building on temperature (Default: 0.9)",
+                optionGet: () => (float)ModConfig.GetInstance().FarmIndoorTemperatureMultiplier,
+                optionSet: value => ModConfig.GetInstance().FarmIndoorTemperatureMultiplier = (double)value,
+                min: 0f,
+                max: 1f,
+                interval: 0.01f
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
