@@ -268,8 +268,8 @@ namespace StardewSurvivalProject.source.api
                 mod: context.ModManifest,
                 optionName: "% threshold for Thirst",
                 optionDesc: "Thirst effect will be applied if Thirst value drop below this threshold (Default: 25, Effect is disabled if value below 0)",
-                optionGet: () => (float)ModConfig.GetInstance().HungerEffectPercentageThreshold,
-                optionSet: value => ModConfig.GetInstance().HungerEffectPercentageThreshold = (double)value,
+                optionGet: () => (float)ModConfig.GetInstance().ThirstEffectPercentageThreshold,
+                optionSet: value => ModConfig.GetInstance().ThirstEffectPercentageThreshold = (double)value,
                 min: -1f,
                 max: 100f,
                 interval: 0.1f
