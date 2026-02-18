@@ -1,13 +1,14 @@
 ﻿using StardewSurvivalProject.source.effects;
+using StardewSurvivalProject.source.core;
 
 namespace StardewSurvivalProject.source.commands
 {
     public class Commands
     {
-        private Manager instance = null;
-        public Commands(Manager instance)
+        private GameStateManager gameState = null;
+        public Commands(GameStateManager gameState)
         {
-            this.instance = instance;
+            this.gameState = gameState;
         }
         public void SetHungerCmd(string cmd, string[] args)
         {
@@ -16,7 +17,7 @@ namespace StardewSurvivalProject.source.commands
                 if (args.Length != 1)
                     LogHelper.Info("Usage: player_sethunger <amt>");
                 else {
-                    instance.setPlayerHunger(double.Parse(args[0]));
+                    gameState.setPlayerHunger(double.Parse(args[0]));
                     LogHelper.Info($"Ok, set player hunger level to {args[0]}");
                 }
                     
@@ -31,7 +32,7 @@ namespace StardewSurvivalProject.source.commands
                     LogHelper.Info("Usage: player_setthirst <amt>");
                 else
                 {
-                    instance.setPlayerThirst(double.Parse(args[0]));
+                    gameState.setPlayerThirst(double.Parse(args[0]));
                     LogHelper.Info($"Ok, set player thirst level to {args[0]}");
                 }
             }
@@ -45,7 +46,7 @@ namespace StardewSurvivalProject.source.commands
                     LogHelper.Info("Usage: player_settemp <temp>");
                 else
                 {
-                    instance.setPlayerBodyTemp(double.Parse(args[0]));
+                    gameState.setPlayerBodyTemp(double.Parse(args[0]));
                     LogHelper.Info($"Ok, set player body temperature to {args[0]}C");
                 }
             }
@@ -59,7 +60,7 @@ namespace StardewSurvivalProject.source.commands
                     LogHelper.Info("Usage: player_setmood <mood>");
                 else
                 {
-                    instance.setPlayerMood(double.Parse(args[0]));
+                    gameState.setPlayerMood(double.Parse(args[0]));
                     LogHelper.Info($"Ok, set player mood to {args[0]}");
                 }
             }

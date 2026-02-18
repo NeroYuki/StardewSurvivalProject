@@ -16,34 +16,15 @@ namespace StardewSurvivalProject
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        private source.Manager instance;
+        // New refactored systems
+        private source.core.GameStateManager gameState;
+        private source.ui.AssetLoader assetLoader;
+        private source.ui.HudRenderer hudRenderer;
         private source.commands.Commands commandManager;
-        private Texture2D HungerBar;
-        private Texture2D ThirstBar;
-        private Texture2D EnvTempBar;
-        private Texture2D BodyTempBar;
-        private Texture2D TempIndicator;
-        private Texture2D fillRect;
-        private Texture2D TempRangeIndicator;
-        private List<Texture2D> MoodIcons;
-        private int buffIconAppendRow = 2;
-        //expose for harmony patches
+
+        // Expose for harmony patches
         public static Texture2D InfoIcon;
         public static Texture2D ModIcon;
-
-        public Texture2D GetAssetWithPreset(IModHelper helper, string assetFileName, string preset)
-        {
-            Texture2D tex = helper.ModContent.Load<Texture2D>(String.Format("assets/{0}", assetFileName));
-            try
-            {
-                if (!preset.Equals("default")) tex = helper.ModContent.Load<Texture2D>(String.Format("assets/{0}/{1}", preset, assetFileName));
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log(String.Format("Failed to load texture {0} from preset {1}, fallback to default", assetFileName, preset), LogLevel.Warn);
-            }
-            return tex;
-        }
 
         /*********
         ** Public methods
@@ -118,45 +99,23 @@ namespace StardewSurvivalProject
             source.data.ClothingTempResistantDictionary.loadList(this);
             source.data.CustomHungerDictionary.loadList(this);
 
-            instance = new source.Manager();
-
+            // Initialize new refactored systems
+            gameState = new source.core.GameStateManager(helper);
+            assetLoader = new source.ui.AssetLoader(helper, this.Monitor);
+            
             this.Monitor.Log("Initiating Harmony patches", LogLevel.Debug);
             source.harmony_patches.HarmonyPatches.InitPatches(this.ModManifest.UniqueID, this.Monitor);
 
-            //Load assets
-            string preset = ModConfig.GetInstance().RetexturePreset;
-            if (preset.Equals("auto"))
-            {
-                if (helper.ModRegistry.Get("ManaKirel.VintageInterface2") != null) preset = "vintage2";
-                else if (helper.ModRegistry.Get("Maraluna.OvergrownFloweryInterface") != null) preset = "overgrown";
-                else if (helper.ModRegistry.Get("DaisyNiko.EarthyRecolour") != null) preset = "earthy";
-                else preset = "default";
-            } 
+            // Load all assets using new AssetLoader
+            assetLoader.LoadAllAssets();
+            InfoIcon = assetLoader.InfoIcon;
+            ModIcon = assetLoader.ModIcon;
 
-            this.HungerBar = GetAssetWithPreset(helper, "HungerBar.png", preset);
-            this.ThirstBar = GetAssetWithPreset(helper, "ThirstBar.png", preset);
-            this.EnvTempBar = GetAssetWithPreset(helper, "EnvTempBar.png", preset);
-            this.BodyTempBar = GetAssetWithPreset(helper, "BodyTempBar.png", preset);
-            this.TempIndicator = GetAssetWithPreset(helper, "TempIndicator.png", preset);
-            this.fillRect = GetAssetWithPreset(helper, "fillRect.png", preset);
-            this.TempRangeIndicator = GetAssetWithPreset(helper, "TempRangeIndicator.png", preset);
-            this.MoodIcons = new List<Texture2D> { 
-                GetAssetWithPreset(helper, "MoodMentalBreak.png", preset),
-                GetAssetWithPreset(helper, "MoodDistress.png", preset),
-                GetAssetWithPreset(helper, "MoodSad.png", preset),
-                GetAssetWithPreset(helper, "MoodDiscontent.png", preset),
-                GetAssetWithPreset(helper, "MoodNeutral.png", preset),
-                GetAssetWithPreset(helper, "MoodContent.png", preset),
-                GetAssetWithPreset(helper, "MoodHappy.png", preset),
-                GetAssetWithPreset(helper, "MoodOverjoy.png", preset),
-            };
+            // Initialize HUD renderer (will be created after gameState is initialized)
+            // hudRenderer is created in OnLoadedSave when we have a valid player
 
-
-            InfoIcon = GetAssetWithPreset(helper, "InfoIcon.png", preset);
-            ModIcon = GetAssetWithPreset(helper, "ModIcon.png", preset);
-
-            //load command
-            commandManager = new source.commands.Commands(instance);
+            // Load console commands
+            commandManager = new source.commands.Commands(gameState);
             helper.ConsoleCommands.Add("player_sethunger", "Set your hunger to a specified amount", commandManager.SetHungerCmd);
             helper.ConsoleCommands.Add("player_setthirst", "Set your hydration level to a specified amount", commandManager.SetThirstCmd);
             helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
@@ -204,51 +163,11 @@ namespace StardewSurvivalProject
         {
             if (e.Name.IsEquivalentTo("TileSheets/BuffsIcons"))
             {
-                string preset = ModConfig.GetInstance().RetexturePreset;
-                if (preset.Equals("auto"))
-                {
-                    if (this.Helper.ModRegistry.Get("ManaKirel.VintageInterface2") != null) preset = "vintage2";
-                    else if (this.Helper.ModRegistry.Get("Maraluna.OvergrownFloweryInterface") != null) preset = "overgrown";
-                    else if (this.Helper.ModRegistry.Get("DaisyNiko.EarthyRecolour") != null) preset = "earthy";
-                    else preset = "default";
-                }
-
                 e.Edit(assets =>
                 {
                     var editor = assets.AsImage();
-
-                    Texture2D burnEffectIcon = GetAssetWithPreset(this.Helper, "BurnEffect.png", preset);
-                    Texture2D starvationEffectIcon = GetAssetWithPreset(this.Helper, "StarvationEffect.png", preset);
-                    Texture2D hypothermiaEffectIcon = GetAssetWithPreset(this.Helper, "HypothermiaEffect.png", preset);
-                    Texture2D frostbiteEffectIcon = GetAssetWithPreset(this.Helper, "FrostbiteEffect.png", preset);
-                    Texture2D heatstrokeEffectIcon = GetAssetWithPreset(this.Helper, "HeatstrokeEffect.png", preset);
-                    Texture2D dehydrationEffectIcon = GetAssetWithPreset(this.Helper, "DehydratedEffect.png", preset);
-                    Texture2D feverEffectIcon = GetAssetWithPreset(this.Helper, "FeverEffect.png", preset);
-                    Texture2D stomachacheEffectIcon = GetAssetWithPreset(this.Helper, "StomachaceEffect.png", preset);
-                    Texture2D thirstEffectIcon = GetAssetWithPreset(this.Helper, "ThirstEffect.png", preset);
-                    Texture2D hungerEffectIcon = GetAssetWithPreset(this.Helper, "HungerEffect.png", preset);
-                    Texture2D wellFedEffectIcon = GetAssetWithPreset(this.Helper, "WellFedEffect.png", preset);
-                    Texture2D refreshingEffectIcon = GetAssetWithPreset(this.Helper, "RefreshingEffect.png", preset);
-                    Texture2D sprintingEffectIcon = GetAssetWithPreset(this.Helper, "SprintingEffect.png", preset);
-
-                    // add them all into a key value list
-                    Dictionary<string, Texture2D> effectIcons = new Dictionary<string, Texture2D>
-                    {
-                        { "Burn", burnEffectIcon },
-                        { "Starvation", starvationEffectIcon },
-                        { "Hypothermia", hypothermiaEffectIcon },
-                        { "Frostbite", frostbiteEffectIcon },
-                        { "Heatstroke", heatstrokeEffectIcon },
-                        { "Dehydration", dehydrationEffectIcon },
-                        { "Fever", feverEffectIcon },
-                        { "Stomachache", stomachacheEffectIcon },
-                        { "Thirst", thirstEffectIcon },
-                        { "Hunger", hungerEffectIcon },
-                        { "WellFed", wellFedEffectIcon },
-                        { "Refreshing", refreshingEffectIcon },
-                        { "Sprinting", sprintingEffectIcon }
-                    };
-
+                    // Use AssetLoader to load effect icons
+                    Dictionary<string, Texture2D> effectIcons = assetLoader.LoadEffectIcons();
                     source.effects.EffectManager.initialize(effectIcons);
                 });
             }
@@ -259,7 +178,7 @@ namespace StardewSurvivalProject
         {
             if (e.Name.IsEquivalentTo("TileSheets/BuffsIcons"))
             {
-                this.Monitor.Log("Buff Icon has been loaded, number of row " + buffIconAppendRow, LogLevel.Debug);
+                this.Monitor.Log($"Buff Icon has been loaded with preset: {assetLoader.GetCurrentPreset()}", LogLevel.Debug);
 
             }
         } 
@@ -269,7 +188,7 @@ namespace StardewSurvivalProject
         {
             if (!Context.IsWorldReady) return;
             
-            instance.onDayEnding();
+            gameState.OnDayEnding();
         }
 
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -279,14 +198,16 @@ namespace StardewSurvivalProject
 
             if (Game1.player.running && Game1.player.isMoving())
             {
-                // check if player is holding the sprint button
-                // TODO: check for controller button (should be locked)
-                bool isSprinting = ModConfig.GetInstance().UseStaminaRework && Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SprintButton);
-                instance.updateOnRunning(isSprinting);
+                bool isSprinting = ModConfig.GetInstance().UseStaminaRework && 
+                    Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SprintButton);
+                
+                gameState.OnRunning(isSprinting);
+                gameState.OnRunningWithStamina(isSprinting);
             }
+            
             if (Game1.player.health <= 0 || Game1.player.stamina <= -15)
             {
-                instance.ResetPlayerHungerAndThirst();
+                gameState.ResetPlayerStats();
             }
         }
 
@@ -302,7 +223,7 @@ namespace StardewSurvivalProject
             if (Game1.player.CurrentItem != null)
             {
                 if (!(Game1.player.CurrentTool is StardewValley.Tools.WateringCan)
-                    && !(Game1.player.CurrentItem.Name.Equals("Canteen"))) return;
+                    && !Game1.player.CurrentItem.Name.Equals("Canteen")) return;
             }
 
             //if player is eating or drinking, don't do anything
@@ -331,7 +252,7 @@ namespace StardewSurvivalProject
                 if (Game1.player.CurrentTool is StardewValley.Tools.WateringCan && ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft >= ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking)
                 {
                     ((StardewValley.Tools.WateringCan)Game1.player.CurrentTool).WaterLeft -= (int)ModConfig.GetInstance().HydrationGainOnEnvironmentWaterDrinking;
-                    instance.onEnvDrinkingUpdate(false, true);
+                    gameState.OnEnvironmentalDrink(false, true);
                     this.Monitor.Log("drank from watering can");
                 }
                 else
@@ -357,141 +278,35 @@ namespace StardewSurvivalProject
 
                 if (ModConfig.GetInstance().EnvironmentHydrationMode == "strict" && !Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SecondaryLayerButton)) return;
 
-                instance.onEnvDrinkingUpdate(isOcean, isWater);
+                gameState.OnEnvironmentalDrink(isOcean, isWater);
             }
         }
 
         private void OnRenderedHud(object sender, RenderedHudEventArgs e)
         {
-            if (!Context.IsWorldReady || Game1.eventUp)
+            if (!Context.IsWorldReady || Game1.eventUp || hudRenderer == null)
                 return;
 
-            if (Game1.activeClickableMenu != null)
-            {
-                //Game1.tooltip
-            }
-
-            SpriteBatch b = e.SpriteBatch;
-
-            //currently hardcoded
-            //TODO: move this to manager
-
-            int OffsetX = ModConfig.GetInstance().UIOffsetX;
-            int OffsetY = ModConfig.GetInstance().UIOffsetY;
-            float Scale = ModConfig.GetInstance().UIScale;
-            bool overlayComfyTemp = ModConfig.GetInstance().IndicateComfortableTemperatureRange;
-            bool overlaySaturation = ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal;
-
-            Vector2 hunger_pos = new Vector2(OffsetX, OffsetY);
-            b.Draw(this.HungerBar, hunger_pos, new Rectangle(0, 0, this.HungerBar.Width, this.HungerBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            Vector2 thirst_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 1);
-            b.Draw(this.ThirstBar, thirst_pos, new Rectangle(0, 0, this.ThirstBar.Width, this.ThirstBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            Vector2 env_temp_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 2);
-            b.Draw(this.EnvTempBar, env_temp_pos, new Rectangle(0, 0, this.EnvTempBar.Width, this.EnvTempBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            Vector2 body_temp_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 3);
-            b.Draw(this.BodyTempBar, body_temp_pos, new Rectangle(0, 0, this.BodyTempBar.Width, this.BodyTempBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            if (ModConfig.GetInstance().UseSanityModule)
-            {
-                Vector2 mood_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 4);
-                b.Draw(this.MoodIcons[instance.getPlayerMoodIndex()], mood_pos, new Rectangle(0, 0, this.MoodIcons[instance.getPlayerMoodIndex()].Width, this.MoodIcons[instance.getPlayerMoodIndex()].Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-            }
-
-            //render indicators
-            double ENV_TEMP_BOUND_LOW = ModConfig.GetInstance().EnvironmentTemperatureDisplayLowerBound;
-            double ENV_TEMP_BOUND_HIGH = ModConfig.GetInstance().EnvironmentTemperatureDisplayHigherBound;
-
-            double x_coord_env_temp = ((instance.getEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
-            Vector2 env_ind_pos = new Vector2(OffsetX + (float) x_coord_env_temp, OffsetY + this.HungerBar.Height * Scale * 2);
-
-            double x_coord_min_comf_temp = ((instance.getMinComfyEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
-            Vector2 min_env_ind_pos = new Vector2(OffsetX + (float)x_coord_min_comf_temp, OffsetY + (this.HungerBar.Height + 5) * Scale * 2);
-
-            double x_coord_max_comf_temp = ((instance.getMaxComfyEnvTemp() - ENV_TEMP_BOUND_LOW) / (ENV_TEMP_BOUND_HIGH - ENV_TEMP_BOUND_LOW)) * (50 * Scale);
-            Vector2 max_env_ind_pos = new Vector2(OffsetX + (float)x_coord_max_comf_temp, OffsetY + (this.HungerBar.Height - 5) * Scale * 2);
-
-            if (overlayComfyTemp)
-            {
-                b.Draw(this.fillRect, env_temp_pos + new Vector2(min_env_ind_pos.X, 5 * Scale), new Rectangle(0, 0, (int)(Math.Max(max_env_ind_pos.X - min_env_ind_pos.X, 0)), (int)(6 * Scale)), new Color(Color.Green, 0.3f));
-            }            
-            
-            
-            b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            double BODY_TEMP_BOUND_LOW = ModConfig.GetInstance().BodyTemperatureDisplayLowerBound;
-            double BODY_TEMP_BOUND_HIGH = ModConfig.GetInstance().BodyTemperatureDisplayHigherBound;
-
-            double x_coord_body_temp = ((instance.getPlayerBodyTemp() - BODY_TEMP_BOUND_LOW) / (BODY_TEMP_BOUND_HIGH - BODY_TEMP_BOUND_LOW)) * (50 * Scale);
-            Vector2 body_ind_pos = new Vector2(OffsetX + (float) x_coord_body_temp, OffsetY + this.HungerBar.Height * Scale * 3);
-            b.Draw(this.TempIndicator, body_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
-
-            //draw hunger and thirst indicator
-            if (instance.getPlayerHungerPercentage() > 0)
-            {
-                float perc = (float)instance.getPlayerHungerPercentage();
-                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
-            }
-            if (instance.getPlayerThirstPercentage() > 0)
-            {
-                float perc = (float)instance.getPlayerThirstPercentage();
-                b.Draw(this.fillRect, thirst_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
-            }
-
-            // overlay saturation over hunger
-            if (instance.getPlayerHungerPercentage() > 0)
-            {
-                float perc = (float)instance.getPlayerHungerSaturationStat();
-                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 9 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(2 * Scale)), new Color(Color.Yellow, 0.3f));
-            }
-
-            Rectangle hunger_hover_area = new Rectangle((int) hunger_pos.X, (int) hunger_pos.Y, (int) (this.HungerBar.Width * Scale), (int) (this.HungerBar.Height * Scale));
-            Rectangle thirst_hover_area = new Rectangle((int) thirst_pos.X, (int) thirst_pos.Y, (int) (this.ThirstBar.Width * Scale), (int) (this.ThirstBar.Height * Scale));
-            Rectangle env_temp_hover_area = new Rectangle((int) env_temp_pos.X, (int) env_temp_pos.Y, (int) (this.EnvTempBar.Width * Scale), (int) (this.EnvTempBar.Height * Scale));
-            Rectangle body_temp_hover_area = new Rectangle((int) body_temp_pos.X, (int) body_temp_pos.Y, (int) (this.BodyTempBar.Width * Scale), (int) (this.BodyTempBar.Height * Scale));
-
-            //show number stat on bar hover
-
-            if (Game1.getOldMouseX() >= (double)hunger_hover_area.X && Game1.getOldMouseY() >= (double)hunger_hover_area.Y && Game1.getOldMouseX() < (double)hunger_hover_area.X + hunger_hover_area.Width && Game1.getOldMouseY() < hunger_hover_area.Y + hunger_hover_area.Height)
-                Game1.drawWithBorder(instance.getPlayerHungerStat(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
-
-            if (Game1.getOldMouseX() >= (double)thirst_hover_area.X && Game1.getOldMouseY() >= (double)thirst_hover_area.Y && Game1.getOldMouseX() < (double)thirst_hover_area.X + thirst_hover_area.Width && Game1.getOldMouseY() < thirst_hover_area.Y + thirst_hover_area.Height)
-                Game1.drawWithBorder(instance.getPlayerThirstStat(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
-
-            if (Game1.getOldMouseX() >= (double)body_temp_hover_area.X && Game1.getOldMouseY() >= (double)body_temp_hover_area.Y && Game1.getOldMouseX() < (double)body_temp_hover_area.X + body_temp_hover_area.Width && Game1.getOldMouseY() < body_temp_hover_area.Y + body_temp_hover_area.Height)
-                Game1.drawWithBorder(instance.getPlayerBodyTempString(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
-
-            if (Game1.getOldMouseX() >= (double)env_temp_hover_area.X && Game1.getOldMouseY() >= (double)env_temp_hover_area.Y && Game1.getOldMouseX() < (double)env_temp_hover_area.X + env_temp_hover_area.Width && Game1.getOldMouseY() < env_temp_hover_area.Y + env_temp_hover_area.Height)
-                Game1.drawWithBorder(instance.getEnvTempString(), Color.Black * 0.0f, Color.White, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY() - 32));
+            // Use the new HudRenderer
+            hudRenderer.RenderHud(e.SpriteBatch);
         }
 
         private void OnSecondPassed(object sender, OneSecondUpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
-            else
-            {
-                instance.onSecondUpdate();
-            }
+            
+            gameState.OnSecondUpdate();
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
-            else
-            {
-                //foreach (GameLocation l in Game1.locations)
-                //{
-                //    this.Monitor.Log($"name={l.name}, isOutdoor={l.isOutdoors}");
-                //}
-                //int mine_level = Game1.CurrentMineLevel; 
-                
-                instance.onEnvUpdate(e.NewTime, Game1.currentSeason, Game1.weatherIcon, Game1.currentLocation, Game1.CurrentMineLevel);
-                instance.onClockUpdate();
-            }
+            
+            gameState.OnEnvironmentUpdate(e.NewTime, Game1.currentSeason, Game1.weatherIcon, 
+                Game1.currentLocation, Game1.CurrentMineLevel);
+            gameState.OnClockUpdate();
         }
 
         private void OnItemEaten(object sender, EventArgs e)
@@ -500,8 +315,7 @@ namespace StardewSurvivalProject
                 return;
 
             SObject ateItem = Game1.player.itemToEat as SObject;
-            //this.Monitor.Log($"{Game1.player.name} ate {ateItem.name}");
-            instance.onEatingFood(ateItem);
+            gameState.OnItemEaten(ateItem);
         }
 
         private void OnItemUsed(object sender, EventArgs e)
@@ -509,8 +323,7 @@ namespace StardewSurvivalProject
             if (sender != Game1.player)
                 return;
 
-            //this.Monitor.Log(Game1.player.CurrentTool.GetType().Name);
-            instance.updateOnToolUsed(Game1.player.CurrentTool);
+            gameState.OnToolUsed(Game1.player.CurrentTool);
         }
 
         private void OnGiftGiven(object sender, source.events.GiftEventArgs e)
@@ -518,26 +331,28 @@ namespace StardewSurvivalProject
             if (sender != Game1.player)
                 return;
 
-            instance.updateOnGiftGiven(e.Npc, e.Gift);
+            gameState.OnGiftGiven(e.Npc, e.Gift);
         }
 
         private void OnItemPlaced(object sender, EventArgs e)
         {
-            // cast sender to StardewValley.Object
             SObject obj = sender as SObject;
-            // check if object is seed crop
             LogHelper.Info($"Item placed: {obj.Name}");
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            instance.dayStartProcedure();
+            gameState.OnDayStarted();
         }
 
         private void OnLoadedSave(object sender, SaveLoadedEventArgs e)
         {
-            instance.init(Game1.player);
-            instance.loadData(this);
+            gameState.Initialize(Game1.player);
+            gameState.LoadData(this);
+            
+            // Initialize HUD renderer now that we have a valid game state
+            hudRenderer = new source.ui.HudRenderer(assetLoader, gameState);
+            
             //cache these item's id
             source.data.ItemNameCache.cacheItem("Canteen");
             source.data.ItemNameCache.cacheItem("Full Canteen");
@@ -549,12 +364,13 @@ namespace StardewSurvivalProject
 
         private void OnGameSaved(object sender, SavedEventArgs e)
         {
-            instance.saveData(this);
+            gameState.SaveData(this);
         }
 
         private void OnExitToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            instance.onExit();
+            gameState.OnExit();
+            hudRenderer = null;  // Clean up HUD renderer
             source.data.ItemNameCache.clearCache();
         }
 
