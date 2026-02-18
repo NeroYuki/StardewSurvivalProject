@@ -382,7 +382,7 @@ namespace StardewSurvivalProject.source
         public void updateOnToolUsed(StardewValley.Tool toolHold)
         {
             bool isFever = Game1.player.buffs.IsApplied("neroyuki.rlvalley/fever");
-            int power = (int)((player.bindedFarmer.toolHold + 20f) / 600f) + 1;
+            int power = (int)((player.bindedFarmer.toolHold.Value + 20f) / 600f) + 1;
             //LogHelper.Debug($"Tool Power = {power}");
 
             if (!ModConfig.GetInstance().UseOnToolUseDrain) return;

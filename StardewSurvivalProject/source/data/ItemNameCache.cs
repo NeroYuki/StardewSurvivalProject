@@ -14,7 +14,7 @@ namespace StardewSurvivalProject.source.data
             foreach (KeyValuePair<string, StardewValley.GameData.Objects.ObjectData> itemInfoString in Game1.objectData)
             {
                 //check string start for object name
-                if (itemInfoString.Value.Name.StartsWith(name))
+                if (itemInfoString.Value.Name != null && itemInfoString.Value.Name.StartsWith(name))
                 {
                     name_to_id.Add(name, itemInfoString.Key);
                     return true;
