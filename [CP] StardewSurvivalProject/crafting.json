@@ -5,7 +5,7 @@
             "Target": "Data/CraftingRecipes",
             "Entries": {
                 "neroyuki.rlvalleycpitems_Canteen": "(O)334 3/Field/neroyuki.rlvalleycpitems_Canteen/false/default/",
-                "neroyuki.rlvalleycpitems_Bandage": "(O)766 2 (O)92 1 (O)711 1/Field/neroyuki.rlvalleycpitems_Bandage/false/none/",
+                "neroyuki.rlvalleycpitems_Bandage": "(O)766 2 (O)92 1 (O)771 1/Field/neroyuki.rlvalleycpitems_Bandage/false/none/",
                 "neroyuki.rlvalleycpitems_Ice_Water_Canteen": "neroyuki.rlvalleycpitems_Full_Canteen 1 neroyuki.rlvalleycpitems_Ice_Cube 1/Field/neroyuki.rlvalleycpitems_Ice_Water_Canteen/false/default/",
                 "neroyuki.rlvalleycpitems_Tubular_Bandage": "(O)428 1 (O)766 2/Field/neroyuki.rlvalleycpitems_Tubular_Bandage/false/none/",
 
