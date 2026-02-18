@@ -472,6 +472,10 @@ namespace StardewSurvivalProject.source
             displayString = player.getStatStringUI();
         }
 
+        /// <summary>
+        /// Save data structure for player stats
+        /// Version 0.4.1+: Added ItemIdMigrated flag to track item ID migration from Under_Score to camelCase format
+        /// </summary>
         public class SaveData
         {
             public model.Hunger hunger;
@@ -479,14 +483,16 @@ namespace StardewSurvivalProject.source
             public model.BodyTemp bodyTemp;
             public int healthPoint;
             public model.Mood mood;
+            public bool ItemIdMigrated = false;  // Flag to track if item ID migration has been applied
 
-            public SaveData(model.Hunger h, model.Thirst t, model.BodyTemp bt, int hp, model.Mood m)
+            public SaveData(model.Hunger h, model.Thirst t, model.BodyTemp bt, int hp, model.Mood m, bool migrated = true)
             {
                 this.hunger = h;
                 this.thirst = t;
                 this.bodyTemp = bt;
                 this.healthPoint = hp;
                 this.mood = m;
+                this.ItemIdMigrated = migrated;
             }
         }
 
@@ -500,13 +506,27 @@ namespace StardewSurvivalProject.source
                 this.player.temp = saveData.bodyTemp;
                 if (saveData.healthPoint > 0) this.player.healthPoint = saveData.healthPoint;
                 if (saveData.mood != null) this.player.mood = new model.Mood(saveData.mood, this.player.OnFarmerMentalBreak);
+
+                // Check if item ID migration is needed (for v0.4.1+ breaking change)
+                if (!saveData.ItemIdMigrated)
+                {
+                    LogHelper.Info("Detected old save file format. Starting item ID migration...");
+                    int migratedCount = utils.MigrationHelper.MigrateAllItems();
+                    LogHelper.Info($"Item ID migration completed: {migratedCount} items updated");
+                    
+                    // Save immediately to persist the migration flag
+                    saveData.ItemIdMigrated = true;
+                    this.saveData(context);
+                    
+                    Game1.addHUDMessage(new HUDMessage($"Stardew Survival Project: Migrated {migratedCount} items to new format", HUDMessage.achievement_type));
+                }
             }
         }
 
         public void saveData(Mod context)
         {
 
-            SaveData savingData = new SaveData(this.player.hunger, this.player.thirst, this.player.temp, this.player.healthPoint, this.player.mood);
+            SaveData savingData = new SaveData(this.player.hunger, this.player.thirst, this.player.temp, this.player.healthPoint, this.player.mood, migrated: true);
             context.Helper.Data.WriteJsonFile<SaveData>(this.RelativeDataPath, savingData);
         }
 
