@@ -1,21 +1,21 @@
 {
     "Changes": [
-		{
+        {
             "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
-                "neroyuki.rlvalleycpitems_Canteen": {
+                "{{ModId}}_Canteen": {
                     "Name": "Canteen",
                     "Displayname": "Canteen",
                     "Description": "An empty canteen. How about putting some water inside",
                     "Type": "Crafting",
-                    "Category": -8,   //Crafting
+                    "Category": -8,
                     "Price": 1,
-					"Edibility": -300,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Canteen",
+                    "Edibility": -300,
+                    "Texture": "Mods/{{ModId}}/Canteen",
                     "SpriteIndex": 0
-				},
-                "neroyuki.rlvalleycpitems_Advanced_Medkit": {
+                },
+                "{{ModId}}_AdvancedMedkit": {
                     "Name": "Advanced Medkit",
                     "Displayname": "Advanced Medkit",
                     "Description": "21st century medical technology in 1 single package baby!",
@@ -23,132 +23,132 @@
                     "Category": -26,
                     "Price": 200,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Advanced_Medkit",
+                    "Texture": "Mods/{{ModId}}/AdvancedMedkit",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Bandage": {
+                "{{ModId}}_Bandage": {
                     "Name": "Bandage",
                     "Displayname": "Bandage",
                     "Description": "It may seem small, but i can do wonder in dire situation",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 50,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Bandage",
+                    "Texture": "Mods/{{ModId}}/Bandage",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Dirty_Canteen": {
+                "{{ModId}}_DirtyCanteen": {
                     "Name": "Dirty Canteen",
                     "Displayname": "Dirty Canteen",
                     "Description": "Bring it along with ya. You will need it when you're thirsty",
                     "Type": "Basic",
-                    "Category": -81,    //Greens
+                    "Category": -81,
                     "Price": 20,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Dirty_Canteen",
+                    "Texture": "Mods/{{ModId}}/DirtyCanteen",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Joja_Fresh_Water": {
+                "{{ModId}}_JojaFreshWater": {
                     "Name": "Joja Fresh Water",
                     "Displayname": "Joja Fresh Water",
                     "Description": "A bottle of Joja's fresh water brand. I hope they don't put anything weird inside",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 20,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Joja_Fresh_Water",
+                    "Texture": "Mods/{{ModId}}/JojaFreshWater",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Full_Canteen": {
+                "{{ModId}}_FullCanteen": {
                     "Name": "Full Canteen",
                     "Displayname": "Full Canteen",
                     "Description": "Purified Water, ready to drink. It's a life saver in the desert!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 20,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Full_Canteen",
+                    "Texture": "Mods/{{ModId}}/FullCanteen",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Herbal_Medicine": {
+                "{{ModId}}_HerbalMedicine": {
                     "Name": "Herbal Medicine",
                     "Displayname": "Herbal Medicine",
                     "Description": "A sloppy made set of herbal medicine. It's organic i guess",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 50,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Herbal_Medicine",
+                    "Texture": "Mods/{{ModId}}/HerbalMedicine",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ice_Cube": {
+                "{{ModId}}_IceCube": {
                     "Name": "Ice Cube",
                     "Displayname": "Ice Cube",
                     "Description": "Wait they never melt? How??",
                     "Type": "Crafting",
-                    "Category": -8,   //Crafting
+                    "Category": -8,
                     "Price": 20,
-					"Edibility": -300,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Cube",
+                    "Edibility": -300,
+                    "Texture": "Mods/{{ModId}}/IceCube",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ice_Water_Canteen": {
+                "{{ModId}}_IceWaterCanteen": {
                     "Name": "Ice Water Canteen",
                     "Displayname": "Ice Water Canteen",
                     "Description": "Cool you down faster with the power of iced water!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 20,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Water_Canteen",
+                    "Texture": "Mods/{{ModId}}/IceWaterCanteen",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Magic_Herbal_Medicine": {
+                "{{ModId}}_MagicHerbalMedicine": {
                     "Name": "Magic Herbal Medicine",
                     "Displayname": "Magic Herbal Medicine",
                     "Description": "Herbal medicine, now infused with jumino magic. Three times as effective!!!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 350,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Magic_Herbal_Medicine",
+                    "Texture": "Mods/{{ModId}}/MagicHerbalMedicine",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Painkiller": {
+                "{{ModId}}_Painkiller": {
                     "Name": "Painkiller",
                     "Displayname": "Painkiller",
                     "Description": "Kill pain, make you really tired though",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 100,
                     "Edibility": -20,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Painkiller",
+                    "Texture": "Mods/{{ModId}}/Painkiller",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Regular_Medkit": {
+                "{{ModId}}_RegularMedkit": {
                     "Name": "Regular Medkit",
                     "Displayname": "Regular Medkit",
                     "Description": "First-aid items packed neatly into this kit. Would be really useful for prolonged adventure",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 100,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Regular_Medkit",
+                    "Texture": "Mods/{{ModId}}/RegularMedkit",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Tubular_Bandage": {
+                "{{ModId}}_TubularBandage": {
                     "Name": "Tubular Bandage",
                     "Displayname": "Tubular Bandage",
                     "Description": "Good for holding blood, not good for moving around though",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 100,
                     "Edibility": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Tubular_Bandage",
+                    "Texture": "Mods/{{ModId}}/TubularBandage",
                     "Buff": {
                         "Duration": 40,
                         "IsDebuff": true,
@@ -158,40 +158,40 @@
                     },
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ice_Ionized_Water_Canteen": {
+                "{{ModId}}_IceIonizedWaterCanteen": {
                     "Name": "Ice Ionized Water Canteen",
                     "Displayname": "Ice Ionized Water Canteen",
                     "Description": "Ionized water, now with the power of ice. It's like drinking a thunderstorm!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 30,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Ionized_Water_Canteen",
+                    "Texture": "Mods/{{ModId}}/IceIonizedWaterCanteen",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ionized_Full_Canteen": {
+                "{{ModId}}_IonizedFullCanteen": {
                     "Name": "Ionized Full Canteen",
                     "Displayname": "Ionized Full Canteen",
                     "Description": "Ionized water, now with the power of electricity. It's electrifying!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 30,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ionized_Full_Canteen",
+                    "Texture": "Mods/{{ModId}}/IonizedFullCanteen",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Joja_Sport_Drink": {
+                "{{ModId}}_JojaSportDrink": {
                     "Name": "Joja Sport Drink",
                     "Displayname": "Joja Sport Drink",
                     "Description": "A bottle of Joja's sport drink. Energize yourself like never before!",
                     "Type": "Basic",
-                    "Category": -26,    // ArtisanGoods
+                    "Category": -26,
                     "Price": 30,
                     "Edibility": 0,
                     "IsDrink": true,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Joja_Sport_Drink",
+                    "Texture": "Mods/{{ModId}}/JojaSportDrink",
                     "SpriteIndex": 0
                 }
             }
@@ -200,111 +200,111 @@
             "Action": "EditData",
             "Target": "Data/BigCraftables",
             "Entries": {
-                "neroyuki.rlvalleycpitems_Air_Conditioner": {
+                "{{ModId}}_AirConditioner": {
                     "Name": "Air Conditioner",
                     "Displayname": "Air Conditioner",
                     "Description": "Not sure if these things is that effective, and i wonder where those hoses connect to",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Air_Conditioner",
+                    "Texture": "Mods/{{ModId}}/AirConditioner",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Air_Cooler": {
+                "{{ModId}}_AirCooler": {
                     "Name": "Air Cooler",
                     "Displayname": "Air Cooler",
                     "Description": "Now cool you down with water mist, also may make you dam in the process but who care lol",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Air_Cooler",
+                    "Texture": "Mods/{{ModId}}/AirCooler",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Fan": {
+                "{{ModId}}_Fan": {
                     "Name": "Fan",
                     "Displayname": "Fan",
                     "Description": "Cool you down in hot summer days",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Fan",
+                    "Texture": "Mods/{{ModId}}/Fan",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Groundwater_Collector": {
+                "{{ModId}}_GroundwaterCollector": {
                     "Name": "Groundwater Collector",
                     "Displayname": "Groundwater Collector",
                     "Description": "Diamond drill down to the ground. Fresh water ready for ya!",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Groundwater_Collector",
+                    "Texture": "Mods/{{ModId}}/GroundwaterCollector",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ice_Machine": {
+                "{{ModId}}_IceMachine": {
                     "Name": "Ice Machine",
                     "Displayname": "Ice Machine",
                     "Description": "Make ice from frozen tear. Fancy.",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ice_Machine",
+                    "Texture": "Mods/{{ModId}}/IceMachine",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Magical_Medicine_Stove": {
+                "{{ModId}}_MagicalMedicineStove": {
                     "Name": "Magical Medicine Stove",
                     "Displayname": "Magical Medicine Stove",
                     "Description": "Junimo included! infuse your herbal medicine with magic",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Magical_Medicine_Stove",
+                    "Texture": "Mods/{{ModId}}/MagicalMedicineStove",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Medicine_Worktable": {
+                "{{ModId}}_MedicineWorktable": {
                     "Name": "Medicine Worktable",
                     "Displayname": "Medicine Worktable",
                     "Description": "It got a small herbal stove, chopping board and a drying rack for your medicine making need",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Medicine_Worktable",
+                    "Texture": "Mods/{{ModId}}/MedicineWorktable",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Passive_Cooler": {
+                "{{ModId}}_PassiveCooler": {
                     "Name": "Passive Cooler",
                     "Displayname": "Passive Cooler",
                     "Description": "You are supposed to put wet wood in but who is looking anyway",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Passive_Cooler",
+                    "Texture": "Mods/{{ModId}}/PassiveCooler",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Portable_Heater": {
+                "{{ModId}}_PortableHeater": {
                     "Name": "Portable Heater",
                     "Displayname": "Portable Heater",
                     "Description": "Better heating on the go with electricity my friend",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Portable_Heater",
+                    "Texture": "Mods/{{ModId}}/PortableHeater",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Primitive_Water_Filter": {
+                "{{ModId}}_PrimitiveWaterFilter": {
                     "Name": "Primitive Water Filter",
                     "Displayname": "Primitive Water Filter",
                     "Description": "Filter your dirty water with active carbon. Science!!!",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Primitive_Water_Filter",
+                    "Texture": "Mods/{{ModId}}/PrimitiveWaterFilter",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Rain_Collector": {
+                "{{ModId}}_RainCollector": {
                     "Name": "Rain Collector",
                     "Displayname": "Rain Collector",
                     "Description": "Make water, in rainy day only for obvious reason",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Rain_Collector",
+                    "Texture": "Mods/{{ModId}}/RainCollector",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Tall_Air_Conditioner": {
+                "{{ModId}}_TallAirConditioner": {
                     "Name": "Tall Air Conditioner",
                     "Displayname": "Tall Air Conditioner",
                     "Description": "Taller, better, look good in your house as well",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Tall_Air_Conditioner",
+                    "Texture": "Mods/{{ModId}}/TallAirConditioner",
                     "SpriteIndex": 0
                 },
-                "neroyuki.rlvalleycpitems_Ionizing_Machine": {
+                "{{ModId}}_IonizingMachine": {
                     "Name": "Ionizing Machine",
                     "Displayname": "Ionizing Machine",
                     "Description": "Ionize your water, take the lighting to your bottle!",
                     "Price": 1,
-                    "Texture": "Mods/neroyuki.rlvalleycpitems/Ionizing_Machine",
+                    "Texture": "Mods/{{ModId}}/IonizingMachine",
                     "SpriteIndex": 0
                 }
             }
         }
-	]
+    ]
 }

@@ -543,6 +543,8 @@ namespace StardewSurvivalProject
             source.data.ItemNameCache.cacheItem("Full Canteen");
             source.data.ItemNameCache.cacheItem("Dirty Canteen");
             source.data.ItemNameCache.cacheItem("Ice Water Canteen");
+            source.data.ItemNameCache.cacheItem("Ice Ionized Water Canteen");
+            source.data.ItemNameCache.cacheItem("Ionized Full Canteen");
         }
 
         private void OnGameSaved(object sender, SavedEventArgs e)

@@ -125,7 +125,7 @@ namespace StardewSurvivalProject.source
             if (player == null) return;
 
             //addition: if player is drinking a refillable container, give back the empty container item
-            if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen") || gameObj.name.Equals("Ice Water Canteen"))
+            if (gameObj.name.Equals("Full Canteen") || gameObj.name.Equals("Dirty Canteen") || gameObj.name.Equals("Ice Water Canteen") || gameObj.name.Equals("Ice Ionized Water Canteen") || gameObj.name.Equals("Ionized Full Canteen"))
             {
                 string itemId = data.ItemNameCache.getIDFromCache("Canteen");
                 if (itemId != "-1")

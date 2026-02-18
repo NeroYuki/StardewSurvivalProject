@@ -4,118 +4,130 @@
             "Action": "EditData",
             "Target": "Data/Machines",
             "Entries": {
-                "(BC)neroyuki.rlvalleycpitems_Air_Conditioner": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Air_Conditioner",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)787"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 400
-                    }],
+                "{{ModId}}_(bc)airConditioner": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_AirConditioner",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)787"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 400
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Air_Cooler": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Air_Cooler",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)787"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 1600
-                    }],
+                "{{ModId}}_(bc)airCooler": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_AirCooler",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)787"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 1600
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Fan": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Fan",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)787"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 1600
-                    }],
+                "{{ModId}}_(bc)fan": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_Fan",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)787"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 1600
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Groundwater_Collector": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Groundwater_Collector",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Canteen"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 60
-                    }],
+                "{{ModId}}_(bc)groundwaterCollector": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_GroundwaterCollector",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_Canteen"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_FullCanteen"
+                                }
+                            ],
+                            "MinutesUntilReady": 60
+                        }
+                    ],
                     "AllowFairyDust": true
                 },
-                "(BC)neroyuki.rlvalleycpitems_Ice_Machine": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Ice_Machine",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)84"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Ice_Cube"
-                            }
-                        ],
-                        "MinutesUntilReady": 10
-                    }],
+                "{{ModId}}_(bc)iceMachine": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_IceMachine",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)84"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_IceCube"
+                                }
+                            ],
+                            "MinutesUntilReady": 10
+                        }
+                    ],
                     "AllowFairyDust": true
                 },
-                "(BC)neroyuki.rlvalleycpitems_Magical_Medicine_Stove": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Magical_Medicine_Stove",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Herbal_Medicine"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Magic_Herbal_Medicine"
-                            }
-                        ],
-                        "MinutesUntilReady": 500
-                    }],
+                "{{ModId}}_(bc)magicalMedicineStove": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_MagicalMedicineStove",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_HerbalMedicine"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_MagicHerbalMedicine"
+                                }
+                            ],
+                            "MinutesUntilReady": 500
+                        }
+                    ],
                     "AdditionalConsumedItems": [
                         {
                             "ItemId": "(O)388"
@@ -126,24 +138,28 @@
                     ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Medicine_Worktable": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Medicine_Worktable",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredTags": [ "category_flowers" ],
-                                "RequiredCount": 2
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Herbal_Medicine"
-                            }
-                        ],
-                        "MinutesUntilReady": 300
-                    }],
+                "{{ModId}}_(bc)medicineWorktable": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_MedicineWorktable",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredTags": [
+                                        "category_flowers"
+                                    ],
+                                    "RequiredCount": 2
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_HerbalMedicine"
+                                }
+                            ],
+                            "MinutesUntilReady": 300
+                        }
+                    ],
                     "AdditionalConsumedItems": [
                         {
                             "ItemId": "(O)388"
@@ -151,135 +167,148 @@
                     ],
                     "AllowFairyDust": true
                 },
-                "(BC)neroyuki.rlvalleycpitems_Passive_Cooler": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Passive_Cooler",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)388",
-                                "RequiredCount": 10
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 180
-                    }],
+                "{{ModId}}_(bc)passiveCooler": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_PassiveCooler",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)388",
+                                    "RequiredCount": 10
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 180
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Portable_Heater": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Portable_Heater",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)787"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 1600
-                    }],
+                "{{ModId}}_(bc)portableHeater": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_PortableHeater",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)787"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 1600
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Primitive_Water_Filter": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Primitive_Water_Filter",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Dirty_Canteen"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 300
-                    }],
+                "{{ModId}}_(bc)primitiveWaterFilter": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_PrimitiveWaterFilter",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_DirtyCanteen"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_FullCanteen"
+                                }
+                            ],
+                            "MinutesUntilReady": 300
+                        }
+                    ],
                     "AllowFairyDust": true
                 },
-                "(BC)neroyuki.rlvalleycpitems_Rain_Collector": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Rain_Collector",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Canteen",
-                                "Condition": "ANY \"WEATHER Target Rain\" \"WEATHER Target Storm\", LOCATION_IS_OUTDOORS Target"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 120
-                    }],
+                "{{ModId}}_(bc)rainCollector": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_RainCollector",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_Canteen",
+                                    "Condition": "ANY \"WEATHER Target Rain\" \"WEATHER Target Storm\", LOCATION_IS_OUTDOORS Target"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_FullCanteen"
+                                }
+                            ],
+                            "MinutesUntilReady": 120
+                        }
+                    ],
                     "AllowFairyDust": true
                 },
-                "(BC)neroyuki.rlvalleycpitems_Tall_Air_Conditioner": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "(O)787"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "(O)168"
-                            }
-                        ],
-                        "MinutesUntilReady": 1200
-                    }],
+                "{{ModId}}_(bc)tallAirConditioner": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_TallAirConditioner",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "(O)787"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "(O)168"
+                                }
+                            ],
+                            "MinutesUntilReady": 1200
+                        }
+                    ],
                     "AllowFairyDust": false
                 },
-                "(BC)neroyuki.rlvalleycpitems_Ionizing_Machine": {
-                    "OutputRules": [{
-                        "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Full_Canteen"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Ionized_Full_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 20
-                    }, {
-                        "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine_2",
-                        "Triggers": [
-                            {
-                                "Id": "Cond1",
-                                "RequiredItemId": "neroyuki.rlvalleycpitems_Ice_Water_Canteen"
-                            }
-                        ],
-                        "OutputItem": [
-                            {
-                                "Id": "Out1",
-                                "ItemId": "neroyuki.rlvalleycpitems_Ice_Ionized_Water_Canteen"
-                            }
-                        ],
-                        "MinutesUntilReady": 20
-                    }],
+                "{{ModId}}_(bc)ionizingMachine": {
+                    "OutputRules": [
+                        {
+                            "Id": "{{ModId}}_IonizingMachine",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_FullCanteen"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_IonizedFullCanteen"
+                                }
+                            ],
+                            "MinutesUntilReady": 20
+                        },
+                        {
+                            "Id": "{{ModId}}_IonizingMachine2",
+                            "Triggers": [
+                                {
+                                    "Id": "Cond1",
+                                    "RequiredItemId": "{{ModId}}_IceWaterCanteen"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Out1",
+                                    "ItemId": "{{ModId}}_IceIonizedWaterCanteen"
+                                }
+                            ],
+                            "MinutesUntilReady": 20
+                        }
+                    ],
                     "AllowFairyDust": true
                 }
             }

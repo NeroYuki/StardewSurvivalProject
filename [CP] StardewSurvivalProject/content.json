@@ -1,31 +1,31 @@
 {
-	"Format": "2.0.0",
-	"ConfigSchema": {
-      "Spriteset": {
-         "AllowValues": "Default, Legacy",
-         "Default": "Default"
-      }
-   },
+    "Format": "2.0.0",
+    "ConfigSchema": {
+        "Spriteset": {
+            "AllowValues": "Default, Legacy",
+            "Default": "Default"
+        }
+    },
     "Changes": [
-		{
-			"Action": "Include",
-			"FromFile": "items.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "crafting.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "asset.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "shops.json"
-		},
-		{
-			"Action": "Include",
-			"FromFile": "machines.json"
-		}
+        {
+            "Action": "Include",
+            "FromFile": "items.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "crafting.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "asset.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "shops.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "machines.json"
+        }
     ]
 }

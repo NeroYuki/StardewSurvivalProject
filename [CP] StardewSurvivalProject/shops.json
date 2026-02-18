@@ -3,22 +3,25 @@
         {
             "Action": "EditData",
             "Target": "Data/Shops",
-            "TargetField": [ "SeedShop", "Items" ],
+            "TargetField": [
+                "SeedShop",
+                "Items"
+            ],
             "Entries": {
-                "neroyuki.rlvalleycpitems_Joja_Fresh_Water": {
-                    "Id": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
-                    "ItemId": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
+                "{{ModId}}_JojaFreshWater": {
+                    "Id": "{{ModId}}_JojaFreshWater",
+                    "ItemId": "{{ModId}}_JojaFreshWater",
                     "Price": 50
                 },
-                "neroyuki.rlvalleycpitems_Ice_Machine_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Ice_Machine_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Ice_Machine",
+                "{{ModId}}_IceMachineRecipe": {
+                    "Id": "{{ModId}}_IceMachineRecipe",
+                    "ItemId": "{{ModId}}_IceMachine",
                     "Price": 15000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Ionizing_Machine_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Ionizing_Machine_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Ionizing_Machine",
+                "{{ModId}}_IonizingMachineRecipe": {
+                    "Id": "{{ModId}}_IonizingMachineRecipe",
+                    "ItemId": "{{ModId}}_IonizingMachine",
                     "Price": 15000,
                     "IsRecipe": true
                 }
@@ -27,61 +30,64 @@
         {
             "Action": "EditData",
             "Target": "Data/Shops",
-            "TargetField": [ "Carpenter", "Items"  ],
+            "TargetField": [
+                "Carpenter",
+                "Items"
+            ],
             "Entries": {
-                "neroyuki.rlvalleycpitems_Air_Conditioner": {
-                    "Id": "neroyuki.rlvalleycpitems_Air_Conditioner",
-                    "ItemId": "neroyuki.rlvalleycpitems_Air_Conditioner",
+                "{{ModId}}_AirConditioner": {
+                    "Id": "{{ModId}}_AirConditioner",
+                    "ItemId": "{{ModId}}_AirConditioner",
                     "Price": 12000
                 },
-                "neroyuki.rlvalleycpitems_Air_Conditioner_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Air_Conditioner_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Air_Conditioner",
+                "{{ModId}}_AirConditionerRecipe": {
+                    "Id": "{{ModId}}_AirConditionerRecipe",
+                    "ItemId": "{{ModId}}_AirConditioner",
                     "Price": 25000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Air_Cooler": {
-                    "Id": "neroyuki.rlvalleycpitems_Air_Cooler",
-                    "ItemId": "neroyuki.rlvalleycpitems_Air_Cooler",
+                "{{ModId}}_AirCooler": {
+                    "Id": "{{ModId}}_AirCooler",
+                    "ItemId": "{{ModId}}_AirCooler",
                     "Price": 8000
                 },
-                "neroyuki.rlvalleycpitems_Air_Cooler_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Air_Cooler_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Air_Cooler",
+                "{{ModId}}_AirCoolerRecipe": {
+                    "Id": "{{ModId}}_AirCoolerRecipe",
+                    "ItemId": "{{ModId}}_AirCooler",
                     "Price": 20000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Fan": {
-                    "Id": "neroyuki.rlvalleycpitems_Fan",
-                    "ItemId": "neroyuki.rlvalleycpitems_Fan",
+                "{{ModId}}_Fan": {
+                    "Id": "{{ModId}}_Fan",
+                    "ItemId": "{{ModId}}_Fan",
                     "Price": 4000
                 },
-                "neroyuki.rlvalleycpitems_Fan_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Fan_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Fan",
+                "{{ModId}}_FanRecipe": {
+                    "Id": "{{ModId}}_FanRecipe",
+                    "ItemId": "{{ModId}}_Fan",
                     "Price": 10000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Groundwater_Collector_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Groundwater_Collector_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Groundwater_Collector",
+                "{{ModId}}_GroundwaterCollectorRecipe": {
+                    "Id": "{{ModId}}_GroundwaterCollectorRecipe",
+                    "ItemId": "{{ModId}}_GroundwaterCollector",
                     "Price": 10000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Portable_Heater": {
-                    "Id": "neroyuki.rlvalleycpitems_Portable_Heater",
-                    "ItemId": "neroyuki.rlvalleycpitems_Portable_Heater",
+                "{{ModId}}_PortableHeater": {
+                    "Id": "{{ModId}}_PortableHeater",
+                    "ItemId": "{{ModId}}_PortableHeater",
                     "Price": 5000
                 },
-                "neroyuki.rlvalleycpitems_Portable_Heater_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Portable_Heater_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Portable_Heater",
+                "{{ModId}}_PortableHeaterRecipe": {
+                    "Id": "{{ModId}}_PortableHeaterRecipe",
+                    "ItemId": "{{ModId}}_PortableHeater",
                     "Price": 8000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Tall_Air_Conditioner_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Tall_Air_Conditioner",
+                "{{ModId}}_TallAirConditionerRecipe": {
+                    "Id": "{{ModId}}_TallAirConditionerRecipe",
+                    "ItemId": "{{ModId}}_TallAirConditioner",
                     "Price": 40000,
                     "IsRecipe": true
                 }
@@ -90,42 +96,45 @@
         {
             "Action": "EditData",
             "Target": "Data/Shops",
-            "TargetField": [ "Hospital", "Items"  ],
+            "TargetField": [
+                "Hospital",
+                "Items"
+            ],
             "Entries": {
-                "neroyuki.rlvalleycpitems_Advanced_Medkit": {
-                    "Id": "neroyuki.rlvalleycpitems_Advanced_Medkit",
-                    "ItemId": "neroyuki.rlvalleycpitems_Advanced_Medkit",
+                "{{ModId}}_AdvancedMedkit": {
+                    "Id": "{{ModId}}_AdvancedMedkit",
+                    "ItemId": "{{ModId}}_AdvancedMedkit",
                     "Price": 1000
                 },
-                "neroyuki.rlvalleycpitems_Bandage": {
-                    "Id": "neroyuki.rlvalleycpitems_Bandage",
-                    "ItemId": "neroyuki.rlvalleycpitems_Bandage",
+                "{{ModId}}_Bandage": {
+                    "Id": "{{ModId}}_Bandage",
+                    "ItemId": "{{ModId}}_Bandage",
                     "Price": 100
                 },
-                "neroyuki.rlvalleycpitems_Bandage_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Bandage_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Bandage",
+                "{{ModId}}_BandageRecipe": {
+                    "Id": "{{ModId}}_BandageRecipe",
+                    "ItemId": "{{ModId}}_Bandage",
                     "Price": 3000,
                     "IsRecipe": true
                 },
-                "neroyuki.rlvalleycpitems_Painkiller": {
-                    "Id": "neroyuki.rlvalleycpitems_Painkiller",
-                    "ItemId": "neroyuki.rlvalleycpitems_Painkiller",
+                "{{ModId}}_Painkiller": {
+                    "Id": "{{ModId}}_Painkiller",
+                    "ItemId": "{{ModId}}_Painkiller",
                     "Price": 400
                 },
-                "neroyuki.rlvalleycpitems_Regular_Medkit": {
-                    "Id": "neroyuki.rlvalleycpitems_Regular_Medkit",
-                    "ItemId": "neroyuki.rlvalleycpitems_Regular_Medkit",
+                "{{ModId}}_RegularMedkit": {
+                    "Id": "{{ModId}}_RegularMedkit",
+                    "ItemId": "{{ModId}}_RegularMedkit",
                     "Price": 600
                 },
-                "neroyuki.rlvalleycpitems_Tubular_Bandage": {
-                    "Id": "neroyuki.rlvalleycpitems_Tubular_Bandage",
-                    "ItemId": "neroyuki.rlvalleycpitems_Tubular_Bandage",
+                "{{ModId}}_TubularBandage": {
+                    "Id": "{{ModId}}_TubularBandage",
+                    "ItemId": "{{ModId}}_TubularBandage",
                     "Price": 250
                 },
-                "neroyuki.rlvalleycpitems_Tubular_Bandage_Recipe": {
-                    "Id": "neroyuki.rlvalleycpitems_Tubular_Bandage_Recipe",
-                    "ItemId": "neroyuki.rlvalleycpitems_Tubular_Bandage",
+                "{{ModId}}_TubularBandageRecipe": {
+                    "Id": "{{ModId}}_TubularBandageRecipe",
+                    "ItemId": "{{ModId}}_TubularBandage",
                     "Price": 3000,
                     "IsRecipe": true
                 }
@@ -134,16 +143,19 @@
         {
             "Action": "EditData",
             "Target": "Data/Shops",
-            "TargetField": [ "Joja", "Items"  ],
+            "TargetField": [
+                "Joja",
+                "Items"
+            ],
             "Entries": {
-                "neroyuki.rlvalleycpitems_Joja_Fresh_Water": {
-                    "Id": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
-                    "ItemId": "neroyuki.rlvalleycpitems_Joja_Fresh_Water",
+                "{{ModId}}_JojaFreshWater": {
+                    "Id": "{{ModId}}_JojaFreshWater",
+                    "ItemId": "{{ModId}}_JojaFreshWater",
                     "Price": 45
                 },
-                "neroyuki.rlvalleycpitems_Joja_Sports_Drink": {
-                    "Id": "neroyuki.rlvalleycpitems_Joja_Sports_Drink",
-                    "ItemId": "neroyuki.rlvalleycpitems_Joja_Sports_Drink",
+                "{{ModId}}_JojaSportsDrink": {
+                    "Id": "{{ModId}}_JojaSportsDrink",
+                    "ItemId": "{{ModId}}_JojaSportsDrink",
                     "Price": 100
                 }
             }
