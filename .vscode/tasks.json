@@ -1,0 +1,95 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build (Debug)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/StardewSurvivalProject/StardewSurvivalProject.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+                "/property:Configuration=Debug"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build (Release)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/StardewSurvivalProject/StardewSurvivalProject.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+                "/property:Configuration=Release"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/StardewSurvivalProject/StardewSurvivalProject.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "rebuild (Debug)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clean",
+                "build (Debug)"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "copy Content Patcher mod",
+            "type": "shell",
+            "command": "Remove-Item -LiteralPath 'D:/SteamLibrary/steamapps/common/Stardew Valley/Mods/[CP] StardewSurvivalProject' -Recurse -Force -ErrorAction SilentlyContinue; Copy-Item -LiteralPath '${workspaceFolder}/[CP] StardewSurvivalProject' -Destination 'D:/SteamLibrary/steamapps/common/Stardew Valley/Mods/' -Recurse -Force",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "build and run",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build (Debug)",
+                "copy Content Patcher mod"
+            ],
+            "type": "shell",
+            "command": "Write-Host '=== Launching Stardew Valley with SMAPI ===' -ForegroundColor Green; Start-Process -FilePath 'D:/SteamLibrary/steamapps/common/Stardew Valley/StardewModdingAPI.exe' -WorkingDirectory 'D:/SteamLibrary/steamapps/common/Stardew Valley'; Start-Sleep -Seconds 2; Write-Host 'Game launched successfully!' -ForegroundColor Green",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
