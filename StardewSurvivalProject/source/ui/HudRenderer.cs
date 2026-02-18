@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -196,6 +198,127 @@ namespace StardewSurvivalProject.source.ui
 
             if (envTempHover.Contains(mouseX, mouseY))
                 Game1.drawWithBorder(gameState.getEnvTempString(), Color.Black * 0.0f, Color.White, new Vector2(mouseX, mouseY - 32));
+
+            // Mood tooltip
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                Vector2 moodPos = new Vector2(offsetX, offsetY + assetLoader.HungerBar.Height * scale * 4);
+                Rectangle moodHover = new Rectangle((int)moodPos.X, (int)moodPos.Y, 
+                    (int)(assetLoader.MoodIcons[0].Width * scale), (int)(assetLoader.MoodIcons[0].Height * scale));
+
+                if (moodHover.Contains(mouseX, mouseY))
+                {
+                    DrawMoodTooltip(b, mouseX, mouseY);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draw detailed mood tooltip with all modifiers
+        /// </summary>
+        private void DrawMoodTooltip(SpriteBatch b, int x, int y)
+        {
+            var player = gameState.GetPlayerModel();
+            if (player?.mood == null) return;
+
+            // Prepare tooltip content
+            var lines = new List<string>();
+            var mood = player.mood;
+            
+            // Title line
+            lines.Add($"Mood: {mood.TotalMood:F1} ({mood.Level})");
+            lines.Add($"Base Mood: {mood.Value:F1}");
+            
+            if (mood.MoodElements.Count > 0)
+            {
+                lines.Add(""); // Empty line separator
+                lines.Add("Active Modifiers:");
+                
+                // Sort by value (most positive first)
+                var sortedElements = mood.MoodElements.OrderByDescending(e => e.Value).ToList();
+                
+                foreach (var element in sortedElements)
+                {
+                    string sign = element.Value >= 0 ? "+" : "";
+                    string valueLine = $"  {sign}{element.Value:F1} {element.Name}";
+                    lines.Add(valueLine);
+                    
+                    // Add description on next line if it differs from name
+                    if (!string.IsNullOrEmpty(element.Description) && element.Description != element.Name)
+                    {
+                        lines.Add($"    {element.Description}");
+                    }
+                }
+            }
+            else
+            {
+                lines.Add("");
+                lines.Add("No active modifiers");
+            }
+
+            // Calculate tooltip dimensions
+            SpriteFont font = Game1.smallFont;
+            int maxWidth = 0;
+            int totalHeight = 0;
+            var lineHeights = new List<int>();
+
+            foreach (var line in lines)
+            {
+                Vector2 size = font.MeasureString(line);
+                maxWidth = Math.Max(maxWidth, (int)size.X);
+                int lineHeight = (int)size.Y;
+                lineHeights.Add(lineHeight);
+                totalHeight += lineHeight;
+            }
+
+            // Add padding
+            int padding = 16;
+            int tooltipWidth = maxWidth + padding * 2;
+            int tooltipHeight = totalHeight + padding * 2;
+
+            // Position tooltip (avoid going off screen)
+            int tooltipX = x + 16;
+            int tooltipY = y - tooltipHeight - 16;
+
+            // Adjust if going off right edge
+            if (tooltipX + tooltipWidth > Game1.viewport.Width)
+                tooltipX = x - tooltipWidth - 16;
+
+            // Adjust if going off top edge
+            if (tooltipY < 0)
+                tooltipY = y + 16;
+
+            // Draw tooltip background (using game's standard tooltip style)
+            StardewValley.Menus.IClickableMenu.drawTextureBox(
+                b,
+                Game1.menuTexture,
+                new Rectangle(0, 256, 60, 60),
+                tooltipX,
+                tooltipY,
+                tooltipWidth,
+                tooltipHeight,
+                Color.White,
+                1f,
+                false
+            );
+
+            // Draw text lines
+            int currentY = tooltipY + padding;
+            for (int i = 0; i < lines.Count; i++)
+            {
+                Color textColor = Color.Black;
+                
+                // Color code based on content
+                if (lines[i].Contains("+") && lines[i].Contains("  +"))
+                    textColor = new Color(0, 150, 0); // Green for positive
+                else if (lines[i].Contains("-") && lines[i].Contains("  -"))
+                    textColor = new Color(150, 0, 0); // Red for negative
+                else if (i == 0) // Title
+                    textColor = new Color(86, 22, 12); // Dark brown title
+                
+                b.DrawString(font, lines[i], new Vector2(tooltipX + padding, currentY), textColor);
+                currentY += lineHeights[i];
+            }
         }
     }
 }

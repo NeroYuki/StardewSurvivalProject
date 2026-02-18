@@ -60,6 +60,24 @@ namespace StardewSurvivalProject.source.systems
             if (player == null || !ModConfig.GetInstance().UseSanityModule) return;
             player.mood.CheckForMentalBreak();
         }
+        
+        /// <summary>
+        /// Update mood elements (decay and expiration)
+        /// </summary>
+        public void UpdateMoodElements()
+        {
+            if (player == null || !ModConfig.GetInstance().UseSanityModule) return;
+            player.mood.UpdateMoodElements();
+        }
+        
+        /// <summary>
+        /// Handle mood day start (reset daily elements)
+        /// </summary>
+        public void OnMoodDayStart()
+        {
+            if (player == null || !ModConfig.GetInstance().UseSanityModule) return;
+            player.mood.OnDayStart();
+        }
 
         /// <summary>
         /// Handle food/item consumption
@@ -135,6 +153,24 @@ namespace StardewSurvivalProject.source.systems
             player.bindedFarmer.itemToEat = new SObject("(O)18", 1);
             
             player.updateDrinking(addThirst);
+        }
+
+        /// <summary>
+        /// Apply direct hunger drain (for effect consequences)
+        /// </summary>
+        public void ApplyHungerDrain(double amount)
+        {
+            if (player == null) return;
+            player.updateHungerThirstDrain(amount, 0, true);
+        }
+
+        /// <summary>
+        /// Apply direct thirst drain (for effect consequences)
+        /// </summary>
+        public void ApplyThirstDrain(double amount)
+        {
+            if (player == null) return;
+            player.updateHungerThirstDrain(0, amount, false);
         }
 
         /// <summary>
@@ -240,6 +276,8 @@ namespace StardewSurvivalProject.source.systems
         public double GetMinComfortTemp() => player?.temp.MinComfortTemp ?? 0;
         public double GetMaxComfortTemp() => player?.temp.MaxComfortTemp ?? 0;
         public int GetMoodIndex() => player != null ? Math.Max(0, Math.Min(7, (int)player.mood.Level)) : 4;
+        public string GetMoodStat() => player?.mood.GetMoodBreakdown() ?? "N/A";
+        public model.Player GetPlayerModel() => player;
         
         public string GetHungerStat() => player != null ? $"{player.hunger.value.ToString("#.##")} / {model.Hunger.DEFAULT_VALUE}" : "N/A";
         public string GetThirstStat() => player != null ? $"{player.thirst.value.ToString("#.##")} / {model.Thirst.DEFAULT_VALUE}" : "N/A";

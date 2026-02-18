@@ -12,12 +12,13 @@ namespace StardewSurvivalProject.source.harmony_patches
 {
     public class HarmonyPatches
     {
-        public static void InitPatches(string uniqueModId, IMonitor monitor)
+        public static void InitPatches(string uniqueModId, IMonitor monitor, core.GameStateManager gameState)
         {
             FarmerPatches.Initialize(monitor);
             ObjectPatches.Initialize(monitor);
             UIDrawPatches.Initialize(monitor);
             NPCPatches.Initialize(monitor);
+            MoodPatches.Initialize(monitor, gameState);
 
             var harmony = new Harmony(uniqueModId);
 
@@ -51,6 +52,40 @@ namespace StardewSurvivalProject.source.harmony_patches
                 new[] { typeof(SpriteBatch), typeof(StringBuilder), typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(string), typeof(int), typeof(string[]), typeof(Item), typeof(int), typeof(string), typeof(int), typeof(int), typeof(int), typeof(float), typeof(CraftingRecipe), typeof(IList<Item>), typeof(Texture2D), typeof(Rectangle?), typeof(Color?), typeof(Color?), typeof(float), typeof(int), typeof(int) }),
                 postfix: new HarmonyMethod(typeof(UIDrawPatches), nameof(UIDrawPatches.DrawHoverText_Postfix))
             );
+
+            // Mood-related patches
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                // Skill level up detection
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.gainExperience)),
+                    postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.GainExperience_PostFix))
+                );
+
+                // Raw food and food tracking (reuse existing patch, add new postfix)
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.doneEating)),
+                    postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.EatRawFood_Check))
+                );
+
+                // Tool usage for monotony tracking (reuse existing patch)
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.EndUsingTool)),
+                    postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.ToolUsed_Track))
+                );
+
+                // Gift reactions
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(NPC), nameof(NPC.receiveGift), new Type[] { typeof(SObject), typeof(Farmer), typeof(bool), typeof(float), typeof(bool) }),
+                    postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.GiftReaction_PostFix))
+                );
+
+                // NPC dialogue for social interaction tracking
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
+                    postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.NPCDialogue_PostFix))
+                );
+            }
         }
     }
 }

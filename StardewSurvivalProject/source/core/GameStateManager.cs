@@ -62,6 +62,7 @@ namespace StardewSurvivalProject.source.core
             
             if (ModConfig.GetInstance().UseSanityModule)
             {
+                playerStats.UpdateMoodElements();
                 playerStats.CheckMentalBreak();
             }
         }
@@ -128,8 +129,7 @@ namespace StardewSurvivalProject.source.core
             if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/stomachache"))
             {
                 double hungerDrain = -model.Hunger.DEFAULT_VALUE * (ModConfig.GetInstance().StomachacheHungerPercentageDrainPerSecond / 100);
-                // Access internal player stats through system (need to add method)
-                // For now, we'll need to expose this or create a method
+                playerStats.ApplyHungerDrain(hungerDrain);
             }
 
             if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/burn"))
@@ -147,7 +147,8 @@ namespace StardewSurvivalProject.source.core
 
             if (Game1.player.buffs.IsApplied("neroyuki.rlvalley/heatstroke"))
             {
-                // Need to expose thirst drain method
+                double thirstDrain = -ModConfig.GetInstance().HeatstrokeThirstDrainPerSecond;
+                playerStats.ApplyThirstDrain(thirstDrain);
             }
         }
 
@@ -160,7 +161,14 @@ namespace StardewSurvivalProject.source.core
         public void OnToolUsed(Tool tool) => stamina.HandleToolStaminaDrain(Game1.player, tool);
         public void OnGiftGiven(NPC npc, SObject gift) => playerStats.HandleGiftToSpouse(npc, gift);
         public void OnDayEnding() => playerStats.HandleOvernightDrain();
-        public void OnDayStarted() => playerStats.HandleDayStart();
+        public void OnDayStarted() 
+        { 
+            playerStats.HandleDayStart();
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                playerStats.OnMoodDayStart();
+            }
+        }
         public void ResetPlayerStats() => playerStats.ResetStats();
         public void OnExit() => playerStats.Cleanup();
 
@@ -201,6 +209,8 @@ namespace StardewSurvivalProject.source.core
         public double getMinComfyEnvTemp() => playerStats.GetMinComfortTemp();
         public double getMaxComfyEnvTemp() => playerStats.GetMaxComfortTemp();
         public int getPlayerMoodIndex() => playerStats.GetMoodIndex();
+        public string getPlayerMoodStat() => playerStats.GetMoodStat();
+        public model.Player GetPlayerModel() => playerStats.GetPlayerModel();
 
         // === Debug Commands ===
 

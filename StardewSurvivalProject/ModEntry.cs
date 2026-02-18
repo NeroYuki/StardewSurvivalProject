@@ -21,6 +21,7 @@ namespace StardewSurvivalProject
         private source.ui.AssetLoader assetLoader;
         private source.ui.HudRenderer hudRenderer;
         private source.commands.Commands commandManager;
+        private source.handlers.MoodEventHandler moodEventHandler;
 
         // Expose for harmony patches
         public static Texture2D InfoIcon;
@@ -102,9 +103,10 @@ namespace StardewSurvivalProject
             // Initialize new refactored systems
             gameState = new source.core.GameStateManager(helper);
             assetLoader = new source.ui.AssetLoader(helper, this.Monitor);
+            moodEventHandler = new source.handlers.MoodEventHandler(gameState, this.Monitor);
             
             this.Monitor.Log("Initiating Harmony patches", LogLevel.Debug);
-            source.harmony_patches.HarmonyPatches.InitPatches(this.ModManifest.UniqueID, this.Monitor);
+            source.harmony_patches.HarmonyPatches.InitPatches(this.ModManifest.UniqueID, this.Monitor, gameState);
 
             // Load all assets using new AssetLoader
             assetLoader.LoadAllAssets();
@@ -147,6 +149,15 @@ namespace StardewSurvivalProject
 
             Game1.addHUDMessage(new HUDMessage("Player is had mental breakdown, they spent 1 hour contemplating their life", HUDMessage.error_type));
 
+            // Apply catharsis buff immediately (6 hours duration)
+            var player = gameState?.GetPlayerModel();
+            if (player?.mood != null)
+            {
+                player.mood.AddMoodElement("Catharsis", 25, 360, 
+                    "Feeling relief after emotional release");
+                Monitor.Log("Catharsis mood boost applied after mental break", LogLevel.Debug);
+            }
+
             // If in single player, advance the time by 1 hour
             if (!Context.IsMultiplayer)
             {
@@ -188,6 +199,7 @@ namespace StardewSurvivalProject
         {
             if (!Context.IsWorldReady) return;
             
+            moodEventHandler?.OnDayEnding();
             gameState.OnDayEnding();
         }
 
@@ -208,6 +220,12 @@ namespace StardewSurvivalProject
             if (Game1.player.health <= 0 || Game1.player.stamina <= -15)
             {
                 gameState.ResetPlayerStats();
+            }
+            
+            // Update mood handler periodically (every 60 ticks = ~1 second)
+            if (e.IsMultipleOf(60))
+            {
+                moodEventHandler?.OnUpdateTicked();
             }
         }
 
@@ -315,8 +333,7 @@ namespace StardewSurvivalProject
                 return;
 
             SObject ateItem = Game1.player.itemToEat as SObject;
-            gameState.OnItemEaten(ateItem);
-        }
+            gameState.OnItemEaten(ateItem);            moodEventHandler?.OnItemEaten();        }
 
         private void OnItemUsed(object sender, EventArgs e)
         {
@@ -343,6 +360,7 @@ namespace StardewSurvivalProject
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             gameState.OnDayStarted();
+            moodEventHandler?.OnDayStarted();
         }
 
         private void OnLoadedSave(object sender, SaveLoadedEventArgs e)
