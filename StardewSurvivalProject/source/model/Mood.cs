@@ -44,7 +44,7 @@ namespace StardewSurvivalProject.source.model
 
     public class Mood
     {
-        private double _baseValue = 50; // Base mood value
+        private double _baseValue = 50; // Base mood value — overridden from config on construction
 
         // Track mood modifiers with their expiration
         public List<MoodElement> MoodElements = new List<MoodElement>();
@@ -67,6 +67,7 @@ namespace StardewSurvivalProject.source.model
         // for new player
         public Mood(Callback OnMentalBreakCallback)
         {
+            _baseValue = ModConfig.GetInstance().MoodBaseValue;
             _onMentalBreakCallback = OnMentalBreakCallback;
         }
 
@@ -89,7 +90,8 @@ namespace StardewSurvivalProject.source.model
             }
             set
             {
-                _baseValue = value > 120 ? 100 : value < -40 ? -40 : value;
+                var cfg = ModConfig.GetInstance();
+                _baseValue = value > cfg.MoodCap ? cfg.MoodCap : value < cfg.MoodMinValue ? cfg.MoodMinValue : value;
                 Level = GetMoodLevel(_baseValue);
             }
         }
@@ -99,8 +101,9 @@ namespace StardewSurvivalProject.source.model
         {
             get
             {
+                var cfg = ModConfig.GetInstance();
                 double total = _baseValue + MoodElements.Sum(e => e.Value);
-                return Math.Max(-40, Math.Min(120, total));
+                return Math.Max(cfg.MoodMinValue, Math.Min(cfg.MoodCap, total));
             }
         }
 
@@ -315,17 +318,18 @@ namespace StardewSurvivalProject.source.model
 
         public MoodLevel GetMoodLevel(double value)
         {
-            if (value < 10)
+            var cfg = ModConfig.GetInstance();
+            if (value < cfg.MoodDistressThreshold)
                 return MoodLevel.Distress;
-            if (value < 25)
+            if (value < cfg.MoodSadThreshold)
                 return MoodLevel.Sad;
-            if (value < 40)
+            if (value < cfg.MoodDiscontentThreshold)
                 return MoodLevel.Discontent;
-            if (value < 50)
+            if (value < cfg.MoodNeutralThreshold)
                 return MoodLevel.Neutral;
-            if (value < 65)
+            if (value < cfg.MoodContentThreshold)
                 return MoodLevel.Content;
-            if (value < 75)
+            if (value < cfg.MoodHappyThreshold)
                 return MoodLevel.Happy;
             else
                 return MoodLevel.Overjoy;
@@ -336,11 +340,12 @@ namespace StardewSurvivalProject.source.model
             var rand = new Random();
             var out_val = rand.NextDouble();
             var currentLevel = GetMoodLevel(TotalMood);
+            var cfg = ModConfig.GetInstance();
             
-            // roll the dice every 10 minutes, 1% if discontent, 5% if sad, 20% if distress
-            if (currentLevel == MoodLevel.Discontent && out_val < 0.01
-                || currentLevel == MoodLevel.Sad && out_val < 0.05
-                || currentLevel == MoodLevel.Distress && out_val < 0.2)
+            // Roll every 10 minutes; chances are read from config (stored as percentages)
+            if (currentLevel == MoodLevel.Discontent && out_val < cfg.MentalBreakChanceOnDiscontent / 100.0
+                || currentLevel == MoodLevel.Sad && out_val < cfg.MentalBreakChanceOnSad / 100.0
+                || currentLevel == MoodLevel.Distress && out_val < cfg.MentalBreakChanceOnDistress / 100.0)
             {
                 Level = MoodLevel.MentalBreak;
                 _onMentalBreakCallback?.Invoke();

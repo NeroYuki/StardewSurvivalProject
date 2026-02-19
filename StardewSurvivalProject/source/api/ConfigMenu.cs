@@ -246,6 +246,12 @@ namespace StardewSurvivalProject.source.api
 				"Options to tweak how food spoilage system works",
 				"Food Spoilage"
 			);
+			api.RegisterPageLabel(
+				context.ModManifest,
+				"Sanity / Mood",
+				"Options to tweak how sanity / mood system works",
+				"Sanity / Mood"
+			);
 
             api.StartNewPage(context.ModManifest, "Thirst and Hunger");
             api.RegisterParagraph(context.ModManifest, "Options for Thirst and Hunger mechanic");
@@ -983,6 +989,111 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Percentage by which the Chest Freezer extends food shelf life (Default: 250)",
                 optionGet: () => (float)ModConfig.GetInstance().FreezerSpoilageExtension,
                 optionSet: value => ModConfig.GetInstance().FreezerSpoilageExtension = (double)value
+            );
+
+            api.StartNewPage(context.ModManifest, "Sanity / Mood");
+            api.RegisterParagraph(context.ModManifest, "Configure the mood system. All threshold values are absolute mood numbers (not percentages). The mood meter runs from Min Value up to Cap.");
+
+            api.RegisterParagraph(context.ModManifest, "--- Core Values ---");
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Mood Cap",
+                optionDesc: "Maximum possible mood value. Mood cannot exceed this ceiling (Default: 120)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodCap,
+                optionSet: value => ModConfig.GetInstance().MoodCap = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Mood Base Value",
+                optionDesc: "Starting mood value for a new player or fresh save (Default: 50)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodBaseValue,
+                optionSet: value => ModConfig.GetInstance().MoodBaseValue = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Mood Minimum Value",
+                optionDesc: "Floor for the mood value. Mood cannot drop below this (Default: -40)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodMinValue,
+                optionSet: value => ModConfig.GetInstance().MoodMinValue = (double)value
+            );
+
+            api.RegisterParagraph(context.ModManifest, "--- Mood Level Thresholds ---");
+            api.RegisterParagraph(context.ModManifest, "Mood below a threshold maps to that level. Levels in order: Distress < Sad < Discontent < Neutral < Content < Happy < Overjoy.");
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Distress Threshold",
+                optionDesc: "Mood below this value is considered Distress (Default: 10)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodDistressThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodDistressThreshold = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Sad Threshold",
+                optionDesc: "Mood below this value (and at or above Distress) is considered Sad (Default: 25)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodSadThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodSadThreshold = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Discontent Threshold",
+                optionDesc: "Mood below this value (and at or above Sad) is considered Discontent (Default: 40)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodDiscontentThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodDiscontentThreshold = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Neutral Threshold",
+                optionDesc: "Mood below this value (and at or above Discontent) is considered Neutral (Default: 50)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodNeutralThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodNeutralThreshold = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Content Threshold",
+                optionDesc: "Mood below this value (and at or above Neutral) is considered Content (Default: 65)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodContentThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodContentThreshold = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Happy Threshold",
+                optionDesc: "Mood below this value (and at or above Content) is considered Happy. At or above = Overjoy (Default: 75)",
+                optionGet: () => (float)ModConfig.GetInstance().MoodHappyThreshold,
+                optionSet: value => ModConfig.GetInstance().MoodHappyThreshold = (double)value
+            );
+
+            api.RegisterParagraph(context.ModManifest, "--- Mental Break ---");
+            api.RegisterParagraph(context.ModManifest, "A mental break roll happens every 10 in-game minutes. The chance is checked only when mood is at that specific level.");
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Break Chance: Discontent (%)",
+                optionDesc: "Percentage chance per 10-minute tick of a mental break while Discontent (Default: 1)",
+                optionGet: () => (float)ModConfig.GetInstance().MentalBreakChanceOnDiscontent,
+                optionSet: value => ModConfig.GetInstance().MentalBreakChanceOnDiscontent = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Break Chance: Sad (%)",
+                optionDesc: "Percentage chance per 10-minute tick of a mental break while Sad (Default: 5)",
+                optionGet: () => (float)ModConfig.GetInstance().MentalBreakChanceOnSad,
+                optionSet: value => ModConfig.GetInstance().MentalBreakChanceOnSad = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Break Chance: Distress (%)",
+                optionDesc: "Percentage chance per 10-minute tick of a mental break while in Distress (Default: 20)",
+                optionGet: () => (float)ModConfig.GetInstance().MentalBreakChanceOnDistress,
+                optionSet: value => ModConfig.GetInstance().MentalBreakChanceOnDistress = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Mental Break Duration (hours)",
+                optionDesc: "How many in-game hours the mental break lasts. In single player the clock is advanced; in multiplayer the player is frozen for the equivalent ticks (Default: 1)",
+                optionGet: () => ModConfig.GetInstance().MentalBreakDurationHours,
+                optionSet: value => ModConfig.GetInstance().MentalBreakDurationHours = value
             );
         }
     }

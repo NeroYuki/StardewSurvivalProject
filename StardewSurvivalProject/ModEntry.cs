@@ -150,7 +150,9 @@ namespace StardewSurvivalProject
         {
             if (sender != Game1.player) return;
 
-            Game1.addHUDMessage(new HUDMessage("Player is had mental breakdown, they spent 1 hour contemplating their life", HUDMessage.error_type));
+            int durationHours = ModConfig.GetInstance().MentalBreakDurationHours;
+            string hourText = durationHours == 1 ? "1 hour" : $"{durationHours} hours";
+            Game1.addHUDMessage(new HUDMessage($"Player had a mental breakdown, they spent {hourText} contemplating their life", HUDMessage.error_type));
 
             // Apply catharsis buff immediately (6 hours duration)
             var player = gameState?.GetPlayerModel();
@@ -161,15 +163,15 @@ namespace StardewSurvivalProject
                 Monitor.Log("Catharsis mood boost applied after mental break", LogLevel.Debug);
             }
 
-            // If in single player, advance the time by 1 hour
+            // If in single player, advance the time by the configured number of hours
             if (!Context.IsMultiplayer)
             {
-                Game1.timeOfDay += 100;
+                Game1.timeOfDay += durationHours * 100;
             }
             else
             {
-                // If in multiplayer, lock the player from moving for 1 hour in-game
-                Game1.player.freezePause = 3600;
+                // In multiplayer, freeze the player for the equivalent real-time ticks
+                Game1.player.freezePause = durationHours * 3600;
             }
         }
 

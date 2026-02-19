@@ -137,11 +137,23 @@ namespace StardewSurvivalProject
         public float StaminaDrainOnRunningPerTick { get; set; } = 0.01f;
         public float StaminaDrainOnSprintingPerTick { get; set; } = 0.05f;
 
-        //Mood mechanic
-        public double MoodThresholdForBreakdown { get; set; } = 0;
-        public double MoodThresholdForUnhappy { get; set; } = 30;
-        public double MoodThresholdForHappy { get; set; } = 70;
-        public double MoodThresholdForVeryHappy { get; set; } = 100;
+        //Mood / Sanity mechanic
+        public double MoodCap { get; set; } = 120;            // Maximum possible mood value
+        public double MoodBaseValue { get; set; } = 50;       // Starting base mood for a new player
+        public double MoodMinValue { get; set; } = -40;       // Floor for mood value
+        // Level thresholds (absolute mood values); levels are Distress < Sad < Discontent < Neutral < Content < Happy < Overjoy
+        public double MoodDistressThreshold { get; set; } = 10;
+        public double MoodSadThreshold { get; set; } = 25;
+        public double MoodDiscontentThreshold { get; set; } = 40;
+        public double MoodNeutralThreshold { get; set; } = 50;
+        public double MoodContentThreshold { get; set; } = 65;
+        public double MoodHappyThreshold { get; set; } = 75;
+        // Mental break roll chances (as percentages, e.g. 1 = 1% per 10-minute tick)
+        public double MentalBreakChanceOnDiscontent { get; set; } = 1;
+        public double MentalBreakChanceOnSad { get; set; } = 5;
+        public double MentalBreakChanceOnDistress { get; set; } = 20;
+        // How many in-game hours the mental break lasts (time advance in single player / freeze in multiplayer)
+        public int MentalBreakDurationHours { get; set; } = 1;
 
         //Food Spoilage
         public bool UseFoodSpoilage { get; set; } = true;
