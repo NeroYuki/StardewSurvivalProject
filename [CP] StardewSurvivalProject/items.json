@@ -193,6 +193,17 @@
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/JojaSportDrink",
                     "SpriteIndex": 0
+                },
+                "{{ModId}}_SpoiledFood": {
+                    "Name": "Spoiled Food",
+                    "Displayname": "Spoiled Food",
+                    "Description": "This food has gone bad. Nobody wants to eat this.",
+                    "Type": "Basic",
+                    "Category": -20,
+                    "Price": 1,
+                    "Edibility": -300,
+                    "Texture": "Mods/{{ModId}}/SpoiledFood",
+                    "SpriteIndex": 0
                 }
             }
         },
@@ -302,6 +313,30 @@
                     "Description": "Ionize your water, take the lighting to your bottle!",
                     "Price": 1,
                     "Texture": "Mods/{{ModId}}/IonizingMachine",
+                    "SpriteIndex": 0
+                },
+                "{{ModId}}_Cooler": {
+                    "Name": "Portable Cooler",
+                    "Displayname": "Portable Cooler",
+                    "Description": "A small insulated box that slows food spoilage. Extends freshness by 50%.",
+                    "Price": 500,
+                    "Texture": "Mods/{{ModId}}/Cooler",
+                    "SpriteIndex": 0
+                },
+                "{{ModId}}_Fridge": {
+                    "Name": "Mini Fridge",
+                    "Displayname": "Mini Fridge",
+                    "Description": "A compact refrigerator that keeps food fresh. Doubles food freshness time.",
+                    "Price": 2000,
+                    "Texture": "Mods/{{ModId}}/MiniFridge",
+                    "SpriteIndex": 0
+                },
+                "{{ModId}}_Freezer": {
+                    "Name": "Freezer",
+                    "Displayname": "Chest Freezer",
+                    "Description": "A powerful freezer that significantly extends food life. Increases freshness by 250%.",
+                    "Price": 5000,
+                    "Texture": "Mods/{{ModId}}/ChestFreezer",
                     "SpriteIndex": 0
                 }
             }

@@ -21,7 +21,10 @@
                 "{{ModId}}_RainCollector": "(O)771 20 (O)388 30 (O)169 2/Field/{{ModId}}_RainCollector/true/default/",
                 "{{ModId}}_RainCollector2": "(O)771 20 (O)388 30 (O)709 1/Field/{{ModId}}_RainCollector/true/default/",
                 "{{ModId}}_TallAirConditioner": "(O)336 15 (O)337 5 (O)338 30/Field/{{ModId}}_TallAirConditioner/true/none/",
-                "{{ModId}}_IonizingMachine": "((O)335 10 (O)334 10 (O)787 2/Field/{{ModId}}_IonizingMachine/true/none/"
+                "{{ModId}}_IonizingMachine": "(O)335 10 (O)334 10 (O)787 2/Field/{{ModId}}_IonizingMachine/true/none/",
+                "{{ModId}}_Cooler": "(O)335 5 (O)334 10 (O)388 20/Field/{{ModId}}_Cooler/true/default/",
+                "{{ModId}}_Fridge": "(O)335 15 (O)336 5 (O)337 2 (O)334 20/Field/{{ModId}}_Fridge/true/none/",
+                "{{ModId}}_Freezer": "(O)335 20 (O)336 10 (O)337 5 (O)787 5/Field/{{ModId}}_Freezer/true/none/"
             }
         }
     ]

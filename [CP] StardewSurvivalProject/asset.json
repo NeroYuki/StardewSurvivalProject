@@ -137,6 +137,21 @@
         },
         {
             "Action": "Load",
+            "Target": "Mods/{{ModId}}/Cooler",
+            "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/MiniFridge",
+            "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/ChestFreezer",
+            "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
             "Target": "Mods/{{ModId}}/IonizingMachine",
             "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
         },
