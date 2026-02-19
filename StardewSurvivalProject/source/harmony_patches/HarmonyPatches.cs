@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using HarmonyLib;
 using StardewValley;
+using StardewValley.Menus;
 using SObject = StardewValley.Object;
 using StardewModdingAPI;
 
@@ -19,6 +20,7 @@ namespace StardewSurvivalProject.source.harmony_patches
             UIDrawPatches.Initialize(monitor);
             NPCPatches.Initialize(monitor);
             MoodPatches.Initialize(monitor, gameState);
+            SpoilagePatches.Initialize(monitor);
 
             var harmony = new Harmony(uniqueModId);
 
@@ -86,6 +88,41 @@ namespace StardewSurvivalProject.source.harmony_patches
                     postfix: new HarmonyMethod(typeof(MoodPatches), nameof(MoodPatches.NPCDialogue_PostFix))
                 );
             }
+
+            // === Spoilage System Patches ===
+
+            // Track stack merging
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Item), nameof(Item.addToStack)),
+                prefix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.AddToStack_Prefix)),
+                postfix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.AddToStack_Postfix))
+            );
+
+            // Track item cloning (getOne → GetOneCopyFrom)
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Item), "GetOneCopyFrom", new Type[] { typeof(Item) }),
+                postfix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.GetOneCopyFrom_Postfix))
+            );
+
+            // Track stack consumption (splitting)
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Item), nameof(Item.ConsumeStack)),
+                postfix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.ConsumeStack_Postfix))
+            );
+
+            // Track right-click stack splitting in inventory menus
+            harmony.Patch(
+                original: AccessTools.Method(typeof(InventoryMenu), nameof(InventoryMenu.rightClick),
+                    new Type[] { typeof(int), typeof(int), typeof(Item), typeof(bool), typeof(bool) }),
+                postfix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.InventoryMenu_RightClick_Postfix))
+            );
+
+            // Track items added to player inventory
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventory),
+                    new Type[] { typeof(Item) }),
+                postfix: new HarmonyMethod(typeof(SpoilagePatches), nameof(SpoilagePatches.Farmer_AddItem_Postfix))
+            );
         }
     }
 }

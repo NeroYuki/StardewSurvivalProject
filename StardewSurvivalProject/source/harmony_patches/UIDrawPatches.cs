@@ -117,6 +117,9 @@ namespace StardewSurvivalProject.source.harmony_patches
                     operationalRange = tempControlData.operationalRange;
                 }
 
+                // Spoilage info
+                List<string> spoilageLines = systems.SpoilageSystem.GetSpoilageTooltipLines(hoveredItem);
+
                 //draw the UI
                 int x = Game1.getOldMouseX() + 32 + xOffset;
                 int y4 = Game1.getOldMouseY() + 32 + yOffset;
@@ -140,6 +143,12 @@ namespace StardewSurvivalProject.source.harmony_patches
                 if (addThirst > 0 || addHunger > 0) { UIHeight = 64; UIWidth = 256; }
                 if (addHunger > 0 && addThirst > 0) { UIHeight += 40; }
                 if (tempAdjustmentDescription != "") { UIHeight += 40; UIWidth = 384; }
+                if (spoilageLines != null && spoilageLines.Count > 0)
+                {
+                    if (UIHeight == 0) { UIHeight = 24; UIWidth = 256; }
+                    UIHeight += spoilageLines.Count * 36;
+                    UIWidth = Math.Max(UIWidth, 300);
+                }
 
                 
                 //temporary fit
@@ -210,6 +219,18 @@ namespace StardewSurvivalProject.source.harmony_patches
                     string effectiveRangeText = $"{effectiveRange} tile{(effectiveRange >= 1 && effectiveRange <= -1 ? "" : "s")} {(ambientCoefficient != 1 ? $"({Math.Floor(ambientCoefficient * 100)}% Eff.)" : "")}";
                     Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(40, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
                     Utility.drawTextWithShadow(b, effectiveRangeText, font, new Vector2(startX + 34, startY), Game1.textColor);
+                }
+
+                // Draw spoilage info
+                if (spoilageLines != null)
+                {
+                    foreach (var line in spoilageLines)
+                    {
+                        // Use a clock/timer icon area (reuse existing icon sheet)
+                        Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(90, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
+                        Utility.drawTextWithShadow(b, line, font, new Vector2(startX + 34, startY), new Color(139, 69, 19)); // Brown color for spoilage
+                        startY += 36;
+                    }
                 }
 
 

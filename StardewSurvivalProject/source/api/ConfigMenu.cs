@@ -41,7 +41,6 @@ namespace StardewSurvivalProject.source.api
                 "Options to tweak various aspect of the mod's mechanic for a harder or easier experience, some options is fairly advanced",
                 "Difficulty Setting"
             );
-
             api.StartNewPage(context.ModManifest, "Toggle Feature");
             api.RegisterParagraph(context.ModManifest, "Options to enable / disable certain mod feature");
 
@@ -114,6 +113,13 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Hahahaha let's not talk about this one!",
                 optionGet: () => ModConfig.GetInstance().UseSanityModule,
                 optionSet: value => ModConfig.GetInstance().UseSanityModule = value
+            );
+			api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Experimental - Food Spoilage",
+                optionDesc: "When enabled, food items will spoil after a number of days and turn into Spoiled Food (Default: Checked)",
+                optionGet: () => ModConfig.GetInstance().UseFoodSpoilage,
+                optionSet: value => ModConfig.GetInstance().UseFoodSpoilage = value
             );
 
             api.StartNewPage(context.ModManifest, "UI Configuration");
@@ -234,6 +240,12 @@ namespace StardewSurvivalProject.source.api
                 "Options for mod's stamina and HP rework",
                 "Stamina / HP Rework"
             );
+			api.RegisterPageLabel(
+				context.ModManifest,
+				"Food Spoilage",
+				"Options to tweak how food spoilage system works",
+				"Food Spoilage"
+			);
 
             api.StartNewPage(context.ModManifest, "Thirst and Hunger");
             api.RegisterParagraph(context.ModManifest, "Options for Thirst and Hunger mechanic");
@@ -912,6 +924,65 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "How much stamina player lose every tick when they are sprinting (Default: 0.05)",
                 optionGet: () => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick,
                 optionSet: value => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick = value
+            );
+
+			api.StartNewPage(context.ModManifest, "Food Spoilage");
+            api.RegisterParagraph(context.ModManifest, "Options to configure the food spoilage system. Spoilage is tracked per pile within a stack and advances by one day each in-game day.");
+
+            api.RegisterParagraph(context.ModManifest, "--- Spoilage Durations ---");
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Crop Spoilage (days)",
+                optionDesc: "Days before raw crops, forage, and fish spoil. Applies to vegetables, fruits, flowers, greens, and fish (Default: 7)",
+                optionGet: () => ModConfig.GetInstance().CropSpoilageDays,
+                optionSet: value => ModConfig.GetInstance().CropSpoilageDays = value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Animal Produce Spoilage (days)",
+                optionDesc: "Days before animal products and artisan goods spoil. Applies to eggs, milk, cheese, mayo, syrup, and meat (Default: 14)",
+                optionGet: () => ModConfig.GetInstance().ProduceSpoilageDays,
+                optionSet: value => ModConfig.GetInstance().ProduceSpoilageDays = value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Cooked Food Spoilage (days)",
+                optionDesc: "Days before cooked/prepared food spoils. Applies to all items in the cooking category (Default: 3)",
+                optionGet: () => ModConfig.GetInstance().CookedFoodSpoilageDays,
+                optionSet: value => ModConfig.GetInstance().CookedFoodSpoilageDays = value
+            );
+
+            api.RegisterParagraph(context.ModManifest, "--- Container Shelf-Life Extensions ---");
+            api.RegisterParagraph(context.ModManifest, "Each container extends how long food lasts by a percentage. A 100% extension doubles the shelf life.");
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Chest Extension (%)",
+                optionDesc: "Percentage by which a regular chest extends food shelf life. E.g. 20 means a crop that normally lasts 7 days will last ~8.4 days in a chest (Default: 20)",
+                optionGet: () => (float)ModConfig.GetInstance().ChestSpoilageExtension,
+                optionSet: value => ModConfig.GetInstance().ChestSpoilageExtension = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Portable Cooler Extension (%)",
+                optionDesc: "Percentage by which the Portable Cooler extends food shelf life (Default: 50)",
+                optionGet: () => (float)ModConfig.GetInstance().CoolerSpoilageExtension,
+                optionSet: value => ModConfig.GetInstance().CoolerSpoilageExtension = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Mini Fridge Extension (%)",
+                optionDesc: "Percentage by which the Mini Fridge (and kitchen fridge) extends food shelf life (Default: 100)",
+                optionGet: () => (float)ModConfig.GetInstance().FridgeSpoilageExtension,
+                optionSet: value => ModConfig.GetInstance().FridgeSpoilageExtension = (double)value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Chest Freezer Extension (%)",
+                optionDesc: "Percentage by which the Chest Freezer extends food shelf life (Default: 250)",
+                optionGet: () => (float)ModConfig.GetInstance().FreezerSpoilageExtension,
+                optionSet: value => ModConfig.GetInstance().FreezerSpoilageExtension = (double)value
             );
         }
     }

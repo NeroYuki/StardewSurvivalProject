@@ -100,6 +100,9 @@ namespace StardewSurvivalProject
             source.data.ClothingTempResistantDictionary.loadList(this);
             source.data.CustomHungerDictionary.loadList(this);
 
+            // Initialize spoilage system
+            source.systems.SpoilageSystem.Initialize(this.Monitor);
+
             // Initialize new refactored systems
             gameState = new source.core.GameStateManager(helper);
             assetLoader = new source.ui.AssetLoader(helper, this.Monitor);
@@ -201,6 +204,10 @@ namespace StardewSurvivalProject
             
             moodEventHandler?.OnDayEnding();
             gameState.OnDayEnding();
+
+            // Advance spoilage for all items
+            source.systems.SpoilageSystem.AdvanceDayForInventory(Game1.player);
+            source.systems.SpoilageSystem.AdvanceDayForContainers();
         }
 
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -378,6 +385,10 @@ namespace StardewSurvivalProject
             source.data.ItemNameCache.cacheItem("Ice Water Canteen");
             source.data.ItemNameCache.cacheItem("Ice Ionized Water Canteen");
             source.data.ItemNameCache.cacheItem("Ionized Full Canteen");
+            source.data.ItemNameCache.cacheItem("Spoiled Food");
+
+            // Initialize spoilage tracking for existing inventory items
+            source.systems.SpoilageSystem.InitializeExistingItems(Game1.player);
         }
 
         private void OnGameSaved(object sender, SavedEventArgs e)

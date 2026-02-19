@@ -143,6 +143,16 @@ namespace StardewSurvivalProject
         public double MoodThresholdForHappy { get; set; } = 70;
         public double MoodThresholdForVeryHappy { get; set; } = 100;
 
+        //Food Spoilage
+        public bool UseFoodSpoilage { get; set; } = true;
+        public int CropSpoilageDays { get; set; } = 7;
+        public int ProduceSpoilageDays { get; set; } = 14;
+        public int CookedFoodSpoilageDays { get; set; } = 3;
+        public double ChestSpoilageExtension { get; set; } = 20;       // % extension
+        public double CoolerSpoilageExtension { get; set; } = 50;      // % extension
+        public double FridgeSpoilageExtension { get; set; } = 100;     // % extension
+        public double FreezerSpoilageExtension { get; set; } = 250;    // % extension
+
         private static ModConfig _instance;
 
         // This is the static method that controls the access to the singleton
