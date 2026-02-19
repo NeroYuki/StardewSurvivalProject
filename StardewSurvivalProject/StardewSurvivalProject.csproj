@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>StardewSurvivalProject</AssemblyName>
     <RootNamespace>StardewSurvivalProject</RootNamespace>
-    <Version>0.4.1-alpha</Version>
+    <Version>0.5.0-preview1-alpha</Version>
     <TargetFramework>net6.0</TargetFramework>
 	<EnableHarmony>true</EnableHarmony>
 	<Authors>NeroYuki</Authors>
