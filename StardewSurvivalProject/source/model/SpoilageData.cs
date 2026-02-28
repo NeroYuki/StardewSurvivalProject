@@ -60,27 +60,30 @@ namespace StardewSurvivalProject.source.model
             Piles.Sort((a, b) => b.DaysRemaining.CompareTo(a.DaysRemaining));
         }
 
-        /// <summary>Merge piles that have the same integer day remaining (within 0.01 tolerance).</summary>
+        /// <summary>Merge piles whose DaysRemaining are within 0.01 of each other (same cohort).</summary>
         public void ConsolidatePiles()
         {
             if (Piles.Count <= 1) return;
 
-            var consolidated = new Dictionary<int, SpoilagePile>();
+            var result = new List<SpoilagePile>();
             foreach (var pile in Piles)
             {
-                int key = (int)Math.Floor(pile.DaysRemaining);
-                if (consolidated.TryGetValue(key, out var existing))
+                // Only merge into an existing pile if the values are nearly identical —
+                // this avoids incorrectly merging piles from different containers
+                // (e.g., 6.0 days from inventory vs 6.33 days from a cooler).
+                var match = result.FirstOrDefault(p => Math.Abs(p.DaysRemaining - pile.DaysRemaining) < 0.01);
+                if (match != null)
                 {
-                    // Merge: keep the lower DaysRemaining (more spoiled)
-                    existing.Count += pile.Count;
-                    existing.DaysRemaining = Math.Min(existing.DaysRemaining, pile.DaysRemaining);
+                    match.Count += pile.Count;
+                    // keep the exact value of whichever is more spoiled (lower)
+                    match.DaysRemaining = Math.Min(match.DaysRemaining, pile.DaysRemaining);
                 }
                 else
                 {
-                    consolidated[key] = pile.Clone();
+                    result.Add(pile.Clone());
                 }
             }
-            Piles = consolidated.Values.ToList();
+            Piles = result;
             SortPiles();
         }
 

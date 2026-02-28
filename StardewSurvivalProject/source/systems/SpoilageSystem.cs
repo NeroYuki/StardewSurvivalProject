@@ -196,7 +196,7 @@ namespace StardewSurvivalProject.source.systems
         }
 
         /// <summary>
-        /// Determine the container type for a chest item by its name.
+        /// Determine the container type for a chest item by its name or SSP modData tag.
         /// </summary>
         public static ContainerType GetContainerType(SObject container)
         {
@@ -206,6 +206,15 @@ namespace StardewSurvivalProject.source.systems
             if (container is Chest chest && chest.fridge.Value)
                 return ContainerType.MiniFridge;
 
+            // Prefer the explicit modData tag written at placement time (most reliable).
+            if (container.modData.TryGetValue("SSP.CustomContainer", out string customTag))
+            {
+                if (customTag == PortableCoolerName) return ContainerType.PortableCooler;
+                if (customTag == MiniFridgeName)     return ContainerType.MiniFridge;
+                if (customTag == ChestFreezerName)   return ContainerType.ChestFreezer;
+            }
+
+            // Fall back to Name-based detection (handles existing placed objects from before the patch).
             string name = container.Name;
             if (name == PortableCoolerName) return ContainerType.PortableCooler;
             if (name == MiniFridgeName) return ContainerType.MiniFridge;
@@ -509,9 +518,9 @@ namespace StardewSurvivalProject.source.systems
             var lines = new List<string>();
             foreach (var pile in spoilage.Piles)
             {
-                int daysDisplay = Math.Max(1, (int)Math.Ceiling(pile.DaysRemaining));
-                string dayText = daysDisplay == 1 ? "day" : "days";
-                lines.Add($"({pile.Count}) {daysDisplay} {dayText} to spoil");
+                double rounded = Math.Round(Math.Max(0, pile.DaysRemaining), 1);
+                string dayText = rounded <= 1.0 ? "day" : "days";
+                lines.Add($"({pile.Count}) {rounded:0.#} {dayText} to spoil");
             }
 
             return lines;

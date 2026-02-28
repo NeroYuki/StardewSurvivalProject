@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace StardewSurvivalProject.source.harmony_patches
 {
@@ -43,7 +45,7 @@ namespace StardewSurvivalProject.source.harmony_patches
             }
         }
 
-        public static void ItemPlace_PostFix(StardewValley.Object __instance, GameLocation location, int x, int y, Farmer who = null)
+        public static void ItemPlace_PostFix(StardewValley.Object __instance, GameLocation location, int x, int y, Farmer who, bool __result)
         {
             try
             {
@@ -51,7 +53,25 @@ namespace StardewSurvivalProject.source.harmony_patches
                     return;
 
                 events.CustomEvents.InvokeOnItemPlaced(__instance);
-                return;
+
+                // Convert custom container BigCraftables into real Chest objects so they support
+                // item storage and the vanilla chest/ItemGrabMenu interaction.
+                if (!__result || location == null) return;
+
+                string name = __instance.Name;
+                if (name != systems.SpoilageSystem.PortableCoolerName &&
+                    name != systems.SpoilageSystem.MiniFridgeName &&
+                    name != systems.SpoilageSystem.ChestFreezerName)
+                    return;
+
+                Vector2 tile = new Vector2(x / 64, y / 64);
+                if (!location.objects.ContainsKey(tile)) return;
+
+                // Create a Chest using the same ItemId so pick-up gives back the correct item.
+                var chest = new Chest(playerChest: true, tile, __instance.ItemId);
+                // Tag the chest so SpoilageSystem can classify it even if Name lookup ever changes.
+                chest.modData["SSP.CustomContainer"] = name;
+                location.objects[tile] = chest;
             }
             catch (Exception ex)
             {
