@@ -159,6 +159,11 @@
             "Action": "Load",
             "Target": "Mods/{{ModId}}/JojaSportDrink",
             "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/SpoiledFood",
+            "FromFile": "assets/{{Spriteset}}/{{TargetWithoutPath}}.png"
         }
     ]
 }

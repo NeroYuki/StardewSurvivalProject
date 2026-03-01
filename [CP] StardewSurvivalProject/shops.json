@@ -90,6 +90,18 @@
                     "ItemId": "{{ModId}}_TallAirConditioner",
                     "Price": 40000,
                     "IsRecipe": true
+                },
+                "{{ModId}}_MiniFridgeRecipe": {
+                    "Id": "{{ModId}}_MiniFridgeRecipe",
+                    "ItemId": "{{ModId}}_MiniFridge",
+                    "Price": 20000,
+                    "IsRecipe": true
+                },
+                "{{ModId}}_FreezerRecipe": {
+                    "Id": "{{ModId}}_FreezerRecipe",
+                    "ItemId": "{{ModId}}_Freezer",
+                    "Price": 30000,
+                    "IsRecipe": true
                 }
             }
         },

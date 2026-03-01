@@ -41,6 +41,10 @@ namespace StardewSurvivalProject.source.core
         {
             if (!IsInitialized) return;
 
+            // Don't update during pause, events, or when a menu is open (single player)
+            if (Game1.eventUp || (Game1.activeClickableMenu != null && !Game1.IsMultiplayer) || Game1.paused)
+                return;
+
             ApplyEffects();
             ApplyEffectConsequences();
             stamina.UpdateStaminaRegen(Game1.player);
@@ -181,6 +185,13 @@ namespace StardewSurvivalProject.source.core
             {
                 playerStats.LoadFromModels(saveData.hunger, saveData.thirst, saveData.bodyTemp, 
                     saveData.mood, saveData.healthPoint);
+            }
+            else
+            {
+                // New save — HealthPoint was already set in Initialize(),
+                // but ensure HP matches farmer.maxHealth in case it changed.
+                playerStats.HealthPoint = Game1.player.maxHealth;
+                LogHelper.Info("No save data found — new character initialized with default stats");
             }
         }
 

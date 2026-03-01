@@ -26,6 +26,7 @@ namespace StardewSurvivalProject.source.systems
         public void Initialize(Farmer farmer)
         {
             player = new model.Player(farmer);
+            HealthPoint = farmer.maxHealth;
             LogHelper.Debug("PlayerStatsSystem initialized");
         }
 

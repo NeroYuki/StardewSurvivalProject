@@ -1,7 +1,7 @@
 {
   "Name": "StardewSurvivalProject",
   "Author": "NeroYuki",
-  "Version": "0.5.0-preview2-alpha",
+  "Version": "0.5.0-rc1-alpha",
   "Description": "A mod aim to add and alter Stardew Valley's game mechanic for additional layer of realism (one may call this a bit masochist but who care lol)",
   "UniqueID": "neroyuki.rlvalley",
   "EntryDll": "StardewSurvivalProject.dll",

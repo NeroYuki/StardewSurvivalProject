@@ -323,7 +323,7 @@
                     "Texture": "Mods/{{ModId}}/Cooler",
                     "SpriteIndex": 0
                 },
-                "{{ModId}}_Fridge": {
+                "{{ModId}}_MiniFridge": {
                     "Name": "Mini Fridge",
                     "Displayname": "Mini Fridge",
                     "Description": "A compact refrigerator that keeps food fresh. Doubles food freshness time.",
